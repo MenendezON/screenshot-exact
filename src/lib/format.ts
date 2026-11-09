@@ -39,7 +39,7 @@ export function formatDate(value: string | Date | null | undefined): string {
   const d = toDate(value);
   if (Number.isNaN(d.getTime())) return "—";
   const p = parts(d);
-  return `${p.day}/${p.month}/${p.year}`;
+  return `${p['day']}/${p['month']}/${p['year']}`;
 }
 
 export function formatDateTime(value: string | Date | null | undefined): string {
@@ -47,5 +47,5 @@ export function formatDateTime(value: string | Date | null | undefined): string 
   const d = toDate(value);
   if (Number.isNaN(d.getTime())) return "—";
   const p = parts(d);
-  return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
+  return `${p['day']}/${p['month']}/${p['year']} ${p['hour']}:${p['minute']}`;
 }

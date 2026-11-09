@@ -32,7 +32,7 @@ function HomePage() {
       <PageHeader
         eyebrow={formatDate(new Date())}
         title={firstName ? `Bonjour ${firstName}` : "Bonjour"}
-        description={user?.role ? `Connecté en tant que ${ROLE_LABELS[user.role]}.` : undefined}
+        description={user?.role ? `Connecté en tant que ${ROLE_LABELS[user.role]}.` : ""}
       />
 
       <section className="rounded-lg border bg-card shadow-panel">

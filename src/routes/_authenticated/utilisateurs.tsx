@@ -163,7 +163,7 @@ function UserItem({ user }: { user: UserRow }) {
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <Select
-          value={user.role ?? undefined}
+          value={user.role ?? ""}
           onValueChange={(role) => mutation.mutate({ role: role as AppRole })}
           disabled={mutation.isPending}
         >
