@@ -14,7 +14,9 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAccueilRouteImport } from './routes/_authenticated/accueil'
+import { Route as AuthenticatedJournalRouteImport } from './routes/_authenticated/journal'
 import { Route as AuthenticatedParametresRouteImport } from './routes/_authenticated/parametres'
+import { Route as AuthenticatedUtilisateursRouteImport } from './routes/_authenticated/utilisateurs'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,25 +42,40 @@ const AuthenticatedAccueilRoute = AuthenticatedAccueilRouteImport.update({
   path: '/accueil',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedJournalRoute = AuthenticatedJournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedParametresRoute = AuthenticatedParametresRouteImport.update({
   id: '/parametres',
   path: '/parametres',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedUtilisateursRoute =
+  AuthenticatedUtilisateursRouteImport.update({
+    id: '/utilisateurs',
+    path: '/utilisateurs',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/accueil': typeof AuthenticatedAccueilRoute
+  '/journal': typeof AuthenticatedJournalRoute
   '/parametres': typeof AuthenticatedParametresRoute
+  '/utilisateurs': typeof AuthenticatedUtilisateursRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/accueil': typeof AuthenticatedAccueilRoute
+  '/journal': typeof AuthenticatedJournalRoute
   '/parametres': typeof AuthenticatedParametresRoute
+  '/utilisateurs': typeof AuthenticatedUtilisateursRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -67,13 +84,29 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/accueil': typeof AuthenticatedAccueilRoute
+  '/_authenticated/journal': typeof AuthenticatedJournalRoute
   '/_authenticated/parametres': typeof AuthenticatedParametresRoute
+  '/_authenticated/utilisateurs': typeof AuthenticatedUtilisateursRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/reset-password' | '/accueil' | '/parametres'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/accueil'
+    | '/journal'
+    | '/parametres'
+    | '/utilisateurs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/reset-password' | '/accueil' | '/parametres'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/accueil'
+    | '/journal'
+    | '/parametres'
+    | '/utilisateurs'
   id:
     | '__root__'
     | '/'
@@ -81,7 +114,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/_authenticated/accueil'
+    | '/_authenticated/journal'
     | '/_authenticated/parametres'
+    | '/_authenticated/utilisateurs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -128,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccueilRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/journal': {
+      id: '/_authenticated/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof AuthenticatedJournalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/parametres': {
       id: '/_authenticated/parametres'
       path: '/parametres'
@@ -135,17 +177,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParametresRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/utilisateurs': {
+      id: '/_authenticated/utilisateurs'
+      path: '/utilisateurs'
+      fullPath: '/utilisateurs'
+      preLoaderRoute: typeof AuthenticatedUtilisateursRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccueilRoute: typeof AuthenticatedAccueilRoute
+  AuthenticatedJournalRoute: typeof AuthenticatedJournalRoute
   AuthenticatedParametresRoute: typeof AuthenticatedParametresRoute
+  AuthenticatedUtilisateursRoute: typeof AuthenticatedUtilisateursRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccueilRoute: AuthenticatedAccueilRoute,
+  AuthenticatedJournalRoute: AuthenticatedJournalRoute,
   AuthenticatedParametresRoute: AuthenticatedParametresRoute,
+  AuthenticatedUtilisateursRoute: AuthenticatedUtilisateursRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
