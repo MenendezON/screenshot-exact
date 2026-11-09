@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDateTime } from "@/lib/format";
 import { useCurrentUser } from "@/lib/roles";
-import { SETTING_BOUNDS, settingsQuery } from "@/lib/settings";
+import { SETTING_BOUNDS, settingsQuery, type Setting } from "@/lib/settings";
 
 export const Route = createFileRoute("/_authenticated/parametres")({
   head: () => ({
@@ -32,8 +32,6 @@ export const Route = createFileRoute("/_authenticated/parametres")({
   loader: ({ context }) => context.queryClient.ensureQueryData(settingsQuery),
   component: SettingsPage,
 });
-
-type Setting = Awaited<ReturnType<typeof settingsQuery.queryFn & {}>>[number];
 
 function SettingsPage() {
   const { data: settings } = useSuspenseQuery(settingsQuery);
