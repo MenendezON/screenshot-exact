@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794268182971,
+      "tag": "0000_foundation_roles_settings_audit",
+      "breakpoints": true
+    }
+  ]
 }
