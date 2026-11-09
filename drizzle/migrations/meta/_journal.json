@@ -8,6 +8,13 @@
       "when": 1794268182971,
       "tag": "0000_foundation_roles_settings_audit",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794268507523,
+      "tag": "0001_harden_grants_no_delete",
+      "breakpoints": true
     }
   ]
 }
