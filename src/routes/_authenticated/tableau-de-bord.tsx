@@ -5,6 +5,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   Legend,
   ResponsiveContainer,
   Tooltip,
@@ -45,6 +46,8 @@ const DESCRIPTION =
 const INK = "#333D46";
 const RED = "#E32624";
 const BLUE = "#3B7DB5";
+// Une couleur par catégorie (barres de répartition) ; chaque barre est aussi étiquetée par son axe et son tableau.
+const CATEGORY_COLORS = ["#3B7DB5", "#E32624", "#2A9D8F", "#E9A23B", "#7A5BA6", "#D1618A", "#6C8E3F", "#333D46"];
 
 type Search = {
   site?: string | undefined;
@@ -402,7 +405,11 @@ function DistributionChart({
                 fill={INK}
                 radius={[0, 4, 4, 0]}
                 maxBarSize={22}
-              />
+              >
+                {slices.map((s, i) => (
+                  <Cell key={s.label} fill={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>

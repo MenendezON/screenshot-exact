@@ -297,3 +297,26 @@ describe("analyse de l'import", () => {
     expect(a.employees[0]!.contracts[0]!.key).toBe("F001|2025-01-01");
   });
 });
+
+import { gridToRows } from "@/lib/import/read";
+import { TEMPLATE_COLUMNS } from "@/lib/import/template";
+
+describe("modèle de fichier", () => {
+  it("relit son propre modèle sans anomalie de structure", () => {
+    const grid = [
+      TEMPLATE_COLUMNS.map((c) => c.header),
+      TEMPLATE_COLUMNS.map((c) => c.example[0] ?? ""),
+    ];
+    const { rows, missing } = gridToRows(grid);
+    expect(missing).toEqual([]);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ rowNumber: 2, matricule: "F0001", contract_type: "CDD" });
+  });
+  it("signale les colonnes obligatoires absentes", () => {
+    expect(gridToRows([["Nom"], ["Diop"]]).missing).toEqual([
+      "Matricule",
+      "Type de contrat",
+      "Date de début",
+    ]);
+  });
+});

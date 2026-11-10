@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ArrowDown, ArrowUp, ArrowUpDown, Download, Loader2, Plus, Search, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Download, Loader2, Plus, Search, Upload, X } from "lucide-react";
 
 import { PageHeader } from "@/components/app-shell";
 import { FormRow, SelectInput } from "@/components/employees/common";
+import { ImportDialog } from "@/components/import-dialog";
 import { NewEmployeeDialog } from "@/components/employees/new-employee-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -87,6 +88,8 @@ function EmployeesPage() {
   const search = parseListSearch(Route.useSearch());
   const { can, ready } = usePermissions();
   const canExport = can("import_export", "export");
+  const canImport = can("import_export", "import");
+  const [importOpen, setImportOpen] = useState(false);
   const canExportSalary = can("compensation", "view") && can("compensation", "export");
   const canCreate = can("employees", "create");
 
@@ -223,6 +226,11 @@ function EmployeesPage() {
                   <DropdownMenuItem onSelect={() => runExport("csv")}>CSV (.csv)</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+            )}
+            {canImport && (
+              <Button variant="outline" onClick={() => setImportOpen(true)}>
+                <Upload /> Importer
+              </Button>
             )}
             {canCreate && (
               <Button onClick={() => setNewOpen(true)}>
@@ -409,6 +417,7 @@ function EmployeesPage() {
       </div>
 
       <NewEmployeeDialog open={newOpen} onOpenChange={setNewOpen} />
+      {canImport && <ImportDialog open={importOpen} onOpenChange={setImportOpen} />}
     </div>
   );
 }
