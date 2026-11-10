@@ -12,7 +12,6 @@ DECLARE
   r record;
   v_emp uuid;
   v_c1 uuid;
-  v_c2 uuid;
   v_start date;
   v_end date;
   v_unit uuid;
@@ -52,8 +51,7 @@ BEGIN
 
   -- ---------- Arbre d'organisation ----------
   CREATE TEMP TABLE demo_units (key text PRIMARY KEY, id uuid) ON COMMIT DROP;
-  INSERT INTO public.org_units (name, type, sort_order) VALUES ('Direction Générale', 'direction', 0)
-    RETURNING 'DG', id INTO r;
+  INSERT INTO public.org_units (name, type, sort_order) VALUES ('Direction Générale', 'direction', 0);
   INSERT INTO demo_units VALUES ('DG', (SELECT id FROM public.org_units WHERE name = 'Direction Générale'));
 
   INSERT INTO public.org_units (name, type, parent_id, sort_order)
@@ -174,7 +172,7 @@ BEGIN
     v_job := (SELECT id FROM public.job_titles WHERE name = r.job);
     v_cat := (SELECT id FROM public.categories WHERE code = r.cat);
     v_status := (SELECT default_status FROM public.categories WHERE id = v_cat);
-    v_c1 := NULL; v_c2 := NULL;
+    v_c1 := NULL;
 
     IF r.plan LIKE 'cdi:%' THEN
       v_start := make_date(split_part(r.plan, ':', 2)::int, 3, 1);
