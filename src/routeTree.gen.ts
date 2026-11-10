@@ -18,6 +18,7 @@ import { Route as AuthenticatedAccueilRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedJournalRouteImport } from './routes/_authenticated/journal'
 import { Route as AuthenticatedOrganigrammeRouteImport } from './routes/_authenticated/organigramme'
 import { Route as AuthenticatedParametresRouteImport } from './routes/_authenticated/parametres'
+import { Route as AuthenticatedTableauDeBordRouteImport } from './routes/_authenticated/tableau-de-bord'
 import { Route as AuthenticatedUtilisateursRouteImport } from './routes/_authenticated/utilisateurs'
 import { Route as AuthenticatedContratsARegulariserRouteImport } from './routes/_authenticated/contrats/a-regulariser'
 import { Route as AuthenticatedContratsEcheancesRouteImport } from './routes/_authenticated/contrats/echeances'
@@ -70,6 +71,12 @@ const AuthenticatedParametresRoute = AuthenticatedParametresRouteImport.update({
   path: '/parametres',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTableauDeBordRoute =
+  AuthenticatedTableauDeBordRouteImport.update({
+    id: '/tableau-de-bord',
+    path: '/tableau-de-bord',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedUtilisateursRoute =
   AuthenticatedUtilisateursRouteImport.update({
     id: '/utilisateurs',
@@ -116,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
+  '/tableau-de-bord': typeof AuthenticatedTableauDeBordRoute
   '/utilisateurs': typeof AuthenticatedUtilisateursRoute
   '/contrats/a-regulariser': typeof AuthenticatedContratsARegulariserRoute
   '/contrats/echeances': typeof AuthenticatedContratsEcheancesRoute
@@ -132,6 +140,7 @@ export interface FileRoutesByTo {
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
+  '/tableau-de-bord': typeof AuthenticatedTableauDeBordRoute
   '/utilisateurs': typeof AuthenticatedUtilisateursRoute
   '/contrats/a-regulariser': typeof AuthenticatedContratsARegulariserRoute
   '/contrats/echeances': typeof AuthenticatedContratsEcheancesRoute
@@ -150,6 +159,7 @@ export interface FileRoutesById {
   '/_authenticated/journal': typeof AuthenticatedJournalRoute
   '/_authenticated/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/_authenticated/parametres': typeof AuthenticatedParametresRoute
+  '/_authenticated/tableau-de-bord': typeof AuthenticatedTableauDeBordRoute
   '/_authenticated/utilisateurs': typeof AuthenticatedUtilisateursRoute
   '/_authenticated/contrats/a-regulariser': typeof AuthenticatedContratsARegulariserRoute
   '/_authenticated/contrats/echeances': typeof AuthenticatedContratsEcheancesRoute
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/organigramme'
     | '/parametres'
+    | '/tableau-de-bord'
     | '/utilisateurs'
     | '/contrats/a-regulariser'
     | '/contrats/echeances'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/organigramme'
     | '/parametres'
+    | '/tableau-de-bord'
     | '/utilisateurs'
     | '/contrats/a-regulariser'
     | '/contrats/echeances'
@@ -201,6 +213,7 @@ export interface FileRouteTypes {
     | '/_authenticated/journal'
     | '/_authenticated/organigramme'
     | '/_authenticated/parametres'
+    | '/_authenticated/tableau-de-bord'
     | '/_authenticated/utilisateurs'
     | '/_authenticated/contrats/a-regulariser'
     | '/_authenticated/contrats/echeances'
@@ -282,6 +295,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParametresRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/tableau-de-bord': {
+      id: '/_authenticated/tableau-de-bord'
+      path: '/tableau-de-bord'
+      fullPath: '/tableau-de-bord'
+      preLoaderRoute: typeof AuthenticatedTableauDeBordRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/utilisateurs': {
       id: '/_authenticated/utilisateurs'
       path: '/utilisateurs'
@@ -332,6 +352,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedJournalRoute: typeof AuthenticatedJournalRoute
   AuthenticatedOrganigrammeRoute: typeof AuthenticatedOrganigrammeRoute
   AuthenticatedParametresRoute: typeof AuthenticatedParametresRoute
+  AuthenticatedTableauDeBordRoute: typeof AuthenticatedTableauDeBordRoute
   AuthenticatedUtilisateursRoute: typeof AuthenticatedUtilisateursRoute
   AuthenticatedContratsARegulariserRoute: typeof AuthenticatedContratsARegulariserRoute
   AuthenticatedContratsEcheancesRoute: typeof AuthenticatedContratsEcheancesRoute
@@ -345,6 +366,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedJournalRoute: AuthenticatedJournalRoute,
   AuthenticatedOrganigrammeRoute: AuthenticatedOrganigrammeRoute,
   AuthenticatedParametresRoute: AuthenticatedParametresRoute,
+  AuthenticatedTableauDeBordRoute: AuthenticatedTableauDeBordRoute,
   AuthenticatedUtilisateursRoute: AuthenticatedUtilisateursRoute,
   AuthenticatedContratsARegulariserRoute:
     AuthenticatedContratsARegulariserRoute,

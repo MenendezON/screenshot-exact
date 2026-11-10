@@ -124,7 +124,7 @@ export function exportFileName(extension: "csv" | "xlsx", today = new Date()): s
   return `employes-${iso}.${extension}`;
 }
 
-function triggerDownload(blob: Blob, fileName: string) {
+export function triggerDownload(blob: Blob, fileName: string) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

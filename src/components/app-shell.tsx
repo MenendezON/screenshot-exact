@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   CalendarClock,
+  ChartColumn,
   History,
   Hourglass,
   Home,
@@ -26,6 +27,7 @@ import { ROLE_LABELS, useCurrentUser, type AppRole } from "@/lib/roles";
 type NavItem = {
   to:
     | "/accueil"
+    | "/tableau-de-bord"
     | "/employes"
     | "/organigramme"
     | "/contrats/echeances"
@@ -43,6 +45,7 @@ type NavItem = {
 
 const NAV: NavItem[] = [
   { to: "/accueil", label: "Accueil", icon: Home },
+  { to: "/tableau-de-bord", label: "Tableaux de bord", icon: ChartColumn, permission: ["dashboards", "view"] },
   { to: "/employes", label: "Employés", icon: Users, permission: ["employees", "view"] },
   { to: "/organigramme", label: "Organigramme", icon: Network, permission: ["employees", "view"] },
   {

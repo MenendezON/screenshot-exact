@@ -7,7 +7,7 @@ import { FormRow, SelectInput } from "@/components/employees/common";
 import { fullName } from "@/lib/employees";
 import { descendantIds, orgUnitsQuery, sitesQuery, type OrgUnit } from "@/lib/referentials";
 
-export type FollowupSearch = { site?: string; unit?: string };
+export type FollowupSearch = { site?: string | undefined; unit?: string | undefined };
 
 const UUID = /^[0-9a-f-]{36}$/i;
 
