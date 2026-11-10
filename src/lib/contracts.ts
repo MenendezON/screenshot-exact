@@ -246,6 +246,19 @@ export function describeNotification(n: Pick<NotificationRow, "kind" | "payload"
             .filter(Boolean)
             .join(" — ") || null,
       };
+    case "document_expiring": {
+      const type = str("document_type");
+      const when =
+        days === null
+          ? null
+          : days < 0
+            ? `expiré (${remainingLabel(days)})`
+            : `expire dans ${remainingLabel(days)}`;
+      return {
+        title: "Document bientôt expiré",
+        detail: [who, type, when].filter(Boolean).join(" — ") || null,
+      };
+    }
     case "contract_to_regularize":
       return { title: "Contrat à régulariser", detail: who };
     default:

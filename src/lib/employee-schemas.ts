@@ -420,7 +420,6 @@ export const DOCUMENT_MIME_TYPES: Record<string, string> = {
   "application/pdf": "PDF",
   "image/jpeg": "JPEG",
   "image/png": "PNG",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "Word",
 };
 
 /** Contrôle du fichier choisi ; renvoie un message en français ou null. */
@@ -431,7 +430,7 @@ export function validateDocumentFile(
   if (file.size === 0) return "Le fichier est vide.";
   if (file.size > MAX_DOCUMENT_BYTES) return "Le fichier dépasse 10 Mo.";
   if (!DOCUMENT_MIME_TYPES[file.type])
-    return "Format non accepté : PDF, JPEG, PNG ou Word (.docx).";
+    return "Format non accepté : PDF, JPEG ou PNG.";
   return null;
 }
 
