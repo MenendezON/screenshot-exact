@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { authenticate, db, intParam, json } from "@/lib/api/server";
+import { CONTRACT_COLUMNS } from "@/lib/api/keys";
+import { authenticate, db, intParam, json, listResponse } from "@/lib/api/server";
 
 /** GET /api/v1/contracts?matricule=F0001&page=1&per_page=100 — niveau 2 (contrats) minimum. */
 export const Route = createFileRoute("/api/v1/contracts")({
@@ -11,7 +12,7 @@ export const Route = createFileRoute("/api/v1/contracts")({
         if (ctx instanceof Response) return ctx;
         const url = new URL(request.url);
         const page = intParam(url.searchParams.get("page"), 1, 100000);
-        const perPage = intParam(url.searchParams.get("per_page"), 100, 200);
+        const perPage = intParam(url.searchParams.get("per_page"), 100, 1000);
         const matricule = url.searchParams.get("matricule");
 
         const d = await db();
@@ -50,7 +51,12 @@ export const Route = createFileRoute("/api/v1/contracts")({
           duree_mois: c["duration_months"],
         }));
         await ctx.log(200, out.length);
-        return json({ data: out, page, per_page: perPage, total: count ?? out.length });
+        return listResponse(
+          url,
+          out,
+          { page, per_page: perPage, total: count ?? out.length },
+          CONTRACT_COLUMNS,
+        );
       },
     },
   },

@@ -1,4 +1,5 @@
 /** Accès serveur de l'API publique : authentification par clé, journal d'appels, lectures. Importer uniquement depuis des routes serveur. */
+import { toApiCsv } from "./keys";
 import {
   clientStatus,
   extractKey,
@@ -65,15 +66,13 @@ export async function authenticate(
     revoked_at: data.revoked_at,
   };
   const log = async (status: number, rows = 0) => {
-    await db
-      .from("api_call_log")
-      .insert({
-        client_id: client.id,
-        method: request.method,
-        path: started.pathname,
-        status,
-        row_count: rows,
-      });
+    await db.from("api_call_log").insert({
+      client_id: client.id,
+      method: request.method,
+      path: started.pathname,
+      status,
+      row_count: rows,
+    });
     if (status < 400)
       await db
         .from("api_clients")
@@ -107,3 +106,21 @@ export const intParam = (v: string | null, def: number, max: number) => {
   const n = Number(v);
   return Number.isInteger(n) && n > 0 ? Math.min(n, max) : def;
 };
+
+/** Réponse JSON ({data, page, per_page, total}) ou CSV (`?format=csv`, UTF-8 avec BOM, total dans X-Total-Count). */
+export function listResponse(
+  url: URL,
+  data: Record<string, unknown>[],
+  meta: { page: number; per_page: number; total: number },
+  columns: string[],
+) {
+  if (url.searchParams.get("format") !== "csv") return json({ data, ...meta });
+  return new Response(toApiCsv(data, columns), {
+    status: 200,
+    headers: {
+      "content-type": "text/csv; charset=utf-8",
+      "cache-control": "no-store",
+      "x-total-count": String(meta.total),
+    },
+  });
+}

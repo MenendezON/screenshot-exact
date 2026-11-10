@@ -116,3 +116,20 @@ describe("clés d'API", () => {
     ]);
   });
 });
+
+import { employeeColumns, toApiCsv } from "@/lib/api/keys";
+
+describe("export CSV", () => {
+  it("écrit l'en-tête, échappe les guillemets et neutralise les formules", () => {
+    const csv = toApiCsv(
+      [{ a: 'x"y', b: "=1+1", c: null, d: true, e: 5 }],
+      ["a", "b", "c", "d", "e"],
+    );
+    expect(csv).toBe('﻿a,b,c,d,e\r\n"x""y",\'=1+1,,true,5\r\n');
+  });
+  it("les colonnes suivent le niveau de la clé", () => {
+    expect(employeeColumns("identite")).not.toContain("telephone");
+    expect(employeeColumns("remuneration")).toContain("salaire_net_mensuel_fcfa");
+    expect(employeeColumns("contrats")).toContain("contrat_type");
+  });
+});

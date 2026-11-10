@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { projectEmployee, type EmployeeSource } from "@/lib/api/keys";
-import { authenticate, db, intParam, json } from "@/lib/api/server";
+import { employeeColumns, projectEmployee, type EmployeeSource } from "@/lib/api/keys";
+import { authenticate, db, intParam, json, listResponse } from "@/lib/api/server";
 
 /** GET /api/v1/employees?presence=actifs|sortis|tous&site=<nom>&page=1&per_page=100 */
 export const Route = createFileRoute("/api/v1/employees/")({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/api/v1/employees/")({
         const url = new URL(request.url);
         const presence = url.searchParams.get("presence") ?? "actifs";
         const page = intParam(url.searchParams.get("page"), 1, 100000);
-        const perPage = intParam(url.searchParams.get("per_page"), 100, 200);
+        const perPage = intParam(url.searchParams.get("per_page"), 100, 1000);
         const site = url.searchParams.get("site");
 
         const d = await db();
@@ -59,7 +59,12 @@ export const Route = createFileRoute("/api/v1/employees/")({
           projectEmployee(r, ctx.client.level, salaries.get(r.employee_id)),
         );
         await ctx.log(200, out.length);
-        return json({ data: out, page, per_page: perPage, total: count ?? out.length });
+        return listResponse(
+          url,
+          out,
+          { page, per_page: perPage, total: count ?? out.length },
+          employeeColumns(ctx.client.level),
+        );
       },
     },
   },

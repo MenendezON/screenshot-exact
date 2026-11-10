@@ -27,7 +27,7 @@ Un niveau insuffisant pour une ressource renvoie `403`. Les champs d'un niveau s
 ## Ressources
 
 ### `GET /employees`
-Paramètres : `presence` = `actifs` (défaut) | `sortis` | `tous` ; `site` = nom du site principal ; `page` (1 par défaut) ; `per_page` (100 par défaut, 200 au plus).
+Paramètres : `presence` = `actifs` (défaut) | `sortis` | `tous` ; `site` = nom du site principal ; `page` (1 par défaut) ; `per_page` (100 par défaut, 1000 au plus) ; `format` = `json` (défaut) ou `csv`.
 
 ```json
 { "data": [ { "matricule": "F0001", "nom": "Diop", "prenoms": "Awa", "en_poste": true, "statut": "ouvrier",
@@ -50,7 +50,14 @@ Paramètres : `matricule`, `page`, `per_page`. Champs : `matricule`, `type`, `de
 ```sh
 curl -H "Authorization: Bearer $FMS_API_KEY" "https://…/api/v1/employees?presence=actifs&per_page=200&page=1"
 ```
-Parcourir les pages jusqu'à avoir lu `total` lignes.
+Parcourir les pages jusqu'à avoir lu `total` lignes (en CSV, le total est dans l'en-tête `X-Total-Count`).
+
+## Brancher des outils
+
+- **Power BI / Excel** : `docs/exemples/powerbi-employes.pq` (Power Query, pagination comprise). Source « Anonyme », clé dans l'en-tête. Pour un rapport partagé, utiliser une clé de niveau 1 ou 2.
+- **KoboToolbox** : Kobo ne peut pas appeler l'API. Générer un CSV avec `docs/exemples/export-csv.sh` (à planifier, par exemple chaque nuit), puis le téléverser comme fichier média du formulaire pour alimenter ses listes de choix.
+- **Autres outils** : tout client HTTP capable d'envoyer un en-tête `Authorization` (Python, Postman, Zapier, Make, n8n…).
+- Le CSV est en UTF-8 avec BOM (accents corrects dans Excel) ; les textes commençant par `=`, `+`, `-` ou `@` sont préfixés d'une apostrophe pour éviter l'exécution de formules.
 
 ## Bonnes pratiques
 

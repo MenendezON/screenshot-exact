@@ -152,3 +152,42 @@ export function makeRateLimiter(max: number, windowMs = 60_000) {
     return h.n <= max;
   };
 }
+
+/** CSV (virgule, guillemets doublés, BOM UTF-8). Neutralise les formules Excel (=, +, -, @) en début de texte. */
+export function toApiCsv(rows: Record<string, unknown>[], columns: string[]): string {
+  const cell = (v: unknown) => {
+    if (v === null || v === undefined) return "";
+    let t = typeof v === "boolean" ? (v ? "true" : "false") : String(v);
+    if (typeof v === "string" && /^[=+\-@]/.test(t)) t = `'${t}`;
+    return /[",\r\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
+  };
+  const lines = [columns.join(","), ...rows.map((r) => columns.map((c) => cell(r[c])).join(","))];
+  return "\uFEFF" + lines.join("\r\n") + "\r\n";
+}
+
+export const EMPLOYEE_COLUMNS: Record<ApiLevel, string[]> = {
+  identite: [
+    "matricule",
+    "nom",
+    "prenoms",
+    "en_poste",
+    "statut",
+    "poste",
+    "categorie",
+    "unite",
+    "site_principal",
+  ],
+  contrats: ["contrat_type", "contrat_debut", "contrat_fin", "date_sortie"],
+  contact: ["telephone", "email", "date_naissance"],
+  remuneration: ["salaire_net_mensuel_fcfa"],
+};
+export const employeeColumns = (level: ApiLevel) =>
+  API_LEVELS.slice(0, levelRank(level) + 1).flatMap((l) => EMPLOYEE_COLUMNS[l]);
+export const CONTRACT_COLUMNS = [
+  "matricule",
+  "type",
+  "debut",
+  "fin_prevue",
+  "fin_effective",
+  "duree_mois",
+];
