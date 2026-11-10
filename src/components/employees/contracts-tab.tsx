@@ -31,7 +31,13 @@ import {
   type ContractType,
   type ExitForm,
 } from "@/lib/employee-schemas";
-import { employeeKey, formatSeniority, type ExitDetailRow } from "@/lib/employees";
+import { canFollowUp, overlapMessage, suggestedStart, type ContractMode } from "@/lib/contracts";
+import {
+  employeeKey,
+  formatSeniority,
+  type ContractRecord,
+  type ExitDetailRow,
+} from "@/lib/employees";
 import { formatDate } from "@/lib/format";
 import { exitReasonsQuery } from "@/lib/referentials";
 import { settingsQuery } from "@/lib/settings";
@@ -102,8 +108,20 @@ function SituationSection({ ctx }: { ctx: FicheContext }) {
   );
 }
 
+type ContractDialog = { mode: ContractMode; previous: ContractRecord | null };
+
+const MODE_TITLES: Record<ContractMode, string> = {
+  new: "Nouveau contrat",
+  renewal: "Renouveler le contrat",
+  conversion: "Passer en CDI",
+};
+
 function ContractsSection({ ctx }: { ctx: FicheContext }) {
-  const [open, setOpen] = useState(false);
+  const [dialog, setDialog] = useState<ContractDialog | null>(null);
+  const open = dialog !== null;
+  const setOpen = (o: boolean) => {
+    if (!o) setDialog(null);
+  };
   const canView = ctx.can("contracts", "view");
   const canCreate = ctx.can("contracts", "create") && !ctx.record.archived_at;
   const { data: settings } = useQuery(settingsQuery);
@@ -140,6 +158,21 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
       ? computeContractEnd(startDate, Number(duration))
       : null;
 
+  const openDialog = (mode: ContractMode, previous: ContractRecord | null) => {
+    const start = previous ? suggestedStart(previous, todayIso()) : todayIso();
+    reset({
+      type:
+        mode === "conversion"
+          ? "cdi"
+          : mode === "renewal" && previous
+            ? (previous.type as ContractType)
+            : "cdi",
+      startDate: start,
+      durationMonths: "",
+    });
+    setDialog({ mode, previous });
+  };
+
   const save = useEmployeeMutation(
     ctx.id,
     async (v: ContractForm) => {
@@ -149,6 +182,7 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
         type: v.type,
         start_date: v.startDate,
         duration_months: v.type === "cdi" ? null : Number(v.durationMonths),
+        previous_contract_id: dialog?.previous?.id ?? null,
       });
       if (error) throw error;
     },
@@ -156,11 +190,24 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
       success: "Contrat enregistré.",
       errorMessages: { "23P01": "Ce contrat chevauche un contrat existant de l'employé." },
       onDone: () => {
-        setOpen(false);
+        setDialog(null);
         reset();
       },
     },
   );
+
+  const submit = (v: ContractForm) => {
+    const conflict = overlapMessage(rows, {
+      type: v.type,
+      startDate: v.startDate,
+      durationMonths: v.type === "cdi" ? null : Number(v.durationMonths),
+    });
+    if (conflict) {
+      form.setError("startDate", { type: "validate", message: conflict });
+      return;
+    }
+    save.mutate(v);
+  };
 
   const endLabel = (c: (typeof rows)[number]) =>
     c.terminated_on
@@ -175,7 +222,7 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
       description="Historique des contrats de l'employé ; celui en cours est signalé. Le contrat signé se dépose dans l'onglet Documents."
       actions={
         canCreate ? (
-          <Button size="sm" onClick={() => setOpen(true)}>
+          <Button size="sm" onClick={() => openDialog("new", null)}>
             <Plus /> Nouveau contrat
           </Button>
         ) : undefined
@@ -196,6 +243,12 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
                 <th className="px-3 py-2 font-medium">Début</th>
                 <th className="px-3 py-2 font-medium">Durée</th>
                 <th className="px-3 py-2 font-medium">Fin</th>
+                <th className="px-3 py-2 font-medium">Origine</th>
+                {canCreate && (
+                  <th className="px-3 py-2 font-medium">
+                    <span className="sr-only">Actions</span>
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -210,6 +263,36 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
                     {c.duration_months ? `${c.duration_months} mois` : "Indéterminée"}
                   </td>
                   <td className="px-3 py-2">{endLabel(c)}</td>
+                  <td className="px-3 py-2 text-muted-foreground">
+                    {c.previous_contract_id
+                      ? originLabel(
+                          c,
+                          rows.find((r) => r.id === c.previous_contract_id),
+                        )
+                      : "—"}
+                  </td>
+                  {canCreate && (
+                    <td className="px-3 py-2 text-right">
+                      {ctx.current?.is_active !== false && canFollowUp(c, rows) && (
+                        <span className="inline-flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => openDialog("renewal", c)}
+                          >
+                            Renouveler
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => openDialog("conversion", c)}
+                          >
+                            Passer en CDI
+                          </Button>
+                        </span>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -225,9 +308,15 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Nouveau contrat</DialogTitle>
+            <DialogTitle>{dialog ? MODE_TITLES[dialog.mode] : "Nouveau contrat"}</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit((v) => save.mutate(v))} className="space-y-4" noValidate>
+          {dialog?.previous && (
+            <p className="text-sm text-muted-foreground">
+              Fait suite au contrat {CONTRACT_LABELS[dialog.previous.type as ContractType]} du{" "}
+              {formatDate(dialog.previous.start_date)}. L'ancien contrat reste dans l'historique.
+            </p>
+          )}
+          <form onSubmit={handleSubmit(submit)} className="space-y-4" noValidate>
             <FormRow label="Type de contrat" error={errors.type?.message}>
               <Controller
                 control={control}
@@ -239,7 +328,9 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
                       field.onChange(v);
                       if (v === "cdi") form.setValue("durationMonths", "");
                     }}
-                    options={CONTRACT_TYPES.map((t) => ({ value: t, label: CONTRACT_LABELS[t] }))}
+                    options={CONTRACT_TYPES.filter(
+                      (t) => dialog?.mode !== "conversion" || t === "cdi",
+                    ).map((t) => ({ value: t, label: CONTRACT_LABELS[t] }))}
                   />
                 )}
               />
@@ -291,12 +382,21 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
   );
 }
 
+function originLabel(c: ContractRecord, previous: ContractRecord | undefined) {
+  const from = previous ? ` du ${formatDate(previous.start_date)}` : "";
+  if (c.type === "cdi" && previous && previous.type !== "cdi")
+    return `Conversion du contrat${from}`;
+  return `Renouvellement du contrat${from}`;
+}
+
 function ExitsSection({ ctx }: { ctx: FicheContext }) {
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState<ExitForm | null>(null);
   const canRecord =
     ctx.can("employees", "edit") && !ctx.record.archived_at && ctx.current?.is_active !== false;
   const { data: reasons = [] } = useQuery(exitReasonsQuery);
+  // Un motif confidentiel ne se choisit (et ne s'affiche) qu'avec la permission sur les données sensibles.
+  const canConfidential = ctx.can("sensitive_data", "edit");
 
   const { data: exits = [], isLoading } = useQuery({
     queryKey: [...employeeKey(ctx.id), "exits"],
@@ -400,7 +500,7 @@ function ExitsSection({ ctx }: { ctx: FicheContext }) {
                     onChange={field.onChange}
                     placeholder="Choisir un motif"
                     options={reasons
-                      .filter((r) => !r.archived_at)
+                      .filter((r) => !r.archived_at && (!r.is_confidential || canConfidential))
                       .map((r) => ({ value: r.id, label: r.name }))}
                     invalid={!!errors.reasonId}
                   />

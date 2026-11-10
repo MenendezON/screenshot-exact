@@ -3,6 +3,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 import { CONTRACT_TYPES, STATUS_VALUES, type ContractType } from "@/lib/employee-schemas";
+import { listAll } from "@/lib/referentials";
 
 export type EmployeeRow = Database["public"]["Views"]["v_employee_current"]["Row"];
 export type MetricsRow = Database["public"]["Views"]["v_employee_metrics"]["Row"];
@@ -170,6 +171,20 @@ export async function fetchMetrics(ids: string[]): Promise<Map<string, MetricsRo
     for (const m of data ?? []) if (m.employee_id) map.set(m.employee_id, m as MetricsRow);
   }
   return map;
+}
+
+/** Employés en poste (hors archivés) avec leur date de naissance, pour les suivis de retraite. */
+export async function listAllCurrent() {
+  const rows = await listAll((from, to) =>
+    supabase
+      .from("v_employee_current")
+      .select("employee_id, matricule, first_names, last_name, primary_site_id, org_unit_id, birth_date")
+      .eq("is_active", true)
+      .is("archived_at", null)
+      .order("employee_id")
+      .range(from, to),
+  );
+  return rows.flatMap((r) => (r.employee_id ? [{ ...r, employee_id: r.employee_id }] : []));
 }
 
 /** Dernière rémunération en vigueur par employé (lisible seulement avec « compensation:view »). */

@@ -1,18 +1,22 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import {
+  CalendarClock,
   History,
+  Hourglass,
   Home,
   Loader2,
   LogOut,
   Menu,
   Network,
   SlidersHorizontal,
+  TriangleAlert,
   Users,
   type LucideIcon,
 } from "lucide-react";
 
 import { BrandName } from "@/components/brand";
+import { NotificationBell } from "@/components/notification-bell";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useSignOut } from "@/lib/auth-context";
@@ -20,7 +24,16 @@ import { usePermissions, type Action, type Resource } from "@/lib/permissions";
 import { ROLE_LABELS, useCurrentUser, type AppRole } from "@/lib/roles";
 
 type NavItem = {
-  to: "/accueil" | "/employes" | "/organigramme" | "/parametres" | "/utilisateurs" | "/journal";
+  to:
+    | "/accueil"
+    | "/employes"
+    | "/organigramme"
+    | "/contrats/echeances"
+    | "/contrats/retraites"
+    | "/contrats/a-regulariser"
+    | "/parametres"
+    | "/utilisateurs"
+    | "/journal";
   label: string;
   icon: LucideIcon;
   roles?: AppRole[];
@@ -32,7 +45,30 @@ const NAV: NavItem[] = [
   { to: "/accueil", label: "Accueil", icon: Home },
   { to: "/employes", label: "Employés", icon: Users, permission: ["employees", "view"] },
   { to: "/organigramme", label: "Organigramme", icon: Network, permission: ["employees", "view"] },
-  { to: "/parametres", label: "Paramètres RH", icon: SlidersHorizontal, roles: ["admin_it", "drh"] },
+  {
+    to: "/contrats/echeances",
+    label: "Fins de contrat",
+    icon: CalendarClock,
+    permission: ["contracts", "view"],
+  },
+  {
+    to: "/contrats/retraites",
+    label: "Retraites",
+    icon: Hourglass,
+    permission: ["contracts", "view"],
+  },
+  {
+    to: "/contrats/a-regulariser",
+    label: "À régulariser",
+    icon: TriangleAlert,
+    permission: ["contracts", "view"],
+  },
+  {
+    to: "/parametres",
+    label: "Paramètres RH",
+    icon: SlidersHorizontal,
+    roles: ["admin_it", "drh"],
+  },
   { to: "/utilisateurs", label: "Utilisateurs", icon: Users, roles: ["admin_rh"] },
   { to: "/journal", label: "Journal d'audit", icon: History, roles: ["admin_rh"] },
 ];
@@ -43,7 +79,8 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { can } = usePermissions();
   const items = NAV.filter(
     (item) =>
-      (!item.roles || (user?.role && item.roles.includes(user.role))) && (!item.permission || can(...item.permission)),
+      (!item.roles || (user?.role && item.roles.includes(user.role))) &&
+      (!item.permission || can(...item.permission)),
   );
 
   return (
@@ -103,22 +140,28 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex min-h-screen flex-col">
         <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-sidebar px-4 py-3 text-sidebar-foreground lg:hidden">
           <BrandName inverted />
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <button
-                type="button"
-                aria-label="Ouvrir le menu"
-                className="rounded-md p-2 hover:bg-sidebar-accent"
-              >
-                <Menu className="size-5" />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-72 border-sidebar-border p-0">
-              <SheetTitle className="sr-only">Menu</SheetTitle>
-              <SidebarContent onNavigate={() => setOpen(false)} />
-            </SheetContent>
-          </Sheet>
+          <div className="flex items-center gap-1">
+            <NotificationBell inverted />
+            <Sheet open={open} onOpenChange={setOpen}>
+              <SheetTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Ouvrir le menu"
+                  className="rounded-md p-2 hover:bg-sidebar-accent"
+                >
+                  <Menu className="size-5" />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-72 border-sidebar-border p-0">
+                <SheetTitle className="sr-only">Menu</SheetTitle>
+                <SidebarContent onNavigate={() => setOpen(false)} />
+              </SheetContent>
+            </Sheet>
+          </div>
         </header>
+        <div className="sticky top-0 z-20 hidden items-center justify-end border-b bg-background px-8 py-2 lg:flex">
+          <NotificationBell />
+        </div>
 
         <main className="flex-1 px-4 py-6 sm:px-8 sm:py-10">
           {isLoading ? (
@@ -161,7 +204,9 @@ export function PageHeader({
       <div>
         {eyebrow && <p className="eyebrow text-muted-foreground">{eyebrow}</p>}
         <h1 className="mt-1 text-2xl font-bold sm:text-3xl">{title}</h1>
-        {description && <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{description}</p>}
+        {description && (
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{description}</p>
+        )}
       </div>
       {actions}
     </div>
