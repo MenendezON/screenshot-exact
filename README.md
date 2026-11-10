@@ -93,5 +93,6 @@ Faire un essai de restauration sur un projet de test avant d'en avoir besoin.
 ## Documentation
 
 - `docs/guide-utilisation.md` — guide d'utilisation pour les équipes RH.
+- `docs/api.md` — API de lecture pour les autres applications (clés, niveaux, ressources).
 - `docs/recette.md` — checklist de recette RH par module.
 - `AGENTS.md` — règles de collaboration avec Lovable.

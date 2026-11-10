@@ -17,6 +17,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAccesDocumentsRouteImport } from './routes/_authenticated/acces-documents'
 import { Route as AuthenticatedAccueilRouteImport } from './routes/_authenticated/accueil'
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
+import { Route as AuthenticatedApiClesRouteImport } from './routes/_authenticated/api-cles'
 import { Route as AuthenticatedJournalRouteImport } from './routes/_authenticated/journal'
 import { Route as AuthenticatedOrganigrammeRouteImport } from './routes/_authenticated/organigramme'
 import { Route as AuthenticatedParametresRouteImport } from './routes/_authenticated/parametres'
@@ -28,6 +29,9 @@ import { Route as AuthenticatedContratsEcheancesRouteImport } from './routes/_au
 import { Route as AuthenticatedContratsRetraitesRouteImport } from './routes/_authenticated/contrats/retraites'
 import { Route as AuthenticatedEmployesIndexRouteImport } from './routes/_authenticated/employes/index'
 import { Route as AuthenticatedEmployesEmployeeIdRouteImport } from './routes/_authenticated/employes/$employeeId'
+import { Route as ApiV1ContractsRouteImport } from './routes/api/v1/contracts'
+import { Route as ApiV1EmployeesIndexRouteImport } from './routes/api/v1/employees/index'
+import { Route as ApiV1EmployeesMatriculeRouteImport } from './routes/api/v1/employees/$matricule'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -67,6 +71,11 @@ const AuthenticatedAccueilRoute = AuthenticatedAccueilRouteImport.update({
 const AuthenticatedAideRoute = AuthenticatedAideRouteImport.update({
   id: '/aide',
   path: '/aide',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedApiClesRoute = AuthenticatedApiClesRouteImport.update({
+  id: '/api-cles',
+  path: '/api-cles',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedJournalRoute = AuthenticatedJournalRouteImport.update({
@@ -133,6 +142,21 @@ const AuthenticatedEmployesEmployeeIdRoute =
     path: '/employes/$employeeId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiV1ContractsRoute = ApiV1ContractsRouteImport.update({
+  id: '/api/v1/contracts',
+  path: '/api/v1/contracts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1EmployeesIndexRoute = ApiV1EmployeesIndexRouteImport.update({
+  id: '/api/v1/employees/',
+  path: '/api/v1/employees/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1EmployeesMatriculeRoute = ApiV1EmployeesMatriculeRouteImport.update({
+  id: '/api/v1/employees/$matricule',
+  path: '/api/v1/employees/$matricule',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -142,6 +166,7 @@ export interface FileRoutesByFullPath {
   '/acces-documents': typeof AuthenticatedAccesDocumentsRoute
   '/accueil': typeof AuthenticatedAccueilRoute
   '/aide': typeof AuthenticatedAideRoute
+  '/api-cles': typeof AuthenticatedApiClesRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
@@ -152,7 +177,10 @@ export interface FileRoutesByFullPath {
   '/contrats/echeances': typeof AuthenticatedContratsEcheancesRoute
   '/contrats/retraites': typeof AuthenticatedContratsRetraitesRoute
   '/employes/$employeeId': typeof AuthenticatedEmployesEmployeeIdRoute
+  '/api/v1/contracts': typeof ApiV1ContractsRoute
   '/employes/': typeof AuthenticatedEmployesIndexRoute
+  '/api/v1/employees/$matricule': typeof ApiV1EmployeesMatriculeRoute
+  '/api/v1/employees/': typeof ApiV1EmployeesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -162,6 +190,7 @@ export interface FileRoutesByTo {
   '/acces-documents': typeof AuthenticatedAccesDocumentsRoute
   '/accueil': typeof AuthenticatedAccueilRoute
   '/aide': typeof AuthenticatedAideRoute
+  '/api-cles': typeof AuthenticatedApiClesRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
@@ -172,7 +201,10 @@ export interface FileRoutesByTo {
   '/contrats/echeances': typeof AuthenticatedContratsEcheancesRoute
   '/contrats/retraites': typeof AuthenticatedContratsRetraitesRoute
   '/employes/$employeeId': typeof AuthenticatedEmployesEmployeeIdRoute
+  '/api/v1/contracts': typeof ApiV1ContractsRoute
   '/employes': typeof AuthenticatedEmployesIndexRoute
+  '/api/v1/employees/$matricule': typeof ApiV1EmployeesMatriculeRoute
+  '/api/v1/employees': typeof ApiV1EmployeesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -184,6 +216,7 @@ export interface FileRoutesById {
   '/_authenticated/acces-documents': typeof AuthenticatedAccesDocumentsRoute
   '/_authenticated/accueil': typeof AuthenticatedAccueilRoute
   '/_authenticated/aide': typeof AuthenticatedAideRoute
+  '/_authenticated/api-cles': typeof AuthenticatedApiClesRoute
   '/_authenticated/journal': typeof AuthenticatedJournalRoute
   '/_authenticated/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/_authenticated/parametres': typeof AuthenticatedParametresRoute
@@ -194,7 +227,10 @@ export interface FileRoutesById {
   '/_authenticated/contrats/echeances': typeof AuthenticatedContratsEcheancesRoute
   '/_authenticated/contrats/retraites': typeof AuthenticatedContratsRetraitesRoute
   '/_authenticated/employes/$employeeId': typeof AuthenticatedEmployesEmployeeIdRoute
+  '/api/v1/contracts': typeof ApiV1ContractsRoute
   '/_authenticated/employes/': typeof AuthenticatedEmployesIndexRoute
+  '/api/v1/employees/$matricule': typeof ApiV1EmployeesMatriculeRoute
+  '/api/v1/employees/': typeof ApiV1EmployeesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -206,6 +242,7 @@ export interface FileRouteTypes {
     | '/acces-documents'
     | '/accueil'
     | '/aide'
+    | '/api-cles'
     | '/journal'
     | '/organigramme'
     | '/parametres'
@@ -216,7 +253,10 @@ export interface FileRouteTypes {
     | '/contrats/echeances'
     | '/contrats/retraites'
     | '/employes/$employeeId'
+    | '/api/v1/contracts'
     | '/employes/'
+    | '/api/v1/employees/$matricule'
+    | '/api/v1/employees/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -226,6 +266,7 @@ export interface FileRouteTypes {
     | '/acces-documents'
     | '/accueil'
     | '/aide'
+    | '/api-cles'
     | '/journal'
     | '/organigramme'
     | '/parametres'
@@ -236,7 +277,10 @@ export interface FileRouteTypes {
     | '/contrats/echeances'
     | '/contrats/retraites'
     | '/employes/$employeeId'
+    | '/api/v1/contracts'
     | '/employes'
+    | '/api/v1/employees/$matricule'
+    | '/api/v1/employees'
   id:
     | '__root__'
     | '/'
@@ -247,6 +291,7 @@ export interface FileRouteTypes {
     | '/_authenticated/acces-documents'
     | '/_authenticated/accueil'
     | '/_authenticated/aide'
+    | '/_authenticated/api-cles'
     | '/_authenticated/journal'
     | '/_authenticated/organigramme'
     | '/_authenticated/parametres'
@@ -257,7 +302,10 @@ export interface FileRouteTypes {
     | '/_authenticated/contrats/echeances'
     | '/_authenticated/contrats/retraites'
     | '/_authenticated/employes/$employeeId'
+    | '/api/v1/contracts'
     | '/_authenticated/employes/'
+    | '/api/v1/employees/$matricule'
+    | '/api/v1/employees/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -266,6 +314,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   MfaRoute: typeof MfaRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiV1ContractsRoute: typeof ApiV1ContractsRoute
+  ApiV1EmployeesMatriculeRoute: typeof ApiV1EmployeesMatriculeRoute
+  ApiV1EmployeesIndexRoute: typeof ApiV1EmployeesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -324,6 +375,13 @@ declare module '@tanstack/react-router' {
       path: '/aide'
       fullPath: '/aide'
       preLoaderRoute: typeof AuthenticatedAideRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/api-cles': {
+      id: '/_authenticated/api-cles'
+      path: '/api-cles'
+      fullPath: '/api-cles'
+      preLoaderRoute: typeof AuthenticatedApiClesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/journal': {
@@ -403,6 +461,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEmployesEmployeeIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/v1/contracts': {
+      id: '/api/v1/contracts'
+      path: '/api/v1/contracts'
+      fullPath: '/api/v1/contracts'
+      preLoaderRoute: typeof ApiV1ContractsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/employees/': {
+      id: '/api/v1/employees/'
+      path: '/api/v1/employees'
+      fullPath: '/api/v1/employees/'
+      preLoaderRoute: typeof ApiV1EmployeesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/employees/$matricule': {
+      id: '/api/v1/employees/$matricule'
+      path: '/api/v1/employees/$matricule'
+      fullPath: '/api/v1/employees/$matricule'
+      preLoaderRoute: typeof ApiV1EmployeesMatriculeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -410,6 +489,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccesDocumentsRoute: typeof AuthenticatedAccesDocumentsRoute
   AuthenticatedAccueilRoute: typeof AuthenticatedAccueilRoute
   AuthenticatedAideRoute: typeof AuthenticatedAideRoute
+  AuthenticatedApiClesRoute: typeof AuthenticatedApiClesRoute
   AuthenticatedJournalRoute: typeof AuthenticatedJournalRoute
   AuthenticatedOrganigrammeRoute: typeof AuthenticatedOrganigrammeRoute
   AuthenticatedParametresRoute: typeof AuthenticatedParametresRoute
@@ -427,6 +507,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccesDocumentsRoute: AuthenticatedAccesDocumentsRoute,
   AuthenticatedAccueilRoute: AuthenticatedAccueilRoute,
   AuthenticatedAideRoute: AuthenticatedAideRoute,
+  AuthenticatedApiClesRoute: AuthenticatedApiClesRoute,
   AuthenticatedJournalRoute: AuthenticatedJournalRoute,
   AuthenticatedOrganigrammeRoute: AuthenticatedOrganigrammeRoute,
   AuthenticatedParametresRoute: AuthenticatedParametresRoute,
@@ -450,6 +531,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   MfaRoute: MfaRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiV1ContractsRoute: ApiV1ContractsRoute,
+  ApiV1EmployeesMatriculeRoute: ApiV1EmployeesMatriculeRoute,
+  ApiV1EmployeesIndexRoute: ApiV1EmployeesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

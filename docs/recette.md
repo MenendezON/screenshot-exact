@@ -78,6 +78,16 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Rapprochement avec le classeur : effectif actif, contrats par type, totaux identiques.
 - [ ] Statut de cette étape : voir la note de livraison (écran en attente du classeur).
 
+## 9 bis. API et clés (admin_it)
+- [ ] Seul admin_it voit « API et clés » ; un autre rôle qui ouvre l'adresse voit « Accès réservé » et les fonctions serveur refusent.
+- [ ] Création d'une clé par niveau : elle s'affiche une seule fois ; la liste ne montre que `fms_xxxxxxxx_…`.
+- [ ] Niveau 1 : `/employees` sans contrat/coordonnées/salaire ; `/contracts` → 403.
+- [ ] Niveau 4 : le salaire apparaît ; niveau 3 : il n'apparaît pas.
+- [ ] Clé limitée à un site : seuls les employés de ce site sont renvoyés.
+- [ ] Clé révoquée ou expirée → 401 ; clé inventée → 401 ; 121 appels en une minute → 429.
+- [ ] Chaque appel apparaît dans le journal ; création et révocation dans le journal d'audit.
+- [ ] Brancher la paie (niveau 4) et le pointage (niveau 1 ou 2) et comparer les effectifs reçus avec le tableau de bord.
+
 ## 10. Accessibilité et performance
 - [ ] Navigation complète au clavier (Tab, Maj+Tab, Entrée, Échap) ; lien « Aller au contenu » au premier Tab.
 - [ ] Focus visible partout ; boîtes de dialogue refermées par Échap, focus rendu au déclencheur.
