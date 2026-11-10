@@ -2,6 +2,8 @@ import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   CalendarClock,
+  FileSearch,
+  ShieldCheck,
   ChartColumn,
   History,
   Hourglass,
@@ -28,6 +30,8 @@ type NavItem = {
   to:
     | "/accueil"
     | "/tableau-de-bord"
+    | "/permissions"
+    | "/acces-documents"
     | "/employes"
     | "/organigramme"
     | "/contrats/echeances"
@@ -45,7 +49,12 @@ type NavItem = {
 
 const NAV: NavItem[] = [
   { to: "/accueil", label: "Accueil", icon: Home },
-  { to: "/tableau-de-bord", label: "Tableaux de bord", icon: ChartColumn, permission: ["dashboards", "view"] },
+  {
+    to: "/tableau-de-bord",
+    label: "Tableaux de bord",
+    icon: ChartColumn,
+    permission: ["dashboards", "view"],
+  },
   { to: "/employes", label: "Employés", icon: Users, permission: ["employees", "view"] },
   { to: "/organigramme", label: "Organigramme", icon: Network, permission: ["employees", "view"] },
   {
@@ -72,8 +81,15 @@ const NAV: NavItem[] = [
     icon: SlidersHorizontal,
     roles: ["admin_it", "drh"],
   },
-  { to: "/utilisateurs", label: "Utilisateurs", icon: Users, roles: ["admin_rh"] },
-  { to: "/journal", label: "Journal d'audit", icon: History, roles: ["admin_rh"] },
+  { to: "/utilisateurs", label: "Utilisateurs", icon: Users, permission: ["users", "view"] },
+  { to: "/permissions", label: "Permissions", icon: ShieldCheck, permission: ["users", "view"] },
+  { to: "/journal", label: "Journal d'audit", icon: History, permission: ["audit", "view"] },
+  {
+    to: "/acces-documents",
+    label: "Accès aux documents",
+    icon: FileSearch,
+    permission: ["audit", "view"],
+  },
 ];
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
@@ -214,6 +230,36 @@ export function PageHeader({
       {actions}
     </div>
   );
+}
+
+export function RequirePermission({
+  resource,
+  action,
+  message = "Votre rôle n'a pas accès à cette page.",
+  children,
+}: {
+  resource: Resource;
+  action: Action;
+  message?: string;
+  children: ReactNode;
+}) {
+  const { ready, can } = usePermissions();
+  if (!ready) {
+    return (
+      <p className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Loader2 className="size-4 animate-spin" /> Chargement…
+      </p>
+    );
+  }
+  if (!can(resource, action)) {
+    return (
+      <div className="mx-auto max-w-md rounded-lg border bg-card p-8 text-center">
+        <h1 className="text-xl font-bold">Accès réservé</h1>
+        <p className="mt-3 text-sm text-muted-foreground">{message}</p>
+      </div>
+    );
+  }
+  return <>{children}</>;
 }
 
 export function RequireRole({

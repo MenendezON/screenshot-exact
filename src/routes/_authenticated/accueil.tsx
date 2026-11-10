@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, History, SlidersHorizontal, Users } from "lucide-react";
 
 import { PageHeader } from "@/components/app-shell";
+import { usePermission } from "@/lib/permissions";
 import { ROLE_LABELS, useCurrentUser } from "@/lib/roles";
 import { settingsQuery } from "@/lib/settings";
 import { formatDate } from "@/lib/format";
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/_authenticated/accueil")({
 function HomePage() {
   const { data: user } = useCurrentUser();
   const { data: settings } = useQuery(settingsQuery);
-  const isAdmin = user?.role === "admin_rh";
+  const isAdmin = usePermission("users", "view");
   const firstName = user?.fullName?.split(" ")[0];
 
   return (

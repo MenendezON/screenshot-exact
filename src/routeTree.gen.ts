@@ -14,10 +14,12 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as MfaRouteImport } from './routes/mfa'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedAccesDocumentsRouteImport } from './routes/_authenticated/acces-documents'
 import { Route as AuthenticatedAccueilRouteImport } from './routes/_authenticated/accueil'
 import { Route as AuthenticatedJournalRouteImport } from './routes/_authenticated/journal'
 import { Route as AuthenticatedOrganigrammeRouteImport } from './routes/_authenticated/organigramme'
 import { Route as AuthenticatedParametresRouteImport } from './routes/_authenticated/parametres'
+import { Route as AuthenticatedPermissionsRouteImport } from './routes/_authenticated/permissions'
 import { Route as AuthenticatedTableauDeBordRouteImport } from './routes/_authenticated/tableau-de-bord'
 import { Route as AuthenticatedUtilisateursRouteImport } from './routes/_authenticated/utilisateurs'
 import { Route as AuthenticatedContratsARegulariserRouteImport } from './routes/_authenticated/contrats/a-regulariser'
@@ -50,6 +52,12 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAccesDocumentsRoute =
+  AuthenticatedAccesDocumentsRouteImport.update({
+    id: '/acces-documents',
+    path: '/acces-documents',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAccueilRoute = AuthenticatedAccueilRouteImport.update({
   id: '/accueil',
   path: '/accueil',
@@ -71,6 +79,12 @@ const AuthenticatedParametresRoute = AuthenticatedParametresRouteImport.update({
   path: '/parametres',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPermissionsRoute =
+  AuthenticatedPermissionsRouteImport.update({
+    id: '/permissions',
+    path: '/permissions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedTableauDeBordRoute =
   AuthenticatedTableauDeBordRouteImport.update({
     id: '/tableau-de-bord',
@@ -119,10 +133,12 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/mfa': typeof MfaRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/acces-documents': typeof AuthenticatedAccesDocumentsRoute
   '/accueil': typeof AuthenticatedAccueilRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
+  '/permissions': typeof AuthenticatedPermissionsRoute
   '/tableau-de-bord': typeof AuthenticatedTableauDeBordRoute
   '/utilisateurs': typeof AuthenticatedUtilisateursRoute
   '/contrats/a-regulariser': typeof AuthenticatedContratsARegulariserRoute
@@ -136,10 +152,12 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/mfa': typeof MfaRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/acces-documents': typeof AuthenticatedAccesDocumentsRoute
   '/accueil': typeof AuthenticatedAccueilRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
+  '/permissions': typeof AuthenticatedPermissionsRoute
   '/tableau-de-bord': typeof AuthenticatedTableauDeBordRoute
   '/utilisateurs': typeof AuthenticatedUtilisateursRoute
   '/contrats/a-regulariser': typeof AuthenticatedContratsARegulariserRoute
@@ -155,10 +173,12 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/mfa': typeof MfaRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/acces-documents': typeof AuthenticatedAccesDocumentsRoute
   '/_authenticated/accueil': typeof AuthenticatedAccueilRoute
   '/_authenticated/journal': typeof AuthenticatedJournalRoute
   '/_authenticated/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/_authenticated/parametres': typeof AuthenticatedParametresRoute
+  '/_authenticated/permissions': typeof AuthenticatedPermissionsRoute
   '/_authenticated/tableau-de-bord': typeof AuthenticatedTableauDeBordRoute
   '/_authenticated/utilisateurs': typeof AuthenticatedUtilisateursRoute
   '/_authenticated/contrats/a-regulariser': typeof AuthenticatedContratsARegulariserRoute
@@ -174,10 +194,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/mfa'
     | '/reset-password'
+    | '/acces-documents'
     | '/accueil'
     | '/journal'
     | '/organigramme'
     | '/parametres'
+    | '/permissions'
     | '/tableau-de-bord'
     | '/utilisateurs'
     | '/contrats/a-regulariser'
@@ -191,10 +213,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/mfa'
     | '/reset-password'
+    | '/acces-documents'
     | '/accueil'
     | '/journal'
     | '/organigramme'
     | '/parametres'
+    | '/permissions'
     | '/tableau-de-bord'
     | '/utilisateurs'
     | '/contrats/a-regulariser'
@@ -209,10 +233,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/mfa'
     | '/reset-password'
+    | '/_authenticated/acces-documents'
     | '/_authenticated/accueil'
     | '/_authenticated/journal'
     | '/_authenticated/organigramme'
     | '/_authenticated/parametres'
+    | '/_authenticated/permissions'
     | '/_authenticated/tableau-de-bord'
     | '/_authenticated/utilisateurs'
     | '/_authenticated/contrats/a-regulariser'
@@ -267,6 +293,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/acces-documents': {
+      id: '/_authenticated/acces-documents'
+      path: '/acces-documents'
+      fullPath: '/acces-documents'
+      preLoaderRoute: typeof AuthenticatedAccesDocumentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/accueil': {
       id: '/_authenticated/accueil'
       path: '/accueil'
@@ -293,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/parametres'
       fullPath: '/parametres'
       preLoaderRoute: typeof AuthenticatedParametresRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/permissions': {
+      id: '/_authenticated/permissions'
+      path: '/permissions'
+      fullPath: '/permissions'
+      preLoaderRoute: typeof AuthenticatedPermissionsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/tableau-de-bord': {
@@ -348,10 +388,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAccesDocumentsRoute: typeof AuthenticatedAccesDocumentsRoute
   AuthenticatedAccueilRoute: typeof AuthenticatedAccueilRoute
   AuthenticatedJournalRoute: typeof AuthenticatedJournalRoute
   AuthenticatedOrganigrammeRoute: typeof AuthenticatedOrganigrammeRoute
   AuthenticatedParametresRoute: typeof AuthenticatedParametresRoute
+  AuthenticatedPermissionsRoute: typeof AuthenticatedPermissionsRoute
   AuthenticatedTableauDeBordRoute: typeof AuthenticatedTableauDeBordRoute
   AuthenticatedUtilisateursRoute: typeof AuthenticatedUtilisateursRoute
   AuthenticatedContratsARegulariserRoute: typeof AuthenticatedContratsARegulariserRoute
@@ -362,10 +404,12 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAccesDocumentsRoute: AuthenticatedAccesDocumentsRoute,
   AuthenticatedAccueilRoute: AuthenticatedAccueilRoute,
   AuthenticatedJournalRoute: AuthenticatedJournalRoute,
   AuthenticatedOrganigrammeRoute: AuthenticatedOrganigrammeRoute,
   AuthenticatedParametresRoute: AuthenticatedParametresRoute,
+  AuthenticatedPermissionsRoute: AuthenticatedPermissionsRoute,
   AuthenticatedTableauDeBordRoute: AuthenticatedTableauDeBordRoute,
   AuthenticatedUtilisateursRoute: AuthenticatedUtilisateursRoute,
   AuthenticatedContratsARegulariserRoute:
