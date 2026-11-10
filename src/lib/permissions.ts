@@ -2,7 +2,19 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
 
-export type Resource = "referentials" | "assignments" | "sensitive_data" | "audit";
+export type Resource =
+  | "referentials"
+  | "users"
+  | "audit"
+  | "employees"
+  | "sensitive_data"
+  | "contracts"
+  | "assignments"
+  | "compensation"
+  | "documents"
+  | "confidential_documents"
+  | "import_export"
+  | "dashboards";
 export type Action = "view" | "create" | "edit" | "archive" | "export" | "import";
 
 export type PermissionRow = { resource: string; action: string; scope?: string };

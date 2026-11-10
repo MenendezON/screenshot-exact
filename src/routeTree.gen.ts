@@ -12,11 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as MfaRouteImport } from './routes/mfa'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAccueilRouteImport } from './routes/_authenticated/accueil'
 import { Route as AuthenticatedJournalRouteImport } from './routes/_authenticated/journal'
+import { Route as AuthenticatedOrganigrammeRouteImport } from './routes/_authenticated/organigramme'
 import { Route as AuthenticatedParametresRouteImport } from './routes/_authenticated/parametres'
 import { Route as AuthenticatedUtilisateursRouteImport } from './routes/_authenticated/utilisateurs'
+import { Route as AuthenticatedEmployesIndexRouteImport } from './routes/_authenticated/employes/index'
+import { Route as AuthenticatedEmployesEmployeeIdRouteImport } from './routes/_authenticated/employes/$employeeId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,6 +34,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MfaRoute = MfaRouteImport.update({
+  id: '/mfa',
+  path: '/mfa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -47,6 +56,12 @@ const AuthenticatedJournalRoute = AuthenticatedJournalRouteImport.update({
   path: '/journal',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOrganigrammeRoute =
+  AuthenticatedOrganigrammeRouteImport.update({
+    id: '/organigramme',
+    path: '/organigramme',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedParametresRoute = AuthenticatedParametresRouteImport.update({
   id: '/parametres',
   path: '/parametres',
@@ -58,71 +73,108 @@ const AuthenticatedUtilisateursRoute =
     path: '/utilisateurs',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedEmployesIndexRoute =
+  AuthenticatedEmployesIndexRouteImport.update({
+    id: '/employes/',
+    path: '/employes/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEmployesEmployeeIdRoute =
+  AuthenticatedEmployesEmployeeIdRouteImport.update({
+    id: '/employes/$employeeId',
+    path: '/employes/$employeeId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/mfa': typeof MfaRoute
   '/reset-password': typeof ResetPasswordRoute
   '/accueil': typeof AuthenticatedAccueilRoute
   '/journal': typeof AuthenticatedJournalRoute
+  '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
   '/utilisateurs': typeof AuthenticatedUtilisateursRoute
+  '/employes/$employeeId': typeof AuthenticatedEmployesEmployeeIdRoute
+  '/employes/': typeof AuthenticatedEmployesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/mfa': typeof MfaRoute
   '/reset-password': typeof ResetPasswordRoute
   '/accueil': typeof AuthenticatedAccueilRoute
   '/journal': typeof AuthenticatedJournalRoute
+  '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
   '/utilisateurs': typeof AuthenticatedUtilisateursRoute
+  '/employes/$employeeId': typeof AuthenticatedEmployesEmployeeIdRoute
+  '/employes': typeof AuthenticatedEmployesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/mfa': typeof MfaRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/accueil': typeof AuthenticatedAccueilRoute
   '/_authenticated/journal': typeof AuthenticatedJournalRoute
+  '/_authenticated/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/_authenticated/parametres': typeof AuthenticatedParametresRoute
   '/_authenticated/utilisateurs': typeof AuthenticatedUtilisateursRoute
+  '/_authenticated/employes/$employeeId': typeof AuthenticatedEmployesEmployeeIdRoute
+  '/_authenticated/employes/': typeof AuthenticatedEmployesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/mfa'
     | '/reset-password'
     | '/accueil'
     | '/journal'
+    | '/organigramme'
     | '/parametres'
     | '/utilisateurs'
+    | '/employes/$employeeId'
+    | '/employes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/mfa'
     | '/reset-password'
     | '/accueil'
     | '/journal'
+    | '/organigramme'
     | '/parametres'
     | '/utilisateurs'
+    | '/employes/$employeeId'
+    | '/employes'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/mfa'
     | '/reset-password'
     | '/_authenticated/accueil'
     | '/_authenticated/journal'
+    | '/_authenticated/organigramme'
     | '/_authenticated/parametres'
     | '/_authenticated/utilisateurs'
+    | '/_authenticated/employes/$employeeId'
+    | '/_authenticated/employes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  MfaRoute: typeof MfaRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
@@ -149,6 +201,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mfa': {
+      id: '/mfa'
+      path: '/mfa'
+      fullPath: '/mfa'
+      preLoaderRoute: typeof MfaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -170,6 +229,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedJournalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/organigramme': {
+      id: '/_authenticated/organigramme'
+      path: '/organigramme'
+      fullPath: '/organigramme'
+      preLoaderRoute: typeof AuthenticatedOrganigrammeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/parametres': {
       id: '/_authenticated/parametres'
       path: '/parametres'
@@ -184,21 +250,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUtilisateursRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/employes/': {
+      id: '/_authenticated/employes/'
+      path: '/employes'
+      fullPath: '/employes/'
+      preLoaderRoute: typeof AuthenticatedEmployesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/employes/$employeeId': {
+      id: '/_authenticated/employes/$employeeId'
+      path: '/employes/$employeeId'
+      fullPath: '/employes/$employeeId'
+      preLoaderRoute: typeof AuthenticatedEmployesEmployeeIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccueilRoute: typeof AuthenticatedAccueilRoute
   AuthenticatedJournalRoute: typeof AuthenticatedJournalRoute
+  AuthenticatedOrganigrammeRoute: typeof AuthenticatedOrganigrammeRoute
   AuthenticatedParametresRoute: typeof AuthenticatedParametresRoute
   AuthenticatedUtilisateursRoute: typeof AuthenticatedUtilisateursRoute
+  AuthenticatedEmployesEmployeeIdRoute: typeof AuthenticatedEmployesEmployeeIdRoute
+  AuthenticatedEmployesIndexRoute: typeof AuthenticatedEmployesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccueilRoute: AuthenticatedAccueilRoute,
   AuthenticatedJournalRoute: AuthenticatedJournalRoute,
+  AuthenticatedOrganigrammeRoute: AuthenticatedOrganigrammeRoute,
   AuthenticatedParametresRoute: AuthenticatedParametresRoute,
   AuthenticatedUtilisateursRoute: AuthenticatedUtilisateursRoute,
+  AuthenticatedEmployesEmployeeIdRoute: AuthenticatedEmployesEmployeeIdRoute,
+  AuthenticatedEmployesIndexRoute: AuthenticatedEmployesIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -208,6 +294,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  MfaRoute: MfaRoute,
   ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport

@@ -134,6 +134,9 @@ export function dbErrorMessage(error: unknown): string {
   if (e?.code === "23505")
     return "Cette valeur existe déjà (la casse est ignorée, archivés compris).";
   if (e?.code === "42501") return "Action non autorisée pour votre rôle.";
+  if (e?.code === "23P01") return "Cette période chevauche une période existante.";
+  if (e?.code === "23503") return "Cet élément est référencé ailleurs ou n'existe plus.";
+  if (e?.code === "23514") return "Une valeur saisie ne respecte pas les règles de gestion.";
   // Les règles métier de la base (RAISE EXCEPTION) sont rédigées en français.
   if (e?.code === "P0001" && e.message) return e.message;
   if (e?.message?.includes("row-level security")) return "Action non autorisée pour votre rôle.";
@@ -144,7 +147,7 @@ export function dbErrorMessage(error: unknown): string {
 
 const PAGE = 1000;
 
-async function listAll<T>(
+export async function listAll<T>(
   fetchPage: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: unknown }>,
 ) {
   const out: T[] = [];

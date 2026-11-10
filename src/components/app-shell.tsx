@@ -7,6 +7,7 @@ import {
   Loader2,
   LogOut,
   Menu,
+  Network,
   SlidersHorizontal,
   Users,
   type LucideIcon,
@@ -16,17 +17,22 @@ import { BrandName } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { supabase } from "@/integrations/supabase/client";
+import { usePermissions, type Action, type Resource } from "@/lib/permissions";
 import { ROLE_LABELS, useCurrentUser, type AppRole } from "@/lib/roles";
 
 type NavItem = {
-  to: "/accueil" | "/parametres" | "/utilisateurs" | "/journal";
+  to: "/accueil" | "/employes" | "/organigramme" | "/parametres" | "/utilisateurs" | "/journal";
   label: string;
   icon: LucideIcon;
   roles?: AppRole[];
+  /** Visible seulement si la base accorde cette permission au rôle de l'utilisateur. */
+  permission?: [Resource, Action];
 };
 
 const NAV: NavItem[] = [
   { to: "/accueil", label: "Accueil", icon: Home },
+  { to: "/employes", label: "Employés", icon: Users, permission: ["employees", "view"] },
+  { to: "/organigramme", label: "Organigramme", icon: Network, permission: ["employees", "view"] },
   { to: "/parametres", label: "Paramètres RH", icon: SlidersHorizontal, roles: ["admin_it", "drh"] },
   { to: "/utilisateurs", label: "Utilisateurs", icon: Users, roles: ["admin_rh"] },
   { to: "/journal", label: "Journal d'audit", icon: History, roles: ["admin_rh"] },
@@ -46,7 +52,11 @@ function useSignOut() {
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { data: user } = useCurrentUser();
   const signOut = useSignOut();
-  const items = NAV.filter((item) => !item.roles || (user?.role && item.roles.includes(user.role)));
+  const { can } = usePermissions();
+  const items = NAV.filter(
+    (item) =>
+      (!item.roles || (user?.role && item.roles.includes(user.role))) && (!item.permission || can(...item.permission)),
+  );
 
   return (
     <div className="flex h-full flex-col bg-sidebar text-sidebar-foreground">
