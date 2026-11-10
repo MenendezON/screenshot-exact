@@ -1,4 +1,6 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+
+import { installGlobalErrorLogging } from "@/lib/log";
 import { Link } from "@tanstack/react-router";
 import {
   CalendarClock,
@@ -149,9 +151,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const { data: user, isLoading } = useCurrentUser();
   const signOut = useSignOut();
+  useEffect(installGlobalErrorLogging, []);
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[16rem_1fr]">
+      <a
+        href="#contenu"
+        onClick={(e) => {
+          e.preventDefault();
+          document.getElementById("contenu")?.focus();
+        }}
+        className="sr-only z-50 rounded bg-background px-3 py-2 text-sm font-medium shadow focus:not-sr-only focus:fixed focus:left-2 focus:top-2"
+      >
+        Aller au contenu
+      </a>
       <aside className="sticky top-0 hidden h-screen lg:block">
         <SidebarContent />
       </aside>
@@ -182,7 +195,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <NotificationBell />
         </div>
 
-        <main className="flex-1 px-4 py-6 sm:px-8 sm:py-10">
+        <main id="contenu" tabIndex={-1} className="flex-1 px-4 py-6 outline-none sm:px-8 sm:py-10">
           {isLoading ? (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Loader2 className="size-4 animate-spin" /> Chargement…
