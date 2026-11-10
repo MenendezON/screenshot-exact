@@ -33,7 +33,61 @@ export function MarkdownLite({ source }: { source: string }) {
     );
     list = null;
   };
-  for (const line of source.split("\n")) {
+  const lines = source.split("\n");
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]!;
+    if (/^```/.test(line)) {
+      flush();
+      const code: string[] = [];
+      while (++i < lines.length && !/^```/.test(lines[i]!)) code.push(lines[i]!);
+      out.push(
+        <pre key={out.length} className="my-3 overflow-x-auto rounded bg-muted p-3 text-xs">
+          {code.join("\n")}
+        </pre>,
+      );
+      continue;
+    }
+    if (/^\s*\|/.test(line) && /^\s*\|[\s:|-]+\|\s*$/.test(lines[i + 1] ?? "")) {
+      flush();
+      const cells = (l: string) =>
+        l
+          .trim()
+          .replace(/^\||\|$/g, "")
+          .split("|")
+          .map((c) => c.trim());
+      const head = cells(line);
+      const body: string[][] = [];
+      i += 2;
+      while (i < lines.length && /^\s*\|/.test(lines[i]!)) body.push(cells(lines[i++]!));
+      i--;
+      out.push(
+        <div key={out.length} className="my-3 overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="border-b text-left">
+              <tr>
+                {head.map((c, k) => (
+                  <th key={k} className="px-3 py-2 font-medium">
+                    {inline(c)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {body.map((r, k) => (
+                <tr key={k} className="border-b last:border-0">
+                  {r.map((c, m) => (
+                    <td key={m} className="px-3 py-2 align-top">
+                      {inline(c)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>,
+      );
+      continue;
+    }
     const h = /^(#{1,3})\s+(.*)/.exec(line);
     const ul = /^\s*[-*]\s+(.*)/.exec(line);
     const ol = /^\s*\d+\.\s+(.*)/.exec(line);
@@ -72,5 +126,5 @@ export function MarkdownLite({ source }: { source: string }) {
     }
   }
   flush();
-  return <div className="max-w-3xl">{out}</div>;
+  return <div className="max-w-4xl">{out}</div>;
 }

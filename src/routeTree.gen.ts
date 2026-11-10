@@ -18,6 +18,7 @@ import { Route as AuthenticatedAccesDocumentsRouteImport } from './routes/_authe
 import { Route as AuthenticatedAccueilRouteImport } from './routes/_authenticated/accueil'
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
 import { Route as AuthenticatedApiClesRouteImport } from './routes/_authenticated/api-cles'
+import { Route as AuthenticatedDocumentationRouteImport } from './routes/_authenticated/documentation'
 import { Route as AuthenticatedJournalRouteImport } from './routes/_authenticated/journal'
 import { Route as AuthenticatedOrganigrammeRouteImport } from './routes/_authenticated/organigramme'
 import { Route as AuthenticatedParametresRouteImport } from './routes/_authenticated/parametres'
@@ -78,6 +79,12 @@ const AuthenticatedApiClesRoute = AuthenticatedApiClesRouteImport.update({
   path: '/api-cles',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedDocumentationRoute =
+  AuthenticatedDocumentationRouteImport.update({
+    id: '/documentation',
+    path: '/documentation',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedJournalRoute = AuthenticatedJournalRouteImport.update({
   id: '/journal',
   path: '/journal',
@@ -167,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/accueil': typeof AuthenticatedAccueilRoute
   '/aide': typeof AuthenticatedAideRoute
   '/api-cles': typeof AuthenticatedApiClesRoute
+  '/documentation': typeof AuthenticatedDocumentationRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
@@ -191,6 +199,7 @@ export interface FileRoutesByTo {
   '/accueil': typeof AuthenticatedAccueilRoute
   '/aide': typeof AuthenticatedAideRoute
   '/api-cles': typeof AuthenticatedApiClesRoute
+  '/documentation': typeof AuthenticatedDocumentationRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
@@ -217,6 +226,7 @@ export interface FileRoutesById {
   '/_authenticated/accueil': typeof AuthenticatedAccueilRoute
   '/_authenticated/aide': typeof AuthenticatedAideRoute
   '/_authenticated/api-cles': typeof AuthenticatedApiClesRoute
+  '/_authenticated/documentation': typeof AuthenticatedDocumentationRoute
   '/_authenticated/journal': typeof AuthenticatedJournalRoute
   '/_authenticated/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/_authenticated/parametres': typeof AuthenticatedParametresRoute
@@ -243,6 +253,7 @@ export interface FileRouteTypes {
     | '/accueil'
     | '/aide'
     | '/api-cles'
+    | '/documentation'
     | '/journal'
     | '/organigramme'
     | '/parametres'
@@ -267,6 +278,7 @@ export interface FileRouteTypes {
     | '/accueil'
     | '/aide'
     | '/api-cles'
+    | '/documentation'
     | '/journal'
     | '/organigramme'
     | '/parametres'
@@ -292,6 +304,7 @@ export interface FileRouteTypes {
     | '/_authenticated/accueil'
     | '/_authenticated/aide'
     | '/_authenticated/api-cles'
+    | '/_authenticated/documentation'
     | '/_authenticated/journal'
     | '/_authenticated/organigramme'
     | '/_authenticated/parametres'
@@ -382,6 +395,13 @@ declare module '@tanstack/react-router' {
       path: '/api-cles'
       fullPath: '/api-cles'
       preLoaderRoute: typeof AuthenticatedApiClesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/documentation': {
+      id: '/_authenticated/documentation'
+      path: '/documentation'
+      fullPath: '/documentation'
+      preLoaderRoute: typeof AuthenticatedDocumentationRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/journal': {
@@ -490,6 +510,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccueilRoute: typeof AuthenticatedAccueilRoute
   AuthenticatedAideRoute: typeof AuthenticatedAideRoute
   AuthenticatedApiClesRoute: typeof AuthenticatedApiClesRoute
+  AuthenticatedDocumentationRoute: typeof AuthenticatedDocumentationRoute
   AuthenticatedJournalRoute: typeof AuthenticatedJournalRoute
   AuthenticatedOrganigrammeRoute: typeof AuthenticatedOrganigrammeRoute
   AuthenticatedParametresRoute: typeof AuthenticatedParametresRoute
@@ -508,6 +529,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccueilRoute: AuthenticatedAccueilRoute,
   AuthenticatedAideRoute: AuthenticatedAideRoute,
   AuthenticatedApiClesRoute: AuthenticatedApiClesRoute,
+  AuthenticatedDocumentationRoute: AuthenticatedDocumentationRoute,
   AuthenticatedJournalRoute: AuthenticatedJournalRoute,
   AuthenticatedOrganigrammeRoute: AuthenticatedOrganigrammeRoute,
   AuthenticatedParametresRoute: AuthenticatedParametresRoute,

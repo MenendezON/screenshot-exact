@@ -7,6 +7,7 @@ import {
   FileSearch,
   ShieldCheck,
   BookOpen,
+  FileText,
   KeyRound,
   ChartColumn,
   History,
@@ -45,7 +46,8 @@ type NavItem = {
     | "/utilisateurs"
     | "/journal"
     | "/aide"
-    | "/api-cles";
+    | "/api-cles"
+    | "/documentation";
   label: string;
   icon: LucideIcon;
   roles?: AppRole[];
@@ -97,6 +99,7 @@ const NAV: NavItem[] = [
     permission: ["audit", "view"],
   },
   { to: "/api-cles", label: "API et clés", icon: KeyRound, roles: ["admin_it"] },
+  { to: "/documentation", label: "Documentation", icon: FileText, roles: ["admin_it"] },
   { to: "/aide", label: "Guide d'utilisation", icon: BookOpen },
 ];
 
