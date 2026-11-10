@@ -2,7 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ArrowDown, ArrowUp, ArrowUpDown, Download, Loader2, Plus, Search, Upload, X } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Download,
+  Loader2,
+  Plus,
+  Search,
+  Upload,
+  X,
+} from "lucide-react";
 
 import { PageHeader } from "@/components/app-shell";
 import { FormRow, SelectInput } from "@/components/employees/common";
@@ -57,6 +67,7 @@ import {
 } from "@/lib/employees";
 import { formatDate } from "@/lib/format";
 import { usePermissions } from "@/lib/permissions";
+import { useCurrentUser } from "@/lib/roles";
 import {
   buildOrgTree,
   categoriesQuery,
@@ -88,7 +99,11 @@ function EmployeesPage() {
   const search = parseListSearch(Route.useSearch());
   const { can, ready } = usePermissions();
   const canExport = can("import_export", "export");
-  const canImport = can("import_export", "import");
+  // La base n'accorde pas encore `import_export:import` (voir demande Lovable, section 9.a) :
+  // en attendant, le bouton (contrôle local du fichier, sans écriture) est visible des rôles prévus.
+  const { data: me } = useCurrentUser();
+  const canImport =
+    can("import_export", "import") || me?.role === "drh" || me?.role === "gestionnaire_rh";
   const [importOpen, setImportOpen] = useState(false);
   const canExportSalary = can("compensation", "view") && can("compensation", "export");
   const canCreate = can("employees", "create");

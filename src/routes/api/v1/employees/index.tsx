@@ -15,6 +15,20 @@ export const Route = createFileRoute("/api/v1/employees/")({
         const page = intParam(url.searchParams.get("page"), 1, 100000);
         const perPage = intParam(url.searchParams.get("per_page"), 100, 1000);
         const site = url.searchParams.get("site");
+        const since = url.searchParams.get("updated_since");
+        if (
+          since !== null &&
+          (Number.isNaN(Date.parse(since)) || !/^\d{4}-\d{2}-\d{2}/.test(since))
+        ) {
+          await ctx.log(400);
+          return json(
+            {
+              error:
+                "updated_since doit être une date ISO (ex. 2026-11-10 ou 2026-11-10T08:00:00Z).",
+            },
+            400,
+          );
+        }
 
         const d = await db();
         let q = d
@@ -31,7 +45,15 @@ export const Route = createFileRoute("/api/v1/employees/")({
         }
         if (ctx.client.site_id) q = q.contains("site_ids", [ctx.client.site_id]);
         if (site) q = q.eq("primary_site_name", site);
+        if (since) q = q.gte("last_change", new Date(since).toISOString());
         const { data, count, error } = await q;
+        if (error && since && /last_change/.test(String(error.message))) {
+          await ctx.log(503);
+          return json(
+            { error: "Filtre incrémental indisponible (mise à jour de la base en attente)." },
+            503,
+          );
+        }
         if (error) {
           await ctx.log(500);
           return json({ error: "Erreur interne." }, 500);

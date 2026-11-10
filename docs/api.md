@@ -27,7 +27,7 @@ Un niveau insuffisant pour une ressource renvoie `403`. Les champs d'un niveau s
 ## Ressources
 
 ### `GET /employees`
-Paramètres : `presence` = `actifs` (défaut) | `sortis` | `tous` ; `site` = nom du site principal ; `page` (1 par défaut) ; `per_page` (100 par défaut, 1000 au plus) ; `format` = `json` (défaut) ou `csv`.
+Paramètres : `presence` = `actifs` (défaut) | `sortis` | `tous` ; `site` = nom du site principal ; `page` (1 par défaut) ; `per_page` (100 par défaut, 1000 au plus) ; `format` = `json` (défaut) ou `csv` ; `updated_since` = date ISO (seuls les employés modifiés depuis cette date — fiche, affectation, sites, contrats, sortie ou rémunération). Pour une synchronisation, combiner avec `presence=tous` afin de recevoir aussi les départs ; mémoriser la date de début de chaque synchronisation réussie et la réutiliser à la suivante.
 
 ```json
 { "data": [ { "matricule": "F0001", "nom": "Diop", "prenoms": "Awa", "en_poste": true, "statut": "ouvrier",
@@ -43,7 +43,7 @@ Paramètres : `matricule`, `page`, `per_page`. Champs : `matricule`, `type`, `de
 
 ## Codes de réponse
 
-`200` succès · `400` paramètre invalide · `401` clé absente, invalide, expirée ou révoquée · `403` niveau insuffisant · `404` introuvable · `429` plus de 120 requêtes par minute (en-tête `Retry-After`) · `500` erreur interne.
+`200` succès · `400` paramètre invalide · `401` clé absente, invalide, expirée ou révoquée · `403` niveau insuffisant · `404` introuvable · `429` plus de 120 requêtes par minute (en-tête `Retry-After`) · `503` filtre `updated_since` pas encore disponible · `500` erreur interne.
 
 ## Exemple
 

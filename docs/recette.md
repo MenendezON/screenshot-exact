@@ -42,6 +42,7 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Écran « Échéances » : liste des fins de contrat dans les délais d'alerte par type ; filtres site/unité ; export.
 - [ ] Écran « Retraites » : départs à la retraite à venir selon `retirement_age`.
 - [ ] Écran « À régulariser » : CDD échus encore en poste.
+- [ ] Destinataires : drh et gestionnaire_rh reçoivent toutes les alertes ; direction reçoit les départs à la retraite uniquement.
 - [ ] Notification (cloche) : un CDD finissant dans le délai apparaît ; il disparaît après renouvellement ou sortie. [Auto : SQL]
 
 ## 5. Sorties
@@ -72,7 +73,7 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Accès aux documents : journal complet des ouvertures.
 
 ## 9. Import « SUIVIS DU PERSONNEL FMS » (étape 9)
-- [ ] Écran réservé à drh et gestionnaire_rh.
+- [ ] Bouton Importer visible pour drh et gestionnaire_rh uniquement (page Employés).
 - [ ] Simulation : aucune écriture ; rapport d'anomalies exportable.
 - [ ] Valeurs non rapprochées (départements, postes, catégories) : bloquent l'import tant que le rapprochement n'est pas fait.
 - [ ] Exécution en une transaction ; relance sans doublon (clé matricule + date de début).
@@ -88,6 +89,7 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Niveau 4 : le salaire apparaît ; niveau 3 : il n'apparaît pas.
 - [ ] Clé limitée à un site : seuls les employés de ce site sont renvoyés.
 - [ ] Clé révoquée ou expirée → 401 ; clé inventée → 401 ; 121 appels en une minute → 429.
+- [ ] `updated_since` : modifier un employé puis appeler avec une date antérieure → il est renvoyé ; avec une date postérieure → absent. (503 tant que la colonne `last_change` n'existe pas.)
 - [ ] Chaque appel apparaît dans le journal ; création et révocation dans le journal d'audit.
 - [ ] Brancher la paie (niveau 4) et le pointage (niveau 1 ou 2) et comparer les effectifs reçus avec le tableau de bord.
 
