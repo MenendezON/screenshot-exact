@@ -133,3 +133,19 @@ describe("export CSV", () => {
     expect(employeeColumns("contrats")).toContain("contrat_type");
   });
 });
+
+import { addDaysIso, validateExpiry } from "@/lib/api/keys";
+
+describe("durée de vie des clés", () => {
+  const today = "2026-11-10";
+  it("exige une date future et au plus 365 jours", () => {
+    expect(validateExpiry(null, today)).toMatch(/obligatoire/);
+    expect(validateExpiry("2026-11-10", today)).toMatch(/futur/);
+    expect(validateExpiry("2026-11-11", today)).toBeNull();
+    expect(validateExpiry(addDaysIso(today, 365), today)).toBeNull();
+    expect(validateExpiry(addDaysIso(today, 366), today)).toMatch(/365 jours/);
+  });
+  it("respecte un maximum paramétré", () => {
+    expect(validateExpiry(addDaysIso(today, 91), today, 90)).toMatch(/90 jours/);
+  });
+});

@@ -24,10 +24,19 @@ import {
   listApiClients,
   revokeApiClient,
 } from "@/lib/api-keys.functions";
-import { API_LEVELS, clientStatus, LEVEL_INFO, type ApiLevel } from "@/lib/api/keys";
+import {
+  addDaysIso,
+  API_LEVELS,
+  clientStatus,
+  DEFAULT_API_KEY_MAX_DAYS,
+  validateExpiry,
+  LEVEL_INFO,
+  type ApiLevel,
+} from "@/lib/api/keys";
 import { formatDateTime } from "@/lib/format";
 import { logError, userMessage } from "@/lib/log";
 import { sitesQuery } from "@/lib/referentials";
+import { settingsQuery } from "@/lib/settings";
 import { useCurrentUser } from "@/lib/roles";
 
 export const Route = createFileRoute("/_authenticated/api-cles")({
@@ -142,9 +151,7 @@ function ApiAdmin() {
                       <td className="px-4 py-2">
                         <code>fms_{c.key_prefix}_…</code>
                       </td>
-                      <td className="px-4 py-2">
-                        {c.expires_at ? formatDateTime(c.expires_at) : "Jamais"}
-                      </td>
+                      <td className="px-4 py-2">{formatDateTime(c.expires_at)}</td>
                       <td className="px-4 py-2">
                         {c.last_used_at ? formatDateTime(c.last_used_at) : "—"}
                       </td>
@@ -273,7 +280,12 @@ function CreateDialog({
   const [description, setDescription] = useState("");
   const [level, setLevel] = useState<ApiLevel>("identite");
   const [siteId, setSiteId] = useState("");
-  const [expiresAt, setExpiresAt] = useState("");
+  const settings = useQuery({ ...settingsQuery, enabled: open });
+  const maxDays =
+    settings.data?.find((x) => x.key === "api_key_max_days")?.value ?? DEFAULT_API_KEY_MAX_DAYS;
+  const today = new Date().toISOString().slice(0, 10);
+  const [expiresAt, setExpiresAt] = useState(addDaysIso(today, DEFAULT_API_KEY_MAX_DAYS));
+  const expiryError = validateExpiry(expiresAt, today, maxDays);
   const mut = useMutation({
     mutationFn: () =>
       create({
@@ -353,7 +365,7 @@ function CreateDialog({
           <FormRow label="Expire le (facultatif)">
             <Input type="date" value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} />
           </FormRow>
-          <Button type="submit" disabled={mut.isPending || name.trim().length < 2}>
+          <Button type="submit" disabled={mut.isPending || name.trim().length < 2 || !!expiryError}>
             <KeyRound /> Créer la clé
           </Button>
         </form>

@@ -2,7 +2,12 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { API_LEVELS, generateApiKey } from "@/lib/api/keys";
+import {
+  API_LEVELS,
+  DEFAULT_API_KEY_MAX_DAYS,
+  generateApiKey,
+  validateExpiry,
+} from "@/lib/api/keys";
 
 /* Les tables api_* ne figurent pas encore dans les types générés (voir demande-lovable-schema, section 10). */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -40,16 +45,14 @@ async function audit(
   data: Record<string, unknown>,
 ) {
   const d = await admin();
-  await d
-    .from("audit_log")
-    .insert({
-      created_by: actor,
-      table_name: "api_clients",
-      record_id: id,
-      action,
-      changed_fields: fields,
-      new_data: data,
-    });
+  await d.from("audit_log").insert({
+    created_by: actor,
+    table_name: "api_clients",
+    record_id: id,
+    action,
+    changed_fields: fields,
+    new_data: data,
+  });
 }
 
 export const listApiClients = createServerFn({ method: "GET" })
@@ -71,7 +74,7 @@ export const listApiClients = createServerFn({ method: "GET" })
       level: (typeof API_LEVELS)[number];
       site_id: string | null;
       key_prefix: string;
-      expires_at: string | null;
+      expires_at: string;
       revoked_at: string | null;
       last_used_at: string | null;
       created_at: string;
@@ -96,8 +99,16 @@ export const createApiClient = createServerFn({ method: "POST" })
   .inputValidator((input: z.input<typeof createSchema>) => createSchema.parse(input))
   .handler(async ({ data, context }) => {
     await requireItAdmin(context as Ctx);
-    if (data.expiresAt && data.expiresAt <= new Date().toISOString().slice(0, 10))
-      throw new Error("La date d'expiration doit être dans le futur.");
+    const d0 = await admin();
+    const { data: setting } = await d0
+      .from("settings")
+      .select("value")
+      .eq("key", "api_key_max_days")
+      .is("archived_at", null)
+      .maybeSingle();
+    const maxDays = Number(setting?.value) > 0 ? Number(setting.value) : DEFAULT_API_KEY_MAX_DAYS;
+    const problem = validateExpiry(data.expiresAt, new Date().toISOString().slice(0, 10), maxDays);
+    if (problem) throw new Error(problem);
     const { key, prefix, hash } = await generateApiKey();
     const d = await admin();
     const { data: row, error } = await d
@@ -107,7 +118,7 @@ export const createApiClient = createServerFn({ method: "POST" })
         description: data.description ?? null,
         level: data.level,
         site_id: data.siteId,
-        expires_at: data.expiresAt ? `${data.expiresAt}T23:59:59Z` : null,
+        expires_at: `${data.expiresAt}T23:59:59Z`,
         key_prefix: prefix,
         key_hash: hash,
         created_by: context.userId,

@@ -65,8 +65,9 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Un manager voit des chiffres limités à son périmètre.
 
 ## 8. Administration
+- [ ] Seul admin_it peut inviter, changer un rôle, désactiver, réinitialiser (drh et gestionnaire_rh : consultation seule, boutons absents ou refusés par la base).
 - [ ] Utilisateurs : invitation, plusieurs rôles, périmètre, désactivation/réactivation, réinitialisation du mot de passe et du MFA.
-- [ ] Permissions : matrice rôles × permissions × portée ; impossible de se retirer l'administration (verrou).
+- [ ] Permissions : seul admin_it modifie ; matrice rôles × permissions × portée ; impossible de se retirer l'administration (verrou).
 - [ ] Journal d'audit : filtres date/utilisateur/table/action ; avant/après en lecture seule ; aucun bouton de modification.
 - [ ] Accès aux documents : journal complet des ouvertures.
 
@@ -76,10 +77,12 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Valeurs non rapprochées (départements, postes, catégories) : bloquent l'import tant que le rapprochement n'est pas fait.
 - [ ] Exécution en une transaction ; relance sans doublon (clé matricule + date de début).
 - [ ] Rapprochement avec le classeur : effectif actif, contrats par type, totaux identiques.
-- [ ] Statut de cette étape : voir la note de livraison (écran en attente du classeur).
+- [ ] Bouton Importer : modèle Excel/CSV téléchargeable ; le modèle rempli est reconnu sans erreur de structure ; une colonne obligatoire absente est signalée.
+- [ ] Exécution en base : à recetter après la mise à jour de la base (fonction `run_import`).
 
 ## 9 bis. API et clés (admin_it)
 - [ ] Seul admin_it voit « API et clés » ; un autre rôle qui ouvre l'adresse voit « Accès réservé » et les fonctions serveur refusent.
+- [ ] Date d'expiration obligatoire ; au-delà de 365 jours (ou du paramètre `api_key_max_days`) refusée.
 - [ ] Création d'une clé par niveau : elle s'affiche une seule fois ; la liste ne montre que `fms_xxxxxxxx_…`.
 - [ ] Niveau 1 : `/employees` sans contrat/coordonnées/salaire ; `/contracts` → 403.
 - [ ] Niveau 4 : le salaire apparaît ; niveau 3 : il n'apparaît pas.
@@ -87,6 +90,13 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Clé révoquée ou expirée → 401 ; clé inventée → 401 ; 121 appels en une minute → 429.
 - [ ] Chaque appel apparaît dans le journal ; création et révocation dans le journal d'audit.
 - [ ] Brancher la paie (niveau 4) et le pointage (niveau 1 ou 2) et comparer les effectifs reçus avec le tableau de bord.
+
+## 9 ter. Appréciations (après mise à jour de la base)
+- [ ] drh : voir, créer, modifier, archiver. gestionnaire_rh : voir, créer, modifier.
+- [ ] manager : voit seulement les appréciations de son périmètre, sans bouton de création/modification.
+- [ ] direction : voit tout, sans création/modification. paie et admin_it : aucun accès.
+- [ ] Personne ne voit ses propres appréciations, manager et direction compris.
+- [ ] Le journal d'audit n'affiche pas le texte du commentaire.
 
 ## 10. Accessibilité et performance
 - [ ] Navigation complète au clavier (Tab, Maj+Tab, Entrée, Échap) ; lien « Aller au contenu » au premier Tab.

@@ -191,3 +191,24 @@ export const CONTRACT_COLUMNS = [
   "fin_effective",
   "duree_mois",
 ];
+
+export const DEFAULT_API_KEY_MAX_DAYS = 365;
+
+export const addDaysIso = (iso: string, days: number) => {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+};
+
+/** Durée de vie obligatoire : date future, au plus `maxDays` jours après aujourd'hui. Renvoie un message d'erreur, ou null si valide. */
+export function validateExpiry(
+  expiresAt: string | null,
+  today: string,
+  maxDays = DEFAULT_API_KEY_MAX_DAYS,
+): string | null {
+  if (!expiresAt) return "Une date d'expiration est obligatoire.";
+  if (expiresAt <= today) return "La date d'expiration doit être dans le futur.";
+  if (expiresAt > addDaysIso(today, maxDays))
+    return `La durée de vie d'une clé ne peut pas dépasser ${maxDays} jours.`;
+  return null;
+}

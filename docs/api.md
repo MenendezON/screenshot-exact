@@ -11,7 +11,7 @@ Une clé par application, au format `fms_xxxxxxxx_…`, transmise à chaque appe
 ```
 Authorization: Bearer fms_xxxxxxxx_…
 ```
-(ou en-tête `X-API-Key`). La clé n'est affichée qu'une fois, à sa création. Seule son empreinte (SHA-256) est conservée. Une clé peut être révoquée à tout moment, avoir une date d'expiration et être limitée à un site.
+(ou en-tête `X-API-Key`). La clé n'est affichée qu'une fois, à sa création. Seule son empreinte (SHA-256) est conservée. Une clé peut être révoquée à tout moment et être limitée à un site. Elle **expire obligatoirement** (365 jours au plus, paramètre `api_key_max_days`) ; pas de prolongation : créer une nouvelle clé puis révoquer l'ancienne.
 
 ## Niveaux d'accès (cumulatifs)
 

@@ -1,5 +1,7 @@
 # Guide d'utilisation — Gestion du personnel Fabrimétal
 
+Ce guide est aussi disponible dans l'application, menu **Guide d'utilisation**, pour tous les utilisateurs connectés.
+
 Destiné aux équipes RH, aux managers et à la paie. Ce que vous voyez dépend de votre rôle : un menu
 absent signifie que votre rôle n'y donne pas accès.
 
@@ -44,9 +46,11 @@ Effectif actif, âge et ancienneté moyens/médians, répartitions, entrées et 
 année. Filtrez par site ou unité. Les salaires n'apparaissent qu'avec la permission de rémunération.
 Chaque graphique a son tableau de données et un export CSV/Excel. Un manager ne voit que son périmètre.
 
-## 7. Administration (DRH, administrateur)
+## 7. Administration
+La gestion des comptes et des droits est réservée à l'**administrateur IT** (`admin_it`). Le DRH et le gestionnaire RH **consultent** les écrans Utilisateurs et Permissions ; pour créer un compte, changer un rôle, désactiver un accès ou réinitialiser un mot de passe ou un MFA, ils contactent l'administrateur IT.
 - **Utilisateurs** : inviter, attribuer un ou plusieurs rôles avec leur périmètre, désactiver, réinitialiser le mot de passe ou le MFA.
 - **Permissions** : matrice rôles × permissions × portée (tout, site, unité, équipe, soi-même). Le système empêche de se retirer son propre accès d'administration.
+- **API et clés** (administrateur IT uniquement) : voir le chapitre 10.
 - **Journal d'audit** : qui a fait quoi et quand, avec les valeurs avant/après (lecture seule).
 - **Accès aux documents** : qui a ouvert quel document.
 - **Paramètres** : âge de retraite, durée maximale d'un CDD, délais d'alerte, durée d'inactivité.
@@ -56,9 +60,21 @@ Réservé au DRH et au gestionnaire RH. Principe : (1) charger le classeur, (2) 
 rapprochements de valeurs (départements, postes, catégories) — une valeur non rapprochée bloque
 l'import, (3) lancer la **simulation** (rien n'est écrit) et exporter le rapport d'anomalies,
 (4) corriger la source ou les rapprochements, (5) lancer l'**exécution** — tout ou rien. Relancer le
-même fichier ne crée pas de doublons. Voir la note de livraison pour l'état d'avancement de cet écran.
+même fichier ne crée pas de doublons. Le bouton **Importer** de la page Employés propose le **modèle de fichier** (Excel ou CSV, avec une feuille d'instructions) et un **contrôle** du fichier sans rien enregistrer. L'enregistrement définitif sera disponible après la mise à jour de la base.
 
-## 9. Aide et incidents
+## 9. Appréciations *(à venir : en attente de la mise à jour de la base)*
+Les appréciations (de contrat, de performance) sont confidentielles. Le **DRH** les crée, les modifie et les archive ; le **gestionnaire RH** les crée et les modifie ; le **manager** (son périmètre) et la **direction** peuvent seulement les **consulter** ; la paie et l'administrateur IT n'y ont pas accès. Un employé ne voit jamais ses propres appréciations.
+
+## 10. Donner accès aux données à d'autres applications (administrateur IT)
+Menu **API et clés**. Chaque application (paie, pointage…) reçoit sa propre clé, en lecture seule.
+1. **Nouvelle clé** : nom de l'application, niveau d'accès (1 identité, 2 contrats, 3 coordonnées, 4 rémunération), site éventuel, date d'expiration.
+2. La **durée de vie est obligatoire** : 365 jours au plus (paramètre « Durée de vie maximale d'une clé d'API »). Pour renouveler, créer une nouvelle clé puis révoquer l'ancienne.
+3. La clé s'affiche **une seule fois** : la copier et la transmettre de façon sécurisée. Si elle est perdue, la révoquer et en créer une autre.
+4. Choisir le niveau le plus bas suffisant : niveau 4 pour la paie seulement. Pour un rapport Power BI partagé, niveau 1 ou 2.
+5. **Révoquer** coupe l'accès immédiatement. Le tableau des 100 derniers appels montre qui a lu quoi.
+Détails techniques pour les développeurs : `docs/api.md`.
+
+## 11. Aide et incidents
 - Message d'erreur en rouge avec « Réessayer » : vérifiez votre connexion puis réessayez.
 - « Vous n'avez pas le droit… » : demandez l'accès à l'administrateur RH.
 - Signalement : indiquez la page, l'heure et le message affiché ; les erreurs techniques sont consignées automatiquement.
