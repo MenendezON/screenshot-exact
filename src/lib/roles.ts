@@ -6,12 +6,25 @@ import type { Database } from "@/integrations/supabase/types";
 export type AppRole = Database["public"]["Enums"]["app_role"];
 
 export const ROLE_LABELS: Record<AppRole, string> = {
-  admin_rh: "Administrateur RH",
+  admin_it: "Administrateur IT",
+  drh: "DRH",
   gestionnaire_rh: "Gestionnaire RH",
-  direction: "Direction (lecture)",
+  paie: "Paie",
+  manager: "Manager",
+  direction: "Direction",
+  auditeur: "Auditeur",
+  admin_rh: "Administrateur RH (obsolète)",
 };
 
-export const ROLE_OPTIONS: AppRole[] = ["admin_rh", "gestionnaire_rh", "direction"];
+export const ROLE_OPTIONS: AppRole[] = [
+  "admin_it",
+  "drh",
+  "gestionnaire_rh",
+  "paie",
+  "manager",
+  "direction",
+  "auditeur",
+];
 
 export type CurrentUser = {
   id: string;
