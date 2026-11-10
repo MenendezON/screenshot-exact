@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import {
   History,
   Home,
@@ -16,7 +15,7 @@ import {
 import { BrandName } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { supabase } from "@/integrations/supabase/client";
+import { useSignOut } from "@/lib/auth-context";
 import { usePermissions, type Action, type Resource } from "@/lib/permissions";
 import { ROLE_LABELS, useCurrentUser, type AppRole } from "@/lib/roles";
 
@@ -37,17 +36,6 @@ const NAV: NavItem[] = [
   { to: "/utilisateurs", label: "Utilisateurs", icon: Users, roles: ["admin_rh"] },
   { to: "/journal", label: "Journal d'audit", icon: History, roles: ["admin_rh"] },
 ];
-
-function useSignOut() {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  return async () => {
-    await queryClient.cancelQueries();
-    queryClient.clear();
-    await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
-  };
-}
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { data: user } = useCurrentUser();

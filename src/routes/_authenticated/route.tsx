@@ -1,7 +1,9 @@
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 import { AppShell } from "@/components/app-shell";
+import { IdleLogout } from "@/components/idle-logout";
 import { supabase } from "@/integrations/supabase/client";
+import { AuthProvider } from "@/lib/auth-context";
 import { needsMfaStep } from "@/lib/mfa";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -23,8 +25,11 @@ export const Route = createFileRoute("/_authenticated")({
 
 function AuthenticatedLayout() {
   return (
-    <AppShell>
-      <Outlet />
-    </AppShell>
+    <AuthProvider>
+      <AppShell>
+        <Outlet />
+      </AppShell>
+      <IdleLogout />
+    </AuthProvider>
   );
 }

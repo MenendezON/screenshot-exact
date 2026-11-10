@@ -45,3 +45,12 @@ export function usePermissions() {
     can: (resource: Resource, action: Action) => hasPermission(query.data, resource, action),
   };
 }
+
+/**
+ * Vrai si l'utilisateur connecté détient cette permission. Faux tant que les droits se chargent :
+ * l'interface n'affiche rien de plus que ce que la base accorde (la RLS reste l'autorité).
+ */
+export function usePermission(resource: Resource, action: Action): boolean {
+  const { data } = useQuery(myPermissionsQuery);
+  return hasPermission(data, resource, action);
+}

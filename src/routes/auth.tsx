@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
+import { IDLE_NOTICE_KEY } from "@/lib/idle";
 import { safeRedirect } from "@/lib/safe-redirect";
 
 export const Route = createFileRoute("/auth")({
@@ -46,6 +47,17 @@ function AuthPage() {
   const search = Route.useSearch();
   const navigate = useNavigate();
   const target = safeRedirect(search.redirect);
+
+  useEffect(() => {
+    try {
+      if (window.sessionStorage.getItem(IDLE_NOTICE_KEY)) {
+        window.sessionStorage.removeItem(IDLE_NOTICE_KEY);
+        toast.info("Vous avez été déconnecté après une période d'inactivité.");
+      }
+    } catch {
+      // stockage indisponible : pas de message
+    }
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
