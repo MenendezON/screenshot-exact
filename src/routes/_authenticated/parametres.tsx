@@ -1,131 +1,92 @@
-import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { Loader2, Lock } from "lucide-react";
 
-import { PageHeader } from "@/components/app-shell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
-import { formatDateTime } from "@/lib/format";
-import { useCurrentUser } from "@/lib/roles";
-import { SETTING_BOUNDS, settingsQuery, type Setting } from "@/lib/settings";
+import { PageHeader, RequireRole } from "@/components/app-shell";
+import { BusinessSettingsPanel } from "@/components/settings/business-settings-panel";
+import { CategoriesPanel } from "@/components/settings/categories-panel";
+import { DocumentTypesPanel } from "@/components/settings/document-types-panel";
+import { ExitReasonsPanel } from "@/components/settings/exit-reasons-panel";
+import { HistoryPanel } from "@/components/settings/history-panel";
+import { JobTitlesPanel } from "@/components/settings/job-titles-panel";
+import { OrgTreePanel } from "@/components/settings/org-tree-panel";
+import { SitesPanel } from "@/components/settings/sites-panel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { usePermissions } from "@/lib/permissions";
+import type { AppRole } from "@/lib/roles";
+
+const SETTINGS_ROLES: AppRole[] = ["admin_it", "drh"];
+
+const DESCRIPTION =
+  "Sites, organisation, postes, catégories, motifs de sortie, types de documents et règles de gestion.";
 
 export const Route = createFileRoute("/_authenticated/parametres")({
   head: () => ({
     meta: [
-      { title: "Paramètres métier — Fabrimétal Personnel" },
-      {
-        name: "description",
-        content: "Âge de retraite, durée maximale des contrats et délais de notification.",
-      },
-      { property: "og:title", content: "Paramètres métier — Fabrimétal Personnel" },
-      {
-        property: "og:description",
-        content: "Âge de retraite, durée maximale des contrats et délais de notification.",
-      },
+      { title: "Paramètres RH — Fabrimétal Personnel" },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: "Paramètres RH — Fabrimétal Personnel" },
+      { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(settingsQuery),
   component: SettingsPage,
 });
 
 function SettingsPage() {
-  const { data: settings } = useSuspenseQuery(settingsQuery);
-  const { data: user } = useCurrentUser();
-  const canEdit = user?.role === "admin_rh";
-
   return (
-    <div className="mx-auto max-w-4xl">
-      <PageHeader
-        eyebrow="Règles de gestion"
-        title="Paramètres métier"
-        description="Ces valeurs alimentent les calculs de l'application. Toute modification est tracée dans le journal d'audit."
-      />
-      {!canEdit && (
-        <p className="mb-4 flex items-center gap-2 rounded-md border bg-muted px-4 py-3 text-sm text-muted-foreground">
-          <Lock className="size-4" /> Lecture seule : seul l'administrateur RH peut modifier ces valeurs.
-        </p>
-      )}
-      <div className="divide-y rounded-lg border bg-card shadow-panel">
-        {settings.map((s) => (
-          <SettingRow key={s.id} setting={s} canEdit={canEdit} />
-        ))}
-      </div>
-    </div>
+    <RequireRole
+      roles={SETTINGS_ROLES}
+      message="Cette page est réservée à l'administrateur IT et au DRH."
+    >
+      <SettingsContent />
+    </RequireRole>
   );
 }
 
-function SettingRow({ setting, canEdit }: { setting: Setting; canEdit: boolean }) {
-  const queryClient = useQueryClient();
-  const [value, setValue] = useState(String(setting.value));
-  const bounds = SETTING_BOUNDS[setting.unit] ?? { min: 1, max: 999 };
-  const parsed = Number(value);
-  const valid = Number.isInteger(parsed) && parsed >= bounds.min && parsed <= bounds.max;
-  const dirty = parsed !== setting.value;
-
-  const mutation = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.from("settings").update({ value: parsed }).eq("id", setting.id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      toast.success(`« ${setting.label} » mis à jour.`);
-      queryClient.invalidateQueries({ queryKey: ["settings"] });
-    },
-    onError: () => toast.error("Modification refusée."),
-  });
+function SettingsContent() {
+  const { can } = usePermissions();
 
   return (
-    <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
-      <div className="min-w-0">
-        <p className="font-medium">{setting.label}</p>
-        {setting.description && <p className="mt-0.5 text-sm text-muted-foreground">{setting.description}</p>}
-        <p className="mt-1 text-xs text-muted-foreground">Modifié le {formatDateTime(setting.updated_at)}</p>
-      </div>
-      {canEdit ? (
-        <form
-          className="flex shrink-0 items-start gap-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (valid && dirty) mutation.mutate();
-          }}
-        >
-          <div>
-            <div className="flex items-center gap-2">
-              <Input
-                type="number"
-                inputMode="numeric"
-                min={bounds.min}
-                max={bounds.max}
-                step={1}
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                className="w-24 text-right font-mono"
-                aria-label={setting.label}
-                aria-invalid={!valid}
-              />
-              <span className="w-10 text-sm text-muted-foreground">{setting.unit}</span>
-            </div>
-            {!valid && (
-              <p className="mt-1 text-xs text-destructive">
-                Entre {bounds.min} et {bounds.max}
-              </p>
-            )}
-          </div>
-          <Button type="submit" size="sm" className="h-9" disabled={!valid || !dirty || mutation.isPending}>
-            {mutation.isPending && <Loader2 className="animate-spin" />}
-            Enregistrer
-          </Button>
-        </form>
-      ) : (
-        <p className="shrink-0 font-display text-2xl font-bold">
-          {setting.value} <span className="text-sm font-medium text-muted-foreground">{setting.unit}</span>
-        </p>
-      )}
+    <div className="mx-auto max-w-5xl">
+      <PageHeader eyebrow="Référentiels" title="Paramètres RH" description={DESCRIPTION} />
+      <Tabs defaultValue="sites">
+        <TabsList className="mb-6 h-auto flex-wrap justify-start">
+          <TabsTrigger value="sites">Sites</TabsTrigger>
+          <TabsTrigger value="organisation">Organisation</TabsTrigger>
+          <TabsTrigger value="postes">Postes</TabsTrigger>
+          <TabsTrigger value="categories">Catégories</TabsTrigger>
+          <TabsTrigger value="motifs">Motifs de sortie</TabsTrigger>
+          <TabsTrigger value="documents">Documents</TabsTrigger>
+          <TabsTrigger value="regles">Règles métier</TabsTrigger>
+          {can("audit", "view") && <TabsTrigger value="historique">Historique</TabsTrigger>}
+        </TabsList>
+        <TabsContent value="sites">
+          <SitesPanel />
+        </TabsContent>
+        <TabsContent value="organisation">
+          <OrgTreePanel />
+        </TabsContent>
+        <TabsContent value="postes">
+          <JobTitlesPanel />
+        </TabsContent>
+        <TabsContent value="categories">
+          <CategoriesPanel />
+        </TabsContent>
+        <TabsContent value="motifs">
+          <ExitReasonsPanel />
+        </TabsContent>
+        <TabsContent value="documents">
+          <DocumentTypesPanel />
+        </TabsContent>
+        <TabsContent value="regles">
+          <BusinessSettingsPanel />
+        </TabsContent>
+        {can("audit", "view") && (
+          <TabsContent value="historique">
+            <HistoryPanel />
+          </TabsContent>
+        )}
+      </Tabs>
     </div>
   );
 }

@@ -15,6 +15,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { formatDateTime } from "@/lib/format";
+import { TABLE_LABELS as REFERENTIAL_TABLE_LABELS } from "@/lib/referentials";
 import { ROLE_LABELS, type AppRole } from "@/lib/roles";
 
 export const Route = createFileRoute("/_authenticated/journal")({
@@ -32,6 +33,7 @@ export const Route = createFileRoute("/_authenticated/journal")({
 });
 
 const TABLE_LABELS: Record<string, string> = {
+  ...REFERENTIAL_TABLE_LABELS,
   profiles: "Profil utilisateur",
   user_roles: "Rôle",
   settings: "Paramètre",

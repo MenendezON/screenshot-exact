@@ -23,4 +23,5 @@ export const SETTING_BOUNDS: Record<string, { min: number; max: number }> = {
   ans: { min: 40, max: 75 },
   mois: { min: 1, max: 120 },
   jours: { min: 1, max: 365 },
+  minutes: { min: 5, max: 480 },
 };

@@ -27,7 +27,7 @@ type NavItem = {
 
 const NAV: NavItem[] = [
   { to: "/accueil", label: "Accueil", icon: Home },
-  { to: "/parametres", label: "Paramètres", icon: SlidersHorizontal },
+  { to: "/parametres", label: "Paramètres RH", icon: SlidersHorizontal, roles: ["admin_it", "drh"] },
   { to: "/utilisateurs", label: "Utilisateurs", icon: Users, roles: ["admin_rh"] },
   { to: "/journal", label: "Journal d'audit", icon: History, roles: ["admin_rh"] },
 ];
@@ -170,15 +170,21 @@ export function PageHeader({
   );
 }
 
-export function RequireRole({ roles, children }: { roles: AppRole[]; children: ReactNode }) {
+export function RequireRole({
+  roles,
+  message = "Cette page est réservée à l'administrateur RH.",
+  children,
+}: {
+  roles: AppRole[];
+  message?: string;
+  children: ReactNode;
+}) {
   const { data: user } = useCurrentUser();
   if (!user?.role || !roles.includes(user.role)) {
     return (
       <div className="mx-auto max-w-md rounded-lg border bg-card p-8 text-center shadow-panel">
         <h1 className="text-xl font-bold">Accès réservé</h1>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Cette page est réservée à l'administrateur RH.
-        </p>
+        <p className="mt-3 text-sm text-muted-foreground">{message}</p>
       </div>
     );
   }
