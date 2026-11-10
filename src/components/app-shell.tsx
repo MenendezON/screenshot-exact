@@ -6,6 +6,7 @@ import {
   CalendarClock,
   FileSearch,
   ShieldCheck,
+  BookOpen,
   ChartColumn,
   History,
   Hourglass,
@@ -41,7 +42,8 @@ type NavItem = {
     | "/contrats/a-regulariser"
     | "/parametres"
     | "/utilisateurs"
-    | "/journal";
+    | "/journal"
+    | "/aide";
   label: string;
   icon: LucideIcon;
   roles?: AppRole[];
@@ -92,6 +94,7 @@ const NAV: NavItem[] = [
     icon: FileSearch,
     permission: ["audit", "view"],
   },
+  { to: "/aide", label: "Guide d'utilisation", icon: BookOpen },
 ];
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {

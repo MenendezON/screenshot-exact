@@ -16,6 +16,7 @@ import { Route as MfaRouteImport } from './routes/mfa'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAccesDocumentsRouteImport } from './routes/_authenticated/acces-documents'
 import { Route as AuthenticatedAccueilRouteImport } from './routes/_authenticated/accueil'
+import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
 import { Route as AuthenticatedJournalRouteImport } from './routes/_authenticated/journal'
 import { Route as AuthenticatedOrganigrammeRouteImport } from './routes/_authenticated/organigramme'
 import { Route as AuthenticatedParametresRouteImport } from './routes/_authenticated/parametres'
@@ -61,6 +62,11 @@ const AuthenticatedAccesDocumentsRoute =
 const AuthenticatedAccueilRoute = AuthenticatedAccueilRouteImport.update({
   id: '/accueil',
   path: '/accueil',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAideRoute = AuthenticatedAideRouteImport.update({
+  id: '/aide',
+  path: '/aide',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedJournalRoute = AuthenticatedJournalRouteImport.update({
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/acces-documents': typeof AuthenticatedAccesDocumentsRoute
   '/accueil': typeof AuthenticatedAccueilRoute
+  '/aide': typeof AuthenticatedAideRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/acces-documents': typeof AuthenticatedAccesDocumentsRoute
   '/accueil': typeof AuthenticatedAccueilRoute
+  '/aide': typeof AuthenticatedAideRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/parametres': typeof AuthenticatedParametresRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/acces-documents': typeof AuthenticatedAccesDocumentsRoute
   '/_authenticated/accueil': typeof AuthenticatedAccueilRoute
+  '/_authenticated/aide': typeof AuthenticatedAideRoute
   '/_authenticated/journal': typeof AuthenticatedJournalRoute
   '/_authenticated/organigramme': typeof AuthenticatedOrganigrammeRoute
   '/_authenticated/parametres': typeof AuthenticatedParametresRoute
@@ -196,6 +205,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/acces-documents'
     | '/accueil'
+    | '/aide'
     | '/journal'
     | '/organigramme'
     | '/parametres'
@@ -215,6 +225,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/acces-documents'
     | '/accueil'
+    | '/aide'
     | '/journal'
     | '/organigramme'
     | '/parametres'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/acces-documents'
     | '/_authenticated/accueil'
+    | '/_authenticated/aide'
     | '/_authenticated/journal'
     | '/_authenticated/organigramme'
     | '/_authenticated/parametres'
@@ -305,6 +317,13 @@ declare module '@tanstack/react-router' {
       path: '/accueil'
       fullPath: '/accueil'
       preLoaderRoute: typeof AuthenticatedAccueilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/aide': {
+      id: '/_authenticated/aide'
+      path: '/aide'
+      fullPath: '/aide'
+      preLoaderRoute: typeof AuthenticatedAideRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/journal': {
@@ -390,6 +409,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccesDocumentsRoute: typeof AuthenticatedAccesDocumentsRoute
   AuthenticatedAccueilRoute: typeof AuthenticatedAccueilRoute
+  AuthenticatedAideRoute: typeof AuthenticatedAideRoute
   AuthenticatedJournalRoute: typeof AuthenticatedJournalRoute
   AuthenticatedOrganigrammeRoute: typeof AuthenticatedOrganigrammeRoute
   AuthenticatedParametresRoute: typeof AuthenticatedParametresRoute
@@ -406,6 +426,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccesDocumentsRoute: AuthenticatedAccesDocumentsRoute,
   AuthenticatedAccueilRoute: AuthenticatedAccueilRoute,
+  AuthenticatedAideRoute: AuthenticatedAideRoute,
   AuthenticatedJournalRoute: AuthenticatedJournalRoute,
   AuthenticatedOrganigrammeRoute: AuthenticatedOrganigrammeRoute,
   AuthenticatedParametresRoute: AuthenticatedParametresRoute,
