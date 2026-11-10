@@ -10,7 +10,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
       <aside className="relative hidden flex-col justify-between bg-forge p-12 text-sidebar-foreground lg:flex">
         <BrandName inverted />
         <div className="max-w-md">
-          <p className="eyebrow text-sidebar-primary">Gestion du personnel</p>
+          <p className="eyebrow text-sidebar-muted">Gestion du personnel</p>
           <h1 className="mt-4 text-4xl font-extrabold leading-[1.05]">
             Chaque matricule, chaque contrat, au même endroit.
           </h1>

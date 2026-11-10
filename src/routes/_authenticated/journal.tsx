@@ -120,7 +120,7 @@ function JournalContent() {
       )}
 
       {data && data.entries.length > 0 && (
-        <ol className="divide-y rounded-lg border bg-card shadow-panel">
+        <ol className="divide-y rounded-lg border bg-card">
           {data.entries.map((e) => (
             <li key={e.id} className="grid gap-2 px-5 py-4 sm:grid-cols-[10rem_1fr]">
               <div className="text-sm">

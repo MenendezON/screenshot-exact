@@ -94,7 +94,7 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-lg border bg-card shadow-panel">
+    <section className="rounded-lg border bg-card">
       <header className="flex flex-col gap-2 border-b px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-lg font-bold">{title}</h2>

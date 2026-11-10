@@ -89,7 +89,12 @@ export function SitesPanel() {
         }
       >
         <Field label="Nom du site">
-          <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Ex. Sébikotane"
+            autoFocus
+          />
         </Field>
       </FormDialog>
     </Panel>

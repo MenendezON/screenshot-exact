@@ -292,8 +292,8 @@ const EMPLOYEE_FIELD_LABELS: Record<string, string> = {
   expires_on: "Expiration",
   id_document_type: "Type de pièce d'identité",
   id_document_number: "Numéro de pièce d'identité",
-  emergency_contact_name: "Contact d'urgence",
-  emergency_contact_relation: "Lien avec le contact d'urgence",
+  emergency_contact_name: "Nom du contact d'urgence",
+  emergency_contact_relation: "Lien de parenté du contact d'urgence",
   emergency_contact_phone: "Téléphone du contact d'urgence",
 };
 

@@ -195,6 +195,21 @@ export function toEmployeePayload(v: EmployeeForm) {
 
 // ---------- Données sensibles ----------
 
+/** Liens de parenté proposés pour le contact d'urgence. La valeur enregistrée est le libellé. */
+export const KINSHIP_OPTIONS = [
+  "Conjoint(e)",
+  "Père",
+  "Mère",
+  "Enfant",
+  "Frère",
+  "Sœur",
+  "Oncle / Tante",
+  "Grand-parent",
+  "Ami(e)",
+  "Collègue",
+  "Autre",
+] as const;
+
 export const ID_DOCUMENT_TYPES = ["cni", "passport", "consular_card"] as const;
 export const ID_DOCUMENT_LABELS: Record<(typeof ID_DOCUMENT_TYPES)[number], string> = {
   cni: "Carte nationale d'identité",
@@ -221,6 +236,28 @@ export const sensitiveSchema = z
         code: "custom",
         path: ["idDocumentType"],
         message: "Indiquez le type de pièce d'identité.",
+      });
+    }
+    // Un contact d'urgence n'est utile que s'il est joignable et identifié : nom, lien et téléphone vont ensemble.
+    if (v.emergencyName && !v.emergencyPhone) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["emergencyPhone"],
+        message: "Indiquez le téléphone de ce contact.",
+      });
+    }
+    if (v.emergencyName && !v.emergencyRelation) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["emergencyRelation"],
+        message: "Indiquez le lien de parenté.",
+      });
+    }
+    if (!v.emergencyName && (v.emergencyPhone || v.emergencyRelation)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["emergencyName"],
+        message: "Indiquez le nom du contact.",
       });
     }
     if (v.idDocumentType && !v.idDocumentNumber) {

@@ -44,7 +44,7 @@ function Index() {
       </header>
       <main className="flex flex-1 items-center px-6 pb-16 sm:px-12">
         <div className="max-w-2xl">
-          <p className="eyebrow text-sidebar-primary">Outil interne · ressources humaines</p>
+          <p className="eyebrow text-sidebar-muted">Outil interne · ressources humaines</p>
           <h1 className="mt-5 text-4xl font-extrabold leading-[1.02] sm:text-6xl">
             Le suivi du personnel,
             <br />

@@ -11,6 +11,7 @@ import {
   employeeSchema,
   ID_DOCUMENT_LABELS,
   ID_DOCUMENT_TYPES,
+  KINSHIP_OPTIONS,
   MARITAL_LABELS,
   MARITAL_STATUS,
   sensitiveSchema,
@@ -147,10 +148,20 @@ function CivilSection({ ctx }: { ctx: FicheContext }) {
           </FormRow>
           <span className="hidden sm:block" />
           <FormRow label="Nom" htmlFor="lastName" error={errors.lastName?.message}>
-            <Input id="lastName" aria-invalid={!!errors.lastName} {...register("lastName")} />
+            <Input
+              id="lastName"
+              aria-invalid={!!errors.lastName}
+              placeholder="Ex. Diop"
+              {...register("lastName")}
+            />
           </FormRow>
           <FormRow label="Prénoms" htmlFor="firstNames" error={errors.firstNames?.message}>
-            <Input id="firstNames" aria-invalid={!!errors.firstNames} {...register("firstNames")} />
+            <Input
+              id="firstNames"
+              aria-invalid={!!errors.firstNames}
+              placeholder="Ex. Awa Fatou"
+              {...register("firstNames")}
+            />
           </FormRow>
           <FormRow label="Date de naissance" htmlFor="birthDate" error={errors.birthDate?.message}>
             <Input
@@ -165,7 +176,7 @@ function CivilSection({ ctx }: { ctx: FicheContext }) {
             htmlFor="birthPlace"
             error={errors.birthPlace?.message}
           >
-            <Input id="birthPlace" {...register("birthPlace")} />
+            <Input id="birthPlace" placeholder="Ex. Dakar" {...register("birthPlace")} />
           </FormRow>
           <FormRow label="Situation familiale" error={errors.maritalStatus?.message}>
             <Controller
@@ -190,6 +201,7 @@ function CivilSection({ ctx }: { ctx: FicheContext }) {
               id="childrenCount"
               inputMode="numeric"
               aria-invalid={!!errors.childrenCount}
+              placeholder="0"
               {...register("childrenCount")}
             />
           </FormRow>
@@ -203,11 +215,17 @@ function CivilSection({ ctx }: { ctx: FicheContext }) {
             />
           </FormRow>
           <FormRow label="E-mail" htmlFor="email" error={errors.email?.message}>
-            <Input id="email" type="email" aria-invalid={!!errors.email} {...register("email")} />
+            <Input
+              id="email"
+              type="email"
+              aria-invalid={!!errors.email}
+              placeholder="prenom.nom@exemple.sn"
+              {...register("email")}
+            />
           </FormRow>
           <div className="sm:col-span-2">
             <FormRow label="Adresse" htmlFor="address" error={errors.address?.message}>
-              <Input id="address" {...register("address")} />
+              <Input id="address" placeholder="Quartier, rue, ville" {...register("address")} />
             </FormRow>
           </div>
           <div className="sm:col-span-2">
@@ -326,9 +344,9 @@ function SensitiveSection({ ctx }: { ctx: FicheContext }) {
                 <span className="font-mono">{data.id_document_number}</span>
               ) : null,
             },
-            { label: "Contact d'urgence", value: data?.emergency_contact_name },
+            { label: "Nom du contact d'urgence", value: data?.emergency_contact_name },
             { label: "Lien de parenté", value: data?.emergency_contact_relation },
-            { label: "Téléphone du contact", value: data?.emergency_contact_phone },
+            { label: "Téléphone du contact d'urgence", value: data?.emergency_contact_phone },
           ]}
         />
       ) : (
@@ -363,29 +381,60 @@ function SensitiveSection({ ctx }: { ctx: FicheContext }) {
               id="idDocumentNumber"
               className="font-mono"
               autoComplete="off"
+              placeholder="Numéro figurant sur la pièce"
               {...register("idDocumentNumber")}
             />
           </FormRow>
           <FormRow
-            label="Contact d'urgence"
+            label="Nom du contact d'urgence"
             htmlFor="emergencyName"
             error={errors.emergencyName?.message}
+            hint="La personne à prévenir en cas d'urgence."
           >
-            <Input id="emergencyName" {...register("emergencyName")} />
+            <Input
+              id="emergencyName"
+              placeholder="Prénom et nom de la personne à prévenir"
+              {...register("emergencyName")}
+            />
           </FormRow>
           <FormRow
             label="Lien de parenté"
             htmlFor="emergencyRelation"
             error={errors.emergencyRelation?.message}
           >
-            <Input id="emergencyRelation" {...register("emergencyRelation")} />
+            <Controller
+              control={control}
+              name="emergencyRelation"
+              render={({ field }) => (
+                <SelectInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Choisir le lien de parenté"
+                  emptyLabel="Non renseigné"
+                  invalid={!!errors.emergencyRelation}
+                  options={[
+                    ...KINSHIP_OPTIONS.map((k) => ({ value: k, label: k })),
+                    // Une ancienne saisie libre reste sélectionnable : on ne la perd pas à la modification.
+                    ...(field.value && !(KINSHIP_OPTIONS as readonly string[]).includes(field.value)
+                      ? [{ value: field.value, label: field.value }]
+                      : []),
+                  ]}
+                />
+              )}
+            />
           </FormRow>
           <FormRow
-            label="Téléphone du contact"
+            label="Téléphone du contact d'urgence"
             htmlFor="emergencyPhone"
             error={errors.emergencyPhone?.message}
+            hint="Le numéro pour joindre cette personne."
           >
-            <Input id="emergencyPhone" type="tel" {...register("emergencyPhone")} />
+            <Input
+              id="emergencyPhone"
+              type="tel"
+              placeholder="+221 77 123 45 67"
+              {...register("emergencyPhone")}
+            />
           </FormRow>
           <div className="flex items-end justify-end gap-2 sm:col-span-2">
             <Button type="button" variant="outline" onClick={() => setEditing(false)}>

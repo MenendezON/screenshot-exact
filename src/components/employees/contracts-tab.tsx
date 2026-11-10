@@ -70,11 +70,13 @@ function SituationSection({ ctx }: { ctx: FicheContext }) {
     },
   });
   const m = ctx.metrics;
-  const c = ctx.current;
   const refLabel = alert?.contract_type === "cdi" ? "départ à la retraite" : "fin du contrat";
 
   return (
-    <Section title="Situation contractuelle">
+    <Section
+      title="Ancienneté et échéances"
+      description="Calculées à partir des contrats et de la date de naissance. Le détail des contrats est plus bas."
+    >
       {(alert?.to_regularize || alert?.to_notify) && (
         <p
           role="status"
@@ -87,19 +89,6 @@ function SituationSection({ ctx }: { ctx: FicheContext }) {
       )}
       <InfoGrid
         items={[
-          {
-            label: "Contrat en cours",
-            value: c?.contract_type ? CONTRACT_LABELS[c.contract_type as ContractType] : null,
-          },
-          {
-            label: "Fin du contrat",
-            value:
-              c?.contract_terminated_on || c?.contract_end
-                ? formatDate(c.contract_terminated_on ?? c.contract_end)
-                : c?.contract_type === "cdi"
-                  ? "Durée indéterminée"
-                  : null,
-          },
           { label: "Date d'entrée", value: m?.hire_date ? formatDate(m.hire_date) : null },
           { label: "Ancienneté", value: formatSeniority(m?.seniority_months) },
           { label: "Âge", value: m?.age_years != null ? `${m.age_years} ans` : null },
@@ -183,6 +172,7 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
   return (
     <Section
       title="Contrats"
+      description="Historique des contrats de l'employé ; celui en cours est signalé. Le contrat signé se dépose dans l'onglet Documents."
       actions={
         canCreate ? (
           <Button size="sm" onClick={() => setOpen(true)}>
@@ -213,6 +203,7 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
                 <tr key={c.id}>
                   <td className="px-3 py-2">
                     <Badge variant="secondary">{CONTRACT_LABELS[c.type as ContractType]}</Badge>
+                    {ctx.current?.contract_id === c.id && <Badge className="ml-2">En cours</Badge>}
                   </td>
                   <td className="px-3 py-2">{formatDate(c.start_date)}</td>
                   <td className="px-3 py-2">
@@ -282,6 +273,7 @@ function ContractsSection({ ctx }: { ctx: FicheContext }) {
                   id="contract-duration"
                   inputMode="numeric"
                   aria-invalid={!!errors.durationMonths}
+                  placeholder="Ex. 12"
                   {...register("durationMonths")}
                 />
               </FormRow>
@@ -406,6 +398,7 @@ function ExitsSection({ ctx }: { ctx: FicheContext }) {
                   <SelectInput
                     value={field.value}
                     onChange={field.onChange}
+                    placeholder="Choisir un motif"
                     options={reasons
                       .filter((r) => !r.archived_at)
                       .map((r) => ({ value: r.id, label: r.name }))}
@@ -415,7 +408,12 @@ function ExitsSection({ ctx }: { ctx: FicheContext }) {
               />
             </FormRow>
             <FormRow label="Notes" htmlFor="exit-notes" error={errors.notes?.message}>
-              <Textarea id="exit-notes" rows={3} {...register("notes")} />
+              <Textarea
+                id="exit-notes"
+                rows={3}
+                placeholder="Contexte de la sortie (facultatif)"
+                {...register("notes")}
+              />
             </FormRow>
             <div className="flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>

@@ -115,7 +115,12 @@ export function ExitReasonsPanel() {
         }
       >
         <Field label="Libellé">
-          <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Ex. Démission"
+            autoFocus
+          />
         </Field>
         <Label className="flex items-center justify-between gap-4 rounded-md border px-3 py-2.5 font-normal">
           <span>
@@ -130,6 +135,7 @@ export function ExitReasonsPanel() {
           <Input
             type="number"
             inputMode="numeric"
+            placeholder="Ex. 10"
             value={order}
             onChange={(e) => setOrder(e.target.value)}
           />

@@ -35,7 +35,7 @@ function HomePage() {
         description={user?.role ? `Connecté en tant que ${ROLE_LABELS[user.role]}.` : ""}
       />
 
-      <section className="rounded-lg border bg-card shadow-panel">
+      <section className="rounded-lg border bg-card">
         <div className="flex items-center justify-between border-b px-5 py-4">
           <h2 className="text-base font-semibold">Paramètres métier en vigueur</h2>
           <Link to="/parametres" className="inline-flex items-center gap-1 text-sm text-primary hover:underline">
@@ -79,7 +79,7 @@ function QuickLink({
   return (
     <Link
       to={to}
-      className="group rounded-lg border bg-card p-5 shadow-panel transition-colors hover:border-primary"
+      className="group rounded-lg border bg-card p-5 transition-colors hover:border-primary"
     >
       <Icon className="size-5 text-signal" />
       <p className="mt-3 font-semibold">{title}</p>

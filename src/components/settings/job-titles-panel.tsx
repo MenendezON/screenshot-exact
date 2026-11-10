@@ -136,7 +136,12 @@ export function JobTitlesPanel() {
               : "Unique, sans distinction de casse."
           }
         >
-          <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Ex. Soudeur"
+            autoFocus
+          />
         </Field>
       </FormDialog>
       <AliasesDialog

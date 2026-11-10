@@ -125,7 +125,12 @@ export function DocumentTypesPanel() {
         }
       >
         <Field label="Libellé">
-          <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Ex. Attestation de travail"
+            autoFocus
+          />
         </Field>
         <Field label="Confidentialité">
           <Select value={confidentiality} onValueChange={setConfidentiality}>
@@ -145,6 +150,7 @@ export function DocumentTypesPanel() {
           <Input
             type="number"
             inputMode="numeric"
+            placeholder="Ex. 10"
             min={1}
             value={retention}
             onChange={(e) => setRetention(e.target.value)}
@@ -154,6 +160,7 @@ export function DocumentTypesPanel() {
           <Input
             type="number"
             inputMode="numeric"
+            placeholder="Ex. 10"
             value={order}
             onChange={(e) => setOrder(e.target.value)}
           />

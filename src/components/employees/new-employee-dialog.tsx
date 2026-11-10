@@ -127,6 +127,7 @@ export function NewEmployeeDialog({
               id="n-matricule"
               className="font-mono uppercase"
               aria-invalid={!!errors.matricule}
+              placeholder="Ex. FM-0042"
               {...register("matricule")}
             />
           </FormRow>
@@ -141,10 +142,20 @@ export function NewEmployeeDialog({
             />
           </FormRow>
           <FormRow label="Nom" htmlFor="n-last" error={errors.lastName?.message}>
-            <Input id="n-last" aria-invalid={!!errors.lastName} {...register("lastName")} />
+            <Input
+              id="n-last"
+              aria-invalid={!!errors.lastName}
+              placeholder="Ex. Diop"
+              {...register("lastName")}
+            />
           </FormRow>
           <FormRow label="Prénoms" htmlFor="n-first" error={errors.firstNames?.message}>
-            <Input id="n-first" aria-invalid={!!errors.firstNames} {...register("firstNames")} />
+            <Input
+              id="n-first"
+              aria-invalid={!!errors.firstNames}
+              placeholder="Ex. Awa Fatou"
+              {...register("firstNames")}
+            />
           </FormRow>
           <FormRow label="Date de naissance" htmlFor="n-birth" error={errors.birthDate?.message}>
             <Input
@@ -155,7 +166,7 @@ export function NewEmployeeDialog({
             />
           </FormRow>
           <FormRow label="Lieu de naissance" htmlFor="n-place" error={errors.birthPlace?.message}>
-            <Input id="n-place" {...register("birthPlace")} />
+            <Input id="n-place" placeholder="Ex. Dakar" {...register("birthPlace")} />
           </FormRow>
           <FormRow label="Situation familiale" error={errors.maritalStatus?.message}>
             <Controller
@@ -180,6 +191,7 @@ export function NewEmployeeDialog({
               id="n-children"
               inputMode="numeric"
               aria-invalid={!!errors.childrenCount}
+              placeholder="0"
               {...register("childrenCount")}
             />
           </FormRow>
@@ -193,11 +205,17 @@ export function NewEmployeeDialog({
             />
           </FormRow>
           <FormRow label="E-mail" htmlFor="n-email" error={errors.email?.message}>
-            <Input id="n-email" type="email" aria-invalid={!!errors.email} {...register("email")} />
+            <Input
+              id="n-email"
+              type="email"
+              aria-invalid={!!errors.email}
+              placeholder="prenom.nom@exemple.sn"
+              {...register("email")}
+            />
           </FormRow>
           <div className="sm:col-span-2">
             <FormRow label="Adresse" htmlFor="n-address" error={errors.address?.message}>
-              <Input id="n-address" {...register("address")} />
+              <Input id="n-address" placeholder="Quartier, rue, ville" {...register("address")} />
             </FormRow>
           </div>
           <div className="sm:col-span-2">

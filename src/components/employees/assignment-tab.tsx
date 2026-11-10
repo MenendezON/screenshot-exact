@@ -219,6 +219,7 @@ function AssignmentDialog({
                 <SelectInput
                   value={field.value}
                   onChange={field.onChange}
+                  placeholder="Choisir une unité"
                   options={unitOptions}
                   invalid={!!errors.orgUnitId}
                 />
@@ -233,6 +234,7 @@ function AssignmentDialog({
                 <SelectInput
                   value={field.value}
                   onChange={field.onChange}
+                  placeholder="Choisir un poste"
                   options={titles
                     .filter((t) => !t.archived_at)
                     .map((t) => ({ value: t.id, label: t.name }))}
@@ -255,6 +257,7 @@ function AssignmentDialog({
                       const cat = categories.find((c) => c.id === v);
                       if (cat && getValues("status") === "") setValue("status", cat.default_status);
                     }}
+                    placeholder="Choisir une catégorie"
                     emptyLabel="Aucune"
                     options={categories
                       .filter((c) => !c.archived_at)
@@ -271,6 +274,7 @@ function AssignmentDialog({
                   <SelectInput
                     value={field.value}
                     onChange={field.onChange}
+                    placeholder="Choisir un statut"
                     emptyLabel="Non renseigné"
                     options={Object.entries(STATUS_LABELS).map(([value, label]) => ({
                       value,

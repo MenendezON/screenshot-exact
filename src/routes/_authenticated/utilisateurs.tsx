@@ -111,7 +111,7 @@ function UsersContent() {
       {error && <p className="text-sm text-destructive">Impossible de charger les utilisateurs.</p>}
 
       {users && (
-        <ul className="divide-y rounded-lg border bg-card shadow-panel">
+        <ul className="divide-y rounded-lg border bg-card">
           {users.map((u) => (
             <UserItem key={u.id} user={u} />
           ))}

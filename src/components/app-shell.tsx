@@ -84,7 +84,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         {user && (
           <div className="mb-3 px-1">
             <p className="truncate text-sm font-medium">{user.fullName || user.email}</p>
-            <p className="eyebrow mt-1 text-sidebar-primary">
+            <p className="eyebrow mt-1 text-sidebar-muted">
               {user.role ? ROLE_LABELS[user.role] : "Sans rôle"}
             </p>
           </div>
@@ -138,7 +138,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Loader2 className="size-4 animate-spin" /> Chargement…
             </div>
           ) : !user?.role ? (
-            <div className="mx-auto max-w-md rounded-lg border bg-card p-8 text-center shadow-panel">
+            <div className="mx-auto max-w-md rounded-lg border bg-card p-8 text-center">
               <h1 className="text-xl font-bold">Accès non attribué</h1>
               <p className="mt-3 text-sm text-muted-foreground">
                 Votre compte n'a pas de rôle actif. Contactez l'administrateur RH pour obtenir un
@@ -192,7 +192,7 @@ export function RequireRole({
   const { data: user } = useCurrentUser();
   if (!user?.role || !roles.includes(user.role)) {
     return (
-      <div className="mx-auto max-w-md rounded-lg border bg-card p-8 text-center shadow-panel">
+      <div className="mx-auto max-w-md rounded-lg border bg-card p-8 text-center">
         <h1 className="text-xl font-bold">Accès réservé</h1>
         <p className="mt-3 text-sm text-muted-foreground">{message}</p>
       </div>

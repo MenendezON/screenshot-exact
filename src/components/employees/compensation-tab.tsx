@@ -106,7 +106,7 @@ export function CompensationTab({ ctx }: { ctx: FicheContext }) {
                     {formatFCFA(Number(c.net_monthly_salary_fcfa))}
                   </span>
                   {i === 0 && (
-                    <span className="ml-2 rounded-sm bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary">
+                    <span className="ml-2 rounded-sm bg-primary px-1.5 py-0.5 text-xs font-medium text-primary-foreground">
                       Actuelle
                     </span>
                   )}
@@ -145,6 +145,7 @@ export function CompensationTab({ ctx }: { ctx: FicheContext }) {
                 inputMode="numeric"
                 className="font-mono"
                 aria-invalid={!!errors.amount}
+                placeholder="Ex. 450 000"
                 {...register("amount")}
               />
             </FormRow>

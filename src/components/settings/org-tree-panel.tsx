@@ -201,6 +201,7 @@ export function OrgTreePanel() {
               <Input
                 value={draft.name}
                 onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+                placeholder="Ex. Direction de la production"
                 autoFocus
               />
             </Field>
@@ -244,6 +245,7 @@ export function OrgTreePanel() {
               <Input
                 type="number"
                 inputMode="numeric"
+                placeholder="Ex. 10"
                 value={draft.order}
                 onChange={(e) => setDraft({ ...draft, order: e.target.value })}
               />

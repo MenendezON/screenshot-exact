@@ -116,7 +116,12 @@ export function CategoriesPanel() {
         }
       >
         <Field label="Code" hint="Unique, sans distinction de casse.">
-          <Input value={code} onChange={(e) => setCode(e.target.value)} autoFocus />
+          <Input
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            placeholder="Ex. B2"
+            autoFocus
+          />
         </Field>
         <Field label="Statut par défaut">
           <Select value={status} onValueChange={(v) => setStatus(v as EmployeeStatus)}>
@@ -136,6 +141,7 @@ export function CategoriesPanel() {
           <Input
             type="number"
             inputMode="numeric"
+            placeholder="Ex. 10"
             value={order}
             onChange={(e) => setOrder(e.target.value)}
           />

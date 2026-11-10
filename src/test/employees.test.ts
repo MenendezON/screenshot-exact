@@ -9,6 +9,7 @@ import {
   employeeSchema,
   exitSchema,
   isIsoDate,
+  KINSHIP_OPTIONS,
   safeFileName,
   sensitiveSchema,
   toEmployeePayload,
@@ -142,6 +143,38 @@ describe("formulaire employé", () => {
       messages(sensitiveSchema.safeParse({ ...base, idDocumentType: "cni" }))["idDocumentNumber"],
     ).toMatch(/numéro/);
     expect(sensitiveSchema.safeParse(base).success).toBe(true);
+  });
+
+  it("lie le nom, le lien de parenté et le téléphone du contact d'urgence", () => {
+    const base = {
+      idDocumentType: "",
+      idDocumentNumber: "",
+      emergencyName: "",
+      emergencyRelation: "",
+      emergencyPhone: "",
+    };
+    const nameOnly = messages(sensitiveSchema.safeParse({ ...base, emergencyName: "Moussa Diop" }));
+    expect(nameOnly["emergencyPhone"]).toBe("Indiquez le téléphone de ce contact.");
+    expect(nameOnly["emergencyRelation"]).toBe("Indiquez le lien de parenté.");
+    const phoneOnly = messages(
+      sensitiveSchema.safeParse({ ...base, emergencyPhone: "+221 77 123 45 67" }),
+    );
+    expect(phoneOnly["emergencyName"]).toBe("Indiquez le nom du contact.");
+    expect(
+      sensitiveSchema.safeParse({
+        ...base,
+        emergencyName: "Moussa Diop",
+        emergencyRelation: "Frère",
+        emergencyPhone: "+221 77 123 45 67",
+      }).success,
+    ).toBe(true);
+  });
+
+  it("propose une liste de liens de parenté qui inclut les cas courants", () => {
+    expect(KINSHIP_OPTIONS).toEqual(
+      expect.arrayContaining(["Conjoint(e)", "Père", "Mère", "Frère", "Sœur", "Autre"]),
+    );
+    expect(new Set(KINSHIP_OPTIONS).size).toBe(KINSHIP_OPTIONS.length);
   });
 });
 

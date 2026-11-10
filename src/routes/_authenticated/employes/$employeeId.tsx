@@ -146,7 +146,7 @@ function FichePage() {
       <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-center gap-4">
           <span
-            className="grid size-14 shrink-0 place-items-center rounded-full bg-primary/10 text-lg font-bold text-primary"
+            className="grid size-14 shrink-0 place-items-center rounded-full bg-secondary text-lg font-bold text-secondary-foreground"
             aria-hidden
           >
             {initials(record)}

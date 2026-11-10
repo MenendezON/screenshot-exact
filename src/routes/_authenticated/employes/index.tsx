@@ -235,7 +235,7 @@ function EmployeesPage() {
 
       <section
         aria-label="Recherche et filtres"
-        className="mb-4 space-y-3 rounded-lg border bg-card p-4 shadow-panel"
+        className="mb-4 space-y-3 rounded-lg border bg-card p-4"
       >
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -332,10 +332,7 @@ function EmployeesPage() {
         </div>
       </section>
 
-      <div
-        className="overflow-hidden rounded-lg border bg-card shadow-panel"
-        aria-busy={isFetching}
-      >
+      <div className="overflow-hidden rounded-lg border bg-card" aria-busy={isFetching}>
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
@@ -461,7 +458,7 @@ function EmployeeLine({
           className="flex items-center gap-3 font-medium hover:underline"
         >
           <span
-            className="grid size-8 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-bold text-primary"
+            className="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-xs font-bold text-secondary-foreground"
             aria-hidden
           >
             {initials(r)}

@@ -16,7 +16,7 @@ export function BusinessSettingsPanel() {
   const { canEdit } = useRefRights();
 
   return (
-    <section className="rounded-lg border bg-card shadow-panel">
+    <section className="rounded-lg border bg-card">
       <header className="border-b px-5 py-4">
         <h2 className="text-lg font-bold">Paramètres métier</h2>
         <p className="mt-0.5 text-sm text-muted-foreground">

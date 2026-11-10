@@ -42,7 +42,7 @@ function OrgChartPage() {
   return (
     <div className="mx-auto max-w-5xl">
       <PageHeader eyebrow="Personnel" title="Organigramme" description={DESCRIPTION} />
-      <div className="mb-6 flex flex-col gap-3 rounded-lg border bg-card p-4 shadow-panel sm:flex-row sm:items-end sm:justify-between">
+      <div className="mb-6 flex flex-col gap-3 rounded-lg border bg-card p-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="w-full sm:max-w-xs">
           <FormRow label="Site">
             <SelectInput
@@ -78,7 +78,7 @@ function OrgChartPage() {
             <UnitNode key={n.unit.id} node={n} />
           ))}
           {chart.unassigned.length > 0 && (
-            <section className="rounded-lg border bg-card shadow-panel">
+            <section className="rounded-lg border bg-card">
               <h2 className="border-b px-5 py-3 text-sm font-bold">
                 Sans unité active{" "}
                 <span className="font-normal text-muted-foreground">
@@ -98,7 +98,7 @@ function UnitNode({ node }: { node: ChartNode }) {
   return (
     <details
       open={node.depth < 2}
-      className="group rounded-lg border bg-card shadow-panel"
+      className="group rounded-lg border bg-card"
       style={{ marginLeft: node.depth > 0 ? "1rem" : undefined }}
     >
       <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 marker:hidden">
@@ -135,7 +135,7 @@ function Members({ members }: { members: ChartMember[] }) {
             className="flex items-center gap-3 px-4 py-2.5 hover:bg-muted"
           >
             <span
-              className="grid size-8 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-bold text-primary"
+              className="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-xs font-bold text-secondary-foreground"
               aria-hidden
             >
               {m.name
@@ -149,7 +149,7 @@ function Members({ members }: { members: ChartMember[] }) {
               <span className="flex items-center gap-1.5 truncate text-sm font-medium">
                 {m.name}
                 {m.isManager && (
-                  <Crown className="size-3.5 shrink-0 text-warning" aria-label="Responsable" />
+                  <Crown className="size-3.5 shrink-0 text-primary" aria-label="Responsable" />
                 )}
               </span>
               <span className="block truncate text-xs text-muted-foreground">
