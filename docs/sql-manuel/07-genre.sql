@@ -3,6 +3,8 @@
 BEGIN;
 
 ALTER TABLE public.employees ADD COLUMN IF NOT EXISTS gender text;
+-- Valeur par défaut « M » pour les NOUVELLES fiches ; les fiches existantes ne sont pas modifiées.
+ALTER TABLE public.employees ALTER COLUMN gender SET DEFAULT 'M';
 ALTER TABLE public.employees DROP CONSTRAINT IF EXISTS employees_gender_check;
 ALTER TABLE public.employees ADD CONSTRAINT employees_gender_check CHECK (gender IS NULL OR gender IN ('F','M'));
 

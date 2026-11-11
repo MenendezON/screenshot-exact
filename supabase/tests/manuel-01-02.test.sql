@@ -120,6 +120,9 @@ BEGIN
   EXCEPTION WHEN check_violation THEN ok := true; END;
   total := total + 1; IF NOT ok THEN failed := failed + 1; END IF;
   out := out || format(E'\n[%s] genre limité à F ou M', CASE WHEN ok THEN 'OK' ELSE 'ÉCHEC' END);
+  INSERT INTO public.employees (matricule, first_names, last_name) VALUES ('GDEF', 'Test', 'Defaut') RETURNING gender INTO txt;
+  total := total + 1; ok := txt = 'M'; IF NOT ok THEN failed := failed + 1; END IF;
+  out := out || format(E'\n[%s] genre « M » par défaut pour une nouvelle fiche (%s)', CASE WHEN ok THEN 'OK' ELSE 'ÉCHEC' END, txt);
   UPDATE public.employees SET gender = 'F' WHERE id = e_sub;
   SELECT count(*) INTO n FROM public.v_employee_current WHERE employee_id = e_sub AND gender = 'F';
   total := total + 1; ok := n = 1; IF NOT ok THEN failed := failed + 1; END IF;

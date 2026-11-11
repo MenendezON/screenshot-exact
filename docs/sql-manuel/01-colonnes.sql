@@ -61,6 +61,13 @@ ALTER TABLE public.documents ADD CONSTRAINT documents_description_check
   CHECK (description IS NULL OR length(description) <= 500);
 
 -- 4. Vue : ajout en FIN de liste (CREATE OR REPLACE interdit de réordonner)
+-- Si le script 07 (genre) est déjà passé, la vue contient une colonne de plus : on ne la recrée pas
+-- (CREATE OR REPLACE VIEW ne peut pas supprimer de colonne).
+DO $do$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns
+                 WHERE table_schema = 'public' AND table_name = 'v_employee_current' AND column_name = 'gender') THEN
+    EXECUTE $v$
 CREATE OR REPLACE VIEW public.v_employee_current WITH (security_invoker = true) AS
 SELECT e.id AS employee_id,
     e.matricule, e.first_names, e.last_name, e.manager_id, e.birth_date, e.phone, e.email,
@@ -103,6 +110,9 @@ LEFT JOIN LATERAL (SELECT max(t.u) AS last_child_change FROM (
     UNION ALL SELECT updated_at FROM public.employee_sites WHERE employee_id = e.id
     UNION ALL SELECT updated_at FROM public.exits          WHERE employee_id = e.id
     UNION ALL SELECT updated_at FROM public.compensation   WHERE employee_id = e.id) t) lc ON true;
+    $v$;
+  END IF;
+END $do$;
 
 GRANT SELECT ON public.v_employee_current TO authenticated;
 COMMIT;

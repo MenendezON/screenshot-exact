@@ -17,7 +17,7 @@ Au clavier : la touche Tab parcourt les éléments ; le premier arrêt est « Al
 ## 2. Employés
 - **Liste** : recherche par nom ou matricule, filtres (site, unité, statut), export.
 - **Créer** : bouton « Nouvel employé ». Le matricule est unique et obligatoire.
-- **Fiche** : onglets Identité, Poste, Contrats et sortie, Rémunération, Documents, Appréciations, Historique (selon vos droits). L'onglet Identité contient le **genre** (Femme ou Homme, facultatif),  l'e-mail personnel, l'**e-mail professionnel** (facultatif) et la **nationalité** (liste de pays, le Sénégal en premier).
+- **Fiche** : onglets Identité, Poste, Contrats et sortie, Rémunération, Documents, Appréciations, Historique (selon vos droits). L'onglet Identité contient le **genre** (Femme ou Homme ; « Homme » est proposé par défaut à la création, à corriger si besoin),  l'e-mail personnel, l'**e-mail professionnel** (facultatif) et la **nationalité** (liste de pays, le Sénégal en premier).
 - **Rémunération** : chaque ligne peut être rattachée à un **contrat** de l'employé (facultatif).
 - **Changer d'affectation** : ajoutez une nouvelle affectation avec sa date de début ; la précédente est fermée la veille.
 - **Supprimer** n'existe pas : on **archive**. Une fiche archivée reste dans l'historique et le journal.

@@ -33,7 +33,7 @@ const EMPTY: EmployeeForm = {
   matricule: "",
   lastName: "",
   firstNames: "",
-  gender: "",
+  gender: "M",
   birthDate: "",
   birthPlace: "",
   address: "",
