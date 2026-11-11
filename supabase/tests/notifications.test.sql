@@ -54,7 +54,7 @@ BEGIN
   INSERT INTO public.employees (matricule, first_names, last_name) VALUES ('NOTIF0', 'Chef', 'Equipe') RETURNING id INTO e_boss;
   INSERT INTO public.employees (matricule, first_names, last_name, manager_id) VALUES ('NOTIF1', 'Awa', 'Fin', e_boss) RETURNING id INTO e1;
   INSERT INTO public.employees (matricule, first_names, last_name, birth_date)
-    VALUES ('NOTIF2', 'Moussa', 'Retraite', current_date - make_interval(years => (SELECT value FROM public.settings WHERE key = 'retirement_age')::int) + 30)
+    VALUES ('NOTIF2', 'Moussa', 'Retraite', (current_date - make_interval(years => (SELECT value FROM public.settings WHERE key = 'retirement_age')::int))::date + 30)
     RETURNING id INTO e2;
   INSERT INTO public.employees (matricule, first_names, last_name, manager_id) VALUES ('NOTIF3', 'Fatou', 'Echu', e_boss) RETURNING id INTO e3;
   INSERT INTO public.employees (matricule, first_names, last_name) VALUES ('NOTIF4', 'Ibou', 'Courriel') RETURNING id INTO e4;

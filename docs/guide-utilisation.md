@@ -53,7 +53,7 @@ La gestion des comptes et des droits est réservée à l'**administrateur IT** (
 - **API et clés** (administrateur IT uniquement) : voir le chapitre 10.
 - **Journal d'audit** : qui a fait quoi et quand, avec les valeurs avant/après (lecture seule).
 - **Accès aux documents** : qui a ouvert quel document.
-- **Paramètres** : âge de retraite, durée maximale d'un CDD, délais d'alerte, durée d'inactivité.
+- **Paramètres** : âge de retraite, durée maximale d'un CDD, délais d'alerte, durée d'inactivité, et « Notifications par e-mail » (interrupteur). L'onglet **Alertes** indique quels rôles reçoivent chaque type d'alerte dans la cloche (administrateur IT et DRH).
 
 ## 8. Import du classeur « SUIVIS DU PERSONNEL FMS »
 Réservé au DRH et au gestionnaire RH. Principe : (1) charger le classeur, (2) corriger les

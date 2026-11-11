@@ -149,3 +149,19 @@ describe("durée de vie des clés", () => {
     expect(validateExpiry(addDaysIso(today, 91), today, 90)).toMatch(/90 jours/);
   });
 });
+
+import { recipientState } from "@/lib/notification-recipients";
+
+describe("destinataires des alertes", () => {
+  const rows = [
+    { id: "1", kind: "contract_ending", role: "drh" as const, archived_at: null },
+    { id: "2", kind: "*", role: "paie" as const, archived_at: null },
+    { id: "3", kind: "contract_ending", role: "direction" as const, archived_at: "2026-01-01" },
+  ];
+  it("distingue ligne directe, joker, absente et archivée", () => {
+    expect(recipientState(rows, "contract_ending", "drh")).toEqual({ state: "direct", id: "1" });
+    expect(recipientState(rows, "retirement_upcoming", "paie")).toEqual({ state: "all", id: "2" });
+    expect(recipientState(rows, "contract_ending", "direction").state).toBe("none");
+    expect(recipientState(rows, "contract_ending", "manager").state).toBe("none");
+  });
+});

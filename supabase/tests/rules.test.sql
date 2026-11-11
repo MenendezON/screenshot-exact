@@ -26,7 +26,7 @@ BEGIN
   INSERT INTO public.employees (matricule, first_names, last_name) VALUES ('RULE2', 'Test', 'Reembauche') RETURNING id INTO e2;
   INSERT INTO public.employees (matricule, first_names, last_name) VALUES ('RULE3', 'Test', 'Alertes') RETURNING id INTO e3;
   INSERT INTO public.employees (matricule, first_names, last_name, birth_date)
-    VALUES ('RULE4', 'Test', 'Retraite', current_date - make_interval(years => (SELECT value FROM public.settings WHERE key = 'retirement_age')::int) + 30)
+    VALUES ('RULE4', 'Test', 'Retraite', (current_date - make_interval(years => (SELECT value FROM public.settings WHERE key = 'retirement_age')::int))::date + 30)
     RETURNING id INTO e4;
 
   -- ---------- Calcul de la date de fin ----------

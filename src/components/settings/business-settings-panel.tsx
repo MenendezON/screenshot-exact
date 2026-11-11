@@ -5,6 +5,7 @@ import { Loader2, Lock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDateTime } from "@/lib/format";
 import { dbErrorMessage } from "@/lib/referentials";
@@ -42,7 +43,55 @@ export function BusinessSettingsPanel() {
   );
 }
 
+/** Paramètre à deux états (unité « booléen », valeur 0 ou 1) : un interrupteur Activé / Désactivé enregistré aussitôt. */
+function ToggleSettingRow({ setting, canEdit }: { setting: Setting; canEdit: boolean }) {
+  const queryClient = useQueryClient();
+  const on = setting.value === 1;
+  const mutation = useMutation({
+    mutationFn: async (next: boolean) => {
+      const { error } = await supabase
+        .from("settings")
+        .update({ value: next ? 1 : 0 })
+        .eq("id", setting.id);
+      if (error) throw error;
+    },
+    onSuccess: (_d, next) => {
+      toast.success(`« ${setting.label} » ${next ? "activé" : "désactivé"}.`);
+      queryClient.invalidateQueries({ queryKey: ["settings"] });
+      queryClient.invalidateQueries({ queryKey: ["ref-history"] });
+    },
+    onError: (e) => toast.error(dbErrorMessage(e)),
+  });
+  return (
+    <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0">
+        <p className="font-medium">{setting.label}</p>
+        {setting.description && (
+          <p className="mt-0.5 text-sm text-muted-foreground">{setting.description}</p>
+        )}
+        <p className="mt-1 text-xs text-muted-foreground">
+          Modifié le {formatDateTime(setting.updated_at)}
+        </p>
+      </div>
+      <div className="flex shrink-0 items-center gap-3">
+        <Switch
+          checked={on}
+          disabled={!canEdit || mutation.isPending}
+          onCheckedChange={(v) => mutation.mutate(v)}
+          aria-label={setting.label}
+        />
+        <span className="w-20 text-sm font-medium">{on ? "Activé" : "Désactivé"}</span>
+      </div>
+    </div>
+  );
+}
+
 function SettingRow({ setting, canEdit }: { setting: Setting; canEdit: boolean }) {
+  if (setting.unit === "booléen") return <ToggleSettingRow setting={setting} canEdit={canEdit} />;
+  return <NumberSettingRow setting={setting} canEdit={canEdit} />;
+}
+
+function NumberSettingRow({ setting, canEdit }: { setting: Setting; canEdit: boolean }) {
   const queryClient = useQueryClient();
   const [value, setValue] = useState(String(setting.value));
   const bounds = SETTING_BOUNDS[setting.unit] ?? { min: 1, max: 999 };

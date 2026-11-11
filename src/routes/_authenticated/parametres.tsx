@@ -7,6 +7,7 @@ import { DocumentTypesPanel } from "@/components/settings/document-types-panel";
 import { ExitReasonsPanel } from "@/components/settings/exit-reasons-panel";
 import { HistoryPanel } from "@/components/settings/history-panel";
 import { JobTitlesPanel } from "@/components/settings/job-titles-panel";
+import { NotificationRecipientsPanel } from "@/components/settings/notification-recipients-panel";
 import { OrgTreePanel } from "@/components/settings/org-tree-panel";
 import { SitesPanel } from "@/components/settings/sites-panel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -58,6 +59,7 @@ function SettingsContent() {
           <TabsTrigger value="motifs">Motifs de sortie</TabsTrigger>
           <TabsTrigger value="documents">Documents</TabsTrigger>
           <TabsTrigger value="regles">Règles métier</TabsTrigger>
+          <TabsTrigger value="alertes">Alertes</TabsTrigger>
           {can("audit", "view") && <TabsTrigger value="historique">Historique</TabsTrigger>}
         </TabsList>
         <TabsContent value="sites">
@@ -80,6 +82,9 @@ function SettingsContent() {
         </TabsContent>
         <TabsContent value="regles">
           <BusinessSettingsPanel />
+        </TabsContent>
+        <TabsContent value="alertes">
+          <NotificationRecipientsPanel />
         </TabsContent>
         {can("audit", "view") && (
           <TabsContent value="historique">

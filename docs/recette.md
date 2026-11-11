@@ -42,6 +42,8 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Écran « Échéances » : liste des fins de contrat dans les délais d'alerte par type ; filtres site/unité ; export.
 - [ ] Écran « Retraites » : départs à la retraite à venir selon `retirement_age`.
 - [ ] Écran « À régulariser » : CDD échus encore en poste.
+- [ ] Paramètres > Alertes : la grille type d'alerte × rôle reflète les destinataires ; cocher un rôle l'ajoute, décocher l'archive (modifiable par admin_it et drh, lecture seule sinon).
+- [ ] Paramètres > Règles métier : « Notifications par e-mail » est un interrupteur Activé/Désactivé (pas d'erreur « Entre 1 et … »).
 - [ ] Destinataires : drh et gestionnaire_rh reçoivent toutes les alertes ; direction reçoit les départs à la retraite uniquement.
 - [ ] Notification (cloche) : un CDD finissant dans le délai apparaît ; il disparaît après renouvellement ou sortie. [Auto : SQL]
 
