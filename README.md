@@ -1,4 +1,4 @@
-# Fabrimétal — Gestion du personnel
+# Fabri RH — Gestion du personnel de Fabrimétal Sénégal
 
 Application interne de gestion du personnel de Fabrimétal Sénégal : fiches employés, organigramme,
 contrats et sorties, documents, tableau de bord, administration (utilisateurs, permissions, journal).

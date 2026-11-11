@@ -1,4 +1,4 @@
-# Guide d'utilisation — Gestion du personnel Fabrimétal
+# Fabri RH — Gestion du personnel de Fabrimétal Sénégal
 
 Ce guide est aussi disponible dans l'application, menu **Guide d'utilisation**, pour tous les utilisateurs connectés.
 

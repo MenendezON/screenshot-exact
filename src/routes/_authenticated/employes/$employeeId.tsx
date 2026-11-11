@@ -48,7 +48,7 @@ export const Route = createFileRoute("/_authenticated/employes/$employeeId")({
     isFicheTab(raw["onglet"]) && raw["onglet"] !== "identite" ? { onglet: raw["onglet"] } : {},
   head: () => ({
     meta: [
-      { title: "Fiche employé — Fabrimétal Personnel" },
+      { title: "Fiche employé — Fabri RH" },
       { name: "description", content: "Fiche détaillée d'un employé." },
       { name: "robots", content: "noindex" },
     ],

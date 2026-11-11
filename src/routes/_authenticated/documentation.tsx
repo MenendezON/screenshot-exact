@@ -14,7 +14,7 @@ import readme from "../../../README.md?raw";
 export const Route = createFileRoute("/_authenticated/documentation")({
   head: () => ({
     meta: [
-      { title: "Documentation — Fabrimétal Personnel" },
+      { title: "Documentation — Fabri RH" },
       { name: "robots", content: "noindex" },
     ],
   }),

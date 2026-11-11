@@ -40,7 +40,7 @@ import { inviteUser, resetUserMfa, sendPasswordReset, setUserActive } from "@/li
 export const Route = createFileRoute("/_authenticated/utilisateurs")({
   head: () => ({
     meta: [
-      { title: "Utilisateurs — Fabrimétal Personnel" },
+      { title: "Utilisateurs — Fabri RH" },
       { name: "description", content: "Comptes, rôles, périmètres et accès des utilisateurs." },
       { name: "robots", content: "noindex" },
     ],

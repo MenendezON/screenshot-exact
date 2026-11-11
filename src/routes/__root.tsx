@@ -83,13 +83,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Fabrimétal — Gestion du personnel" },
+      { title: "Fabri RH — Gestion du personnel" },
       {
         name: "description",
         content: "Suivi du personnel de Fabrimétal Sénégal : employés, contrats et sites.",
       },
       { name: "author", content: "Fabrimétal Sénégal" },
-      { property: "og:title", content: "Fabrimétal — Gestion du personnel" },
+      { property: "og:title", content: "Fabri RH — Gestion du personnel" },
       {
         property: "og:description",
         content: "Suivi du personnel de Fabrimétal Sénégal : employés, contrats et sites.",

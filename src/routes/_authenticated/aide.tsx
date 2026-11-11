@@ -8,7 +8,7 @@ import guide from "../../../docs/guide-utilisation.md?raw";
 export const Route = createFileRoute("/_authenticated/aide")({
   head: () => ({
     meta: [
-      { title: "Guide d'utilisation — Fabrimétal Personnel" },
+      { title: "Guide d'utilisation — Fabri RH" },
       { name: "description", content: "Guide d'utilisation de l'outil de gestion du personnel." },
     ],
   }),

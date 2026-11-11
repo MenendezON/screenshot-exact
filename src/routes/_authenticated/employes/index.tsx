@@ -86,7 +86,7 @@ export const Route = createFileRoute("/_authenticated/employes/")({
   validateSearch: (raw: Record<string, unknown>) => compactSearch(parseListSearch(raw)),
   head: () => ({
     meta: [
-      { title: "Employés — Fabrimétal Personnel" },
+      { title: "Employés — Fabri RH" },
       { name: "description", content: DESCRIPTION },
       { name: "robots", content: "noindex" },
     ],

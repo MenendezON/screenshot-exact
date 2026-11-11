@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Monogramme Fabrimétal : un aplat rouge avec la lettre F. */
+/** Monogramme Fabri RH : un aplat rouge avec la lettre F. */
 export function BrandMark({ className }: { className?: string }) {
   return (
     <span
@@ -20,11 +20,11 @@ export function BrandName({ className, inverted }: { className?: string; inverte
     <span className={cn("flex items-center gap-3", className)}>
       <BrandMark />
       <span className="leading-tight">
-        <span className="block font-display text-base font-bold tracking-tight">Fabrimétal</span>
+        <span className="block font-display text-base font-bold tracking-tight">Fabri RH</span>
         <span
           className={cn("eyebrow block", inverted ? "text-sidebar-muted" : "text-muted-foreground")}
         >
-          Sénégal · Personnel
+          Fabrimétal Sénégal
         </span>
       </span>
     </span>

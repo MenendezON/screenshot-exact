@@ -66,7 +66,7 @@ export const Route = createFileRoute("/_authenticated/tableau-de-bord")({
   },
   head: () => ({
     meta: [
-      { title: `${TITLE} — Fabrimétal Personnel` },
+      { title: `${TITLE} — Fabri RH` },
       { name: "description", content: DESCRIPTION },
       { name: "robots", content: "noindex" },
     ],

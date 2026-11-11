@@ -11,9 +11,9 @@ import { formatDate } from "@/lib/format";
 export const Route = createFileRoute("/_authenticated/accueil")({
   head: () => ({
     meta: [
-      { title: "Accueil — Fabrimétal Personnel" },
+      { title: "Accueil — Fabri RH" },
       { name: "description", content: "Tableau d'accueil de l'outil de gestion du personnel." },
-      { property: "og:title", content: "Accueil — Fabrimétal Personnel" },
+      { property: "og:title", content: "Accueil — Fabri RH" },
       { property: "og:description", content: "Tableau d'accueil de l'outil de gestion du personnel." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

@@ -47,7 +47,7 @@ export const Route = createFileRoute("/_authenticated/journal")({
   },
   head: () => ({
     meta: [
-      { title: "Journal d'audit — Fabrimétal Personnel" },
+      { title: "Journal d'audit — Fabri RH" },
       { name: "description", content: DESCRIPTION },
       { name: "robots", content: "noindex" },
     ],

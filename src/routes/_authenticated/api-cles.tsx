@@ -41,7 +41,7 @@ import { useCurrentUser } from "@/lib/roles";
 
 export const Route = createFileRoute("/_authenticated/api-cles")({
   head: () => ({
-    meta: [{ title: "API et clés — Fabrimétal Personnel" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "API et clés — Fabri RH" }, { name: "robots", content: "noindex" }],
   }),
   component: Page,
 });

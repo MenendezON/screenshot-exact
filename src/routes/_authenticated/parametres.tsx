@@ -22,9 +22,9 @@ const DESCRIPTION =
 export const Route = createFileRoute("/_authenticated/parametres")({
   head: () => ({
     meta: [
-      { title: "Paramètres RH — Fabrimétal Personnel" },
+      { title: "Paramètres RH — Fabri RH" },
       { name: "description", content: DESCRIPTION },
-      { property: "og:title", content: "Paramètres RH — Fabrimétal Personnel" },
+      { property: "og:title", content: "Paramètres RH — Fabri RH" },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

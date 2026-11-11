@@ -19,9 +19,9 @@ export const Route = createFileRoute("/auth")({
     typeof search["redirect"] === "string" ? { redirect: search["redirect"] } : {},
   head: () => ({
     meta: [
-      { title: "Connexion — Fabrimétal Personnel" },
+      { title: "Connexion — Fabri RH" },
       { name: "description", content: "Connectez-vous à l'outil de gestion du personnel Fabrimétal." },
-      { property: "og:title", content: "Connexion — Fabrimétal Personnel" },
+      { property: "og:title", content: "Connexion — Fabri RH" },
       {
         property: "og:description",
         content: "Connectez-vous à l'outil de gestion du personnel Fabrimétal.",

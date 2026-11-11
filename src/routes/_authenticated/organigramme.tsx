@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/organigramme")({
       : {},
   head: () => ({
     meta: [
-      { title: "Organigramme — Fabrimétal Personnel" },
+      { title: "Organigramme — Fabri RH" },
       { name: "description", content: DESCRIPTION },
       { name: "robots", content: "noindex" },
     ],

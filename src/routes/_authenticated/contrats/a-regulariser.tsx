@@ -22,7 +22,7 @@ export const Route = createFileRoute("/_authenticated/contrats/a-regulariser")({
   validateSearch: parseFollowupSearch,
   head: () => ({
     meta: [
-      { title: `${TITLE} — Fabrimétal Personnel` },
+      { title: `${TITLE} — Fabri RH` },
       { name: "description", content: DESCRIPTION },
       { name: "robots", content: "noindex" },
     ],

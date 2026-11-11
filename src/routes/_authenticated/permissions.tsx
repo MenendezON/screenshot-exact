@@ -25,7 +25,7 @@ import { dbErrorMessage } from "@/lib/referentials";
 export const Route = createFileRoute("/_authenticated/permissions")({
   head: () => ({
     meta: [
-      { title: "Permissions — Fabrimétal Personnel" },
+      { title: "Permissions — Fabri RH" },
       { name: "description", content: "Matrice des rôles, permissions et périmètres." },
       { name: "robots", content: "noindex" },
     ],

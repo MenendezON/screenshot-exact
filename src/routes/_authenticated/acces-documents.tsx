@@ -34,7 +34,7 @@ export const Route = createFileRoute("/_authenticated/acces-documents")({
   },
   head: () => ({
     meta: [
-      { title: "Accès aux documents — Fabrimétal Personnel" },
+      { title: "Accès aux documents — Fabri RH" },
       { name: "description", content: DESCRIPTION },
       { name: "robots", content: "noindex" },
     ],

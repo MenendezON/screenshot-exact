@@ -17,7 +17,7 @@ export const Route = createFileRoute("/mfa")({
     typeof search["redirect"] === "string" ? { redirect: search["redirect"] } : {},
   head: () => ({
     meta: [
-      { title: "Vérification en deux étapes — Fabrimétal Personnel" },
+      { title: "Vérification en deux étapes — Fabri RH" },
       {
         name: "description",
         content: "Confirmez votre identité avec votre application d'authentification.",
@@ -77,7 +77,7 @@ function MfaPage() {
       }
       const { data: enrolled, error: enrollError } = await supabase.auth.mfa.enroll({
         factorType: "totp",
-        friendlyName: `Fabrimétal ${new Date().toISOString().slice(0, 10)}`,
+        friendlyName: `Fabri RH ${new Date().toISOString().slice(0, 10)}`,
       });
       if (cancelled) return;
       if (enrollError || !enrolled) {

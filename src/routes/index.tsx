@@ -9,13 +9,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Fabrimétal Sénégal — Gestion du personnel" },
+      { title: "Fabri RH — Gestion du personnel Fabrimétal Sénégal" },
       {
         name: "description",
         content:
           "Outil interne de suivi du personnel de Fabrimétal Sénégal pour les sites de Sébikotane, Sindia et Dakar.",
       },
-      { property: "og:title", content: "Fabrimétal Sénégal — Gestion du personnel" },
+      { property: "og:title", content: "Fabri RH — Gestion du personnel Fabrimétal Sénégal" },
       {
         property: "og:description",
         content:

@@ -15,9 +15,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/reset-password")({
   head: () => ({
     meta: [
-      { title: "Définir un mot de passe — Fabrimétal Personnel" },
+      { title: "Définir un mot de passe — Fabri RH" },
       { name: "description", content: "Choisissez le mot de passe de votre compte Fabrimétal." },
-      { property: "og:title", content: "Définir un mot de passe — Fabrimétal Personnel" },
+      { property: "og:title", content: "Définir un mot de passe — Fabri RH" },
       {
         property: "og:description",
         content: "Choisissez le mot de passe de votre compte Fabrimétal.",
