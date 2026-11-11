@@ -91,16 +91,21 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Niveau 4 : le salaire apparaît ; niveau 3 : il n'apparaît pas.
 - [ ] Clé limitée à un site : seuls les employés de ce site sont renvoyés.
 - [ ] Clé révoquée ou expirée → 401 ; clé inventée → 401 ; 121 appels en une minute → 429.
-- [ ] `updated_since` : modifier un employé puis appeler avec une date antérieure → il est renvoyé ; avec une date postérieure → absent. (503 tant que la colonne `last_change` n'existe pas.)
+- [ ] `updated_since` : modifier un employé puis appeler avec une date antérieure → il est renvoyé ; avec une date postérieure → absent.
 - [ ] Chaque appel apparaît dans le journal ; création et révocation dans le journal d'audit.
 - [ ] Brancher la paie (niveau 4) et le pointage (niveau 1 ou 2) et comparer les effectifs reçus avec le tableau de bord.
 
-## 9 ter. Appréciations (après mise à jour de la base)
+## 9 ter. Appréciations (onglet de la fiche)
 - [ ] drh : voir, créer, modifier, archiver. gestionnaire_rh : voir, créer, modifier.
 - [ ] manager : voit seulement les appréciations de son périmètre, sans bouton de création/modification.
 - [ ] direction : voit tout, sans création/modification. paie et admin_it : aucun accès.
 - [ ] Personne ne voit ses propres appréciations, manager et direction compris.
 - [ ] Le journal d'audit n'affiche pas le texte du commentaire.
+
+## 9 bis bis. Nouveaux champs de la fiche
+- [ ] Identité : saisir un e-mail professionnel (refus d'une adresse invalide) et une nationalité ; les deux apparaissent en lecture.
+- [ ] Rémunération : rattacher un salaire à un contrat ; un contrat d'un autre employé n'est pas proposé.
+- [ ] Documents : ajouter une description ; elle s'affiche sous le nom du fichier.
 
 ## 9 quater. Contrôles réels après les scripts SQL manuels (`docs/sql-manuel/`)
 - [ ] Déposer un PDF de moins de 10 Mo : accepté. Un fichier Word ou de plus de 10 Mo : refusé.

@@ -65,7 +65,7 @@ const TECHNICAL = new Set([
   "storage_path",
 ]);
 /** Tables dont le contenu ne doit jamais être recopié dans l'écran du journal. */
-const MASKED_TABLES = new Set(["employee_sensitive"]);
+const MASKED_TABLES = new Set(["employee_sensitive", "employee_reviews"]);
 
 export const tableLabel = (t: string) => AUDIT_TABLE_LABELS[t] ?? t;
 export const fieldLabel = (f: string) => FIELD_LABELS[f] ?? f;

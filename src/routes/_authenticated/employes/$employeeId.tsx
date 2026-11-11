@@ -12,6 +12,7 @@ import { DocumentsTab } from "@/components/employees/documents-tab";
 import type { FicheContext } from "@/components/employees/fiche-context";
 import { HistoryTab } from "@/components/employees/history-tab";
 import { IdentityTab } from "@/components/employees/identity-tab";
+import { ReviewsTab } from "@/components/employees/reviews-tab";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -204,6 +205,9 @@ function FichePage() {
           <TabsTrigger value="contrats">Contrats et sortie</TabsTrigger>
           <TabsTrigger value="remuneration">Rémunération</TabsTrigger>
           <TabsTrigger value="documents">Documents</TabsTrigger>
+          {can("reviews", "view") && (
+            <TabsTrigger value="appreciations">Appréciations</TabsTrigger>
+          )}
           <TabsTrigger value="historique">Historique</TabsTrigger>
         </TabsList>
         <TabsContent value="identite">
@@ -227,6 +231,13 @@ function FichePage() {
             <DocumentsTab ctx={ctx} />
           ) : (
             <NoAccess title="Documents" />
+          )}
+        </TabsContent>
+        <TabsContent value="appreciations">
+          {can("reviews", "view") ? (
+            <ReviewsTab ctx={ctx} />
+          ) : (
+            <NoAccess title="Appréciations" />
           )}
         </TabsContent>
         <TabsContent value="historique">

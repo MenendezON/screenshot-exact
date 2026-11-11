@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { isCountryCode } from "@/lib/countries";
+
 /**
  * Validation des formulaires du module Employés. Tous les messages sont en français.
  * Les champs de formulaire sont des chaînes (vide = non renseigné) ; les fonctions `to…Payload`
@@ -102,7 +104,7 @@ const phone = (label: string) =>
     );
 
 const uuid = (message: string) => z.string({ required_error: message }).uuid(message);
-const optionalUuid = z
+export const optionalUuid = z
   .string()
   .refine((v) => v === "" || z.string().uuid().safeParse(v).success, "Choix non valide.");
 
@@ -152,6 +154,17 @@ export const employeeSchema = z
         (v) => v === "" || z.string().email().safeParse(v).success,
         "Adresse e-mail non valide.",
       ),
+    professionalEmail: z
+      .string()
+      .trim()
+      .max(150, "L'adresse e-mail professionnelle : 150 caractères au plus.")
+      .refine(
+        (v) => v === "" || z.string().email().safeParse(v).success,
+        "Adresse e-mail non valide.",
+      ),
+    nationalityCode: z
+      .string()
+      .refine((v) => v === "" || isCountryCode(v), "Choisissez un pays dans la liste."),
     managerId: optionalUuid,
   })
   .superRefine((v, ctx) => {
@@ -189,6 +202,8 @@ export function toEmployeePayload(v: EmployeeForm) {
     children_count: v.childrenCount === "" ? 0 : Number(v.childrenCount),
     phone: emptyToNull(v.phone),
     email: emptyToNull(v.email),
+    professional_email: emptyToNull(v.professionalEmail),
+    nationality_code: emptyToNull(v.nationalityCode),
     manager_id: emptyToNull(v.managerId),
   };
 }
@@ -389,6 +404,7 @@ export const compensationSchema = z.object({
       "Le montant semble trop élevé (100 000 000 FCFA au plus).",
     ),
   effectiveDate: requiredDate("Date d'effet"),
+  contractId: optionalUuid,
 });
 export type CompensationForm = z.input<typeof compensationSchema>;
 
@@ -429,8 +445,7 @@ export function validateDocumentFile(
   if (!file) return "Choisissez un fichier.";
   if (file.size === 0) return "Le fichier est vide.";
   if (file.size > MAX_DOCUMENT_BYTES) return "Le fichier dépasse 10 Mo.";
-  if (!DOCUMENT_MIME_TYPES[file.type])
-    return "Format non accepté : PDF, JPEG ou PNG.";
+  if (!DOCUMENT_MIME_TYPES[file.type]) return "Format non accepté : PDF, JPEG ou PNG.";
   return null;
 }
 
@@ -450,6 +465,7 @@ export const documentSchema = z
     documentTypeId: uuid("Choisissez un type de document."),
     documentDate: optionalDate("Date du document"),
     expiresOn: optionalDate("Date d'expiration"),
+    description: z.string().trim().max(500, "La description : 500 caractères au plus."),
   })
   .superRefine((v, ctx) => {
     if (

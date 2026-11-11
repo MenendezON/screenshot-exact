@@ -2,8 +2,10 @@
 -- Idempotent. Le bouton « Importer » s'affichera alors grâce à la matrice (au lieu du repli par rôle).
 BEGIN;
 INSERT INTO public.permissions (resource, action, label)
-SELECT 'import_export', 'import', 'Import de données'
+SELECT 'import_export', 'import', 'Import et export'
 WHERE NOT EXISTS (SELECT 1 FROM public.permissions WHERE resource = 'import_export' AND action = 'import');
+
+UPDATE public.permissions SET label = 'Import et export' WHERE resource = 'import_export' AND label <> 'Import et export';
 
 INSERT INTO public.role_permissions (role_id, permission_id, scope)
 SELECT r.id, p.id, 'all'

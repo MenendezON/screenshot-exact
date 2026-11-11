@@ -27,6 +27,7 @@ import {
   type EmployeeRecord,
   type SensitiveRecord,
 } from "@/lib/employees";
+import { countryName, countryOptions } from "@/lib/countries";
 import { formatDate } from "@/lib/format";
 import {
   Empty,
@@ -60,6 +61,8 @@ const toForm = (r: EmployeeRecord): EmployeeForm => ({
   childrenCount: String(r.children_count),
   phone: r.phone ?? "",
   email: r.email ?? "",
+  professionalEmail: r.professional_email ?? "",
+  nationalityCode: r.nationality_code ?? "",
   managerId: r.manager_id ?? "",
 });
 
@@ -125,7 +128,12 @@ function CivilSection({ ctx }: { ctx: FicheContext }) {
             },
             { label: "Enfants à charge", value: String(r.children_count) },
             { label: "Téléphone", value: r.phone },
-            { label: "E-mail", value: r.email },
+            { label: "E-mail personnel", value: r.email },
+            { label: "E-mail professionnel", value: r.professional_email },
+            {
+              label: "Nationalité",
+              value: r.nationality_code ? countryName(r.nationality_code) : null,
+            },
             { label: "Adresse", value: r.address },
             {
               label: "Responsable hiérarchique",
@@ -214,13 +222,42 @@ function CivilSection({ ctx }: { ctx: FicheContext }) {
               {...register("phone")}
             />
           </FormRow>
-          <FormRow label="E-mail" htmlFor="email" error={errors.email?.message}>
+          <FormRow label="E-mail personnel" htmlFor="email" error={errors.email?.message}>
             <Input
               id="email"
               type="email"
               aria-invalid={!!errors.email}
               placeholder="prenom.nom@exemple.sn"
               {...register("email")}
+            />
+          </FormRow>
+          <FormRow
+            label="E-mail professionnel"
+            htmlFor="professionalEmail"
+            error={errors.professionalEmail?.message}
+            hint="Facultatif."
+          >
+            <Input
+              id="professionalEmail"
+              type="email"
+              aria-invalid={!!errors.professionalEmail}
+              placeholder="prenom.nom@fabrimetal.sn"
+              {...register("professionalEmail")}
+            />
+          </FormRow>
+          <FormRow label="Nationalité" error={errors.nationalityCode?.message}>
+            <Controller
+              control={control}
+              name="nationalityCode"
+              render={({ field }) => (
+                <SelectInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Choisir un pays"
+                  emptyLabel="Non renseignée"
+                  options={countryOptions()}
+                />
+              )}
             />
           </FormRow>
           <div className="sm:col-span-2">

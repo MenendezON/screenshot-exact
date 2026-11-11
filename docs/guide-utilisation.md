@@ -17,7 +17,8 @@ Au clavier : la touche Tab parcourt les éléments ; le premier arrêt est « Al
 ## 2. Employés
 - **Liste** : recherche par nom ou matricule, filtres (site, unité, statut), export.
 - **Créer** : bouton « Nouvel employé ». Le matricule est unique et obligatoire.
-- **Fiche** : onglets Identité, Affectation, Sites, Contrats, Documents, Rémunération (selon vos droits).
+- **Fiche** : onglets Identité, Poste, Contrats et sortie, Rémunération, Documents, Appréciations, Historique (selon vos droits). L'onglet Identité contient l'e-mail personnel, l'**e-mail professionnel** (facultatif) et la **nationalité** (liste de pays, le Sénégal en premier).
+- **Rémunération** : chaque ligne peut être rattachée à un **contrat** de l'employé (facultatif).
 - **Changer d'affectation** : ajoutez une nouvelle affectation avec sa date de début ; la précédente est fermée la veille.
 - **Supprimer** n'existe pas : on **archive**. Une fiche archivée reste dans l'historique et le journal.
 
@@ -36,6 +37,7 @@ repart de la nouvelle date d'entrée.
 
 ## 5. Documents
 - Formats PDF, JPG, PNG ; 10 Mo maximum.
+- Une **description** facultative (500 caractères) peut accompagner chaque document ; ne mettez pas d'information sensible.
 - Déposer une nouvelle version d'un document conserve les précédentes (historique).
 - L'ouverture d'un document génère un lien valable environ une minute ; chaque ouverture est tracée.
 - Les documents confidentiels sont invisibles pour les rôles non autorisés.
@@ -62,8 +64,8 @@ l'import, (3) lancer la **simulation** (rien n'est écrit) et exporter le rappor
 (4) corriger la source ou les rapprochements, (5) lancer l'**exécution** — tout ou rien. Relancer le
 même fichier ne crée pas de doublons. Le bouton **Importer** de la page Employés propose le **modèle de fichier** (Excel ou CSV, avec une feuille d'instructions) et un **contrôle** du fichier sans rien enregistrer. L'enregistrement définitif sera disponible après la mise à jour de la base.
 
-## 9. Appréciations *(à venir : en attente de la mise à jour de la base)*
-Les appréciations (de contrat, de performance) sont confidentielles. Le **DRH** les crée, les modifie et les archive ; le **gestionnaire RH** les crée et les modifie ; le **manager** (son périmètre) et la **direction** peuvent seulement les **consulter** ; la paie et l'administrateur IT n'y ont pas accès. Un employé ne voit jamais ses propres appréciations.
+## 9. Appréciations
+Onglet **Appréciations** de la fiche (visible si votre rôle y a droit). Une appréciation a une nature (contrat, performance, autre), une date, une note de 1 à 5 facultative, un titre facultatif et un commentaire. Le texte n'apparaît jamais dans l'historique. Les appréciations (de contrat, de performance) sont confidentielles. Le **DRH** les crée, les modifie et les archive ; le **gestionnaire RH** les crée et les modifie ; le **manager** (son périmètre) et la **direction** peuvent seulement les **consulter** ; la paie et l'administrateur IT n'y ont pas accès. Un employé ne voit jamais ses propres appréciations.
 
 ## 10. Donner accès aux données à d'autres applications (administrateur IT)
 Menu **API et clés**. Chaque application (paie, pointage…) reçoit sa propre clé, en lecture seule.

@@ -178,7 +178,9 @@ export async function listAllCurrent() {
   const rows = await listAll((from, to) =>
     supabase
       .from("v_employee_current")
-      .select("employee_id, matricule, first_names, last_name, primary_site_id, org_unit_id, birth_date")
+      .select(
+        "employee_id, matricule, first_names, last_name, primary_site_id, org_unit_id, birth_date",
+      )
       .eq("is_active", true)
       .is("archived_at", null)
       .order("employee_id")
@@ -271,6 +273,7 @@ export const EMPLOYEE_TABLE_LABELS: Record<string, string> = {
   exits: "Sortie",
   compensation: "Rémunération",
   documents: "Document",
+  employee_reviews: "Appréciation",
 };
 
 const EMPLOYEE_FIELD_LABELS: Record<string, string> = {
@@ -310,6 +313,14 @@ const EMPLOYEE_FIELD_LABELS: Record<string, string> = {
   emergency_contact_name: "Nom du contact d'urgence",
   emergency_contact_relation: "Lien de parenté du contact d'urgence",
   emergency_contact_phone: "Téléphone du contact d'urgence",
+  professional_email: "E-mail professionnel",
+  nationality_code: "Nationalité",
+  contract_id: "Contrat",
+  description: "Description",
+  kind: "Nature",
+  review_date: "Date de l'appréciation",
+  rating: "Note",
+  comment: "Commentaire",
 };
 
 /** Colonnes dont la valeur n'est qu'un identifiant technique : on signale le changement sans l'afficher. */
@@ -321,6 +332,7 @@ const ID_FIELDS = new Set([
   "site_id",
   "reason_id",
   "document_type_id",
+  "contract_id",
 ]);
 const SKIPPED_FIELDS = new Set([
   "updated_at",
@@ -417,6 +429,7 @@ export const FICHE_TABS = [
   "contrats",
   "remuneration",
   "documents",
+  "appreciations",
   "historique",
 ] as const;
 export type FicheTab = (typeof FICHE_TABS)[number];

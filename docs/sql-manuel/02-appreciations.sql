@@ -5,9 +5,11 @@ BEGIN;
 -- 1. Permissions
 INSERT INTO public.permissions (resource, action, label)
 SELECT 'reviews', a.action, a.label
-FROM (VALUES ('view','Appréciations : voir'), ('create','Appréciations : créer'),
-             ('edit','Appréciations : modifier'), ('archive','Appréciations : archiver')) a(action, label)
+FROM (VALUES ('view','Appréciations'), ('create','Appréciations'),
+             ('edit','Appréciations'), ('archive','Appréciations')) a(action, label)
 WHERE NOT EXISTS (SELECT 1 FROM public.permissions p WHERE p.resource='reviews' AND p.action=a.action);
+-- Le libellé d'une permission est celui de sa RESSOURCE (l'écran Permissions l'affiche en tête de ligne)
+UPDATE public.permissions SET label = 'Appréciations' WHERE resource = 'reviews' AND label <> 'Appréciations';
 
 -- 2. Table
 CREATE TABLE IF NOT EXISTS public.employee_reviews (

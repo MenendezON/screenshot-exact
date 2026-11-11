@@ -43,7 +43,7 @@ Paramètres : `matricule`, `page`, `per_page`. Champs : `matricule`, `type`, `de
 
 ## Codes de réponse
 
-`200` succès · `400` paramètre invalide · `401` clé absente, invalide, expirée ou révoquée · `403` niveau insuffisant · `404` introuvable · `429` plus de 120 requêtes par minute (en-tête `Retry-After`) · `503` filtre `updated_since` pas encore disponible · `500` erreur interne.
+`200` succès · `400` paramètre invalide · `401` clé absente, invalide, expirée ou révoquée · `403` niveau insuffisant · `404` introuvable · `429` plus de 120 requêtes par minute (en-tête `Retry-After`) · `500` erreur interne.
 
 ## Exemple
 

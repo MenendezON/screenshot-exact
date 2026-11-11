@@ -217,6 +217,9 @@ function DocumentItem({
               {d.document_date && ` · ${formatDate(d.document_date)}`}
               {d.expires_on && ` · expire le ${formatDate(d.expires_on)}`}
             </span>
+            {d.description && (
+              <span className="block text-sm text-muted-foreground">{d.description}</span>
+            )}
           </span>
         </span>
         <span className="flex shrink-0 flex-wrap items-center gap-1">
@@ -316,7 +319,7 @@ function UploadDialog({
 
   const form = useForm<DocumentForm>({
     resolver: zodResolver(documentSchema),
-    defaultValues: { documentTypeId: "", documentDate: "", expiresOn: "" },
+    defaultValues: { documentTypeId: "", documentDate: "", expiresOn: "", description: "" },
   });
   const { control, register, handleSubmit, reset, setValue, formState } = form;
   // En remplacement, le type est celui du document remplacé (non modifiable).
@@ -360,6 +363,7 @@ function UploadDialog({
       size_bytes: file.size,
       document_date: v.documentDate || null,
       expires_on: v.expiresOn || null,
+      description: v.description.trim() || null,
       ...(replacing
         ? {
             replaces_document_id: replacing.id,
@@ -458,6 +462,19 @@ function UploadDialog({
               <Input id="doc-expiry" type="date" {...register("expiresOn")} />
             </FormRow>
           </div>
+          <FormRow
+            label="Description (facultatif)"
+            htmlFor="doc-description"
+            error={errors.description?.message}
+            hint="500 caractères au plus. Ne saisissez pas d'information sensible."
+          >
+            <Input
+              id="doc-description"
+              placeholder="Ex. Avenant de renouvellement signé"
+              maxLength={500}
+              {...register("description")}
+            />
+          </FormRow>
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={close}>
               Annuler

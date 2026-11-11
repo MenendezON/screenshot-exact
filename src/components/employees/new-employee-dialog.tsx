@@ -22,6 +22,7 @@ import {
   toEmployeePayload,
   type EmployeeForm,
 } from "@/lib/employee-schemas";
+import { countryOptions } from "@/lib/countries";
 import { managerOptionsQuery } from "@/lib/employees";
 import { dbErrorMessage, sitesQuery } from "@/lib/referentials";
 import { FormRow, SelectInput, SubmitButton } from "./common";
@@ -37,6 +38,8 @@ const EMPTY: EmployeeForm = {
   childrenCount: "0",
   phone: "",
   email: "",
+  professionalEmail: "",
+  nationalityCode: "",
   managerId: "",
 };
 
@@ -204,13 +207,42 @@ export function NewEmployeeDialog({
               {...register("phone")}
             />
           </FormRow>
-          <FormRow label="E-mail" htmlFor="n-email" error={errors.email?.message}>
+          <FormRow label="E-mail personnel" htmlFor="n-email" error={errors.email?.message}>
             <Input
               id="n-email"
               type="email"
               aria-invalid={!!errors.email}
               placeholder="prenom.nom@exemple.sn"
               {...register("email")}
+            />
+          </FormRow>
+          <FormRow
+            label="E-mail professionnel"
+            htmlFor="n-proemail"
+            error={errors.professionalEmail?.message}
+            hint="Facultatif."
+          >
+            <Input
+              id="n-proemail"
+              type="email"
+              aria-invalid={!!errors.professionalEmail}
+              placeholder="prenom.nom@fabrimetal.sn"
+              {...register("professionalEmail")}
+            />
+          </FormRow>
+          <FormRow label="Nationalité" error={errors.nationalityCode?.message}>
+            <Controller
+              control={control}
+              name="nationalityCode"
+              render={({ field }) => (
+                <SelectInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Choisir un pays"
+                  emptyLabel="Non renseignée"
+                  options={countryOptions()}
+                />
+              )}
             />
           </FormRow>
           <div className="sm:col-span-2">

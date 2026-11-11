@@ -59,6 +59,8 @@ const validEmployee = {
   childrenCount: "2",
   phone: "+221 77 123 45 67",
   email: "awa@example.sn",
+  professionalEmail: "",
+  nationalityCode: "",
   managerId: "",
 };
 
@@ -247,7 +249,11 @@ describe("dates et contrats", () => {
 
 describe("rémunération et documents", () => {
   it("accepte un montant avec séparateurs de milliers et le convertit en entier", () => {
-    const parsed = compensationSchema.safeParse({ amount: "450 000", effectiveDate: "2026-01-01" });
+    const parsed = compensationSchema.safeParse({
+      amount: "450 000",
+      effectiveDate: "2026-01-01",
+      contractId: "",
+    });
     expect(parsed.success && parsed.data.amount).toBe("450000");
   });
 
@@ -289,6 +295,7 @@ describe("rémunération et documents", () => {
           documentTypeId: id,
           documentDate: "2026-05-01",
           expiresOn: "2026-04-01",
+          description: "",
         }),
       )["expiresOn"],
     ).toMatch(/précéder/);

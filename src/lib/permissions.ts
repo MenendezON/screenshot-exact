@@ -14,7 +14,8 @@ export type Resource =
   | "documents"
   | "confidential_documents"
   | "import_export"
-  | "dashboards";
+  | "dashboards"
+  | "reviews";
 export type Action = "view" | "create" | "edit" | "archive" | "export" | "import";
 
 export type PermissionRow = { resource: string; action: string; scope?: string };

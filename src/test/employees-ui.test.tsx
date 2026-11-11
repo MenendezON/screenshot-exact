@@ -357,7 +357,7 @@ describe("module Employés (rendu réel)", () => {
         within(dialog).getAllByText("Ce champ est obligatoire.").length,
       ).toBeGreaterThanOrEqual(3),
     );
-    fireEvent.change(within(dialog).getByLabelText("E-mail"), { target: { value: "oups" } });
+    fireEvent.change(within(dialog).getByLabelText("E-mail personnel"), { target: { value: "oups" } });
     fireEvent.click(within(dialog).getByRole("button", { name: "Créer le dossier" }));
     expect(await within(dialog).findByText("Adresse e-mail non valide.")).toBeInTheDocument();
     expect(reactErrors()).toEqual([]);

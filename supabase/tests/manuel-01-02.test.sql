@@ -116,5 +116,8 @@ BEGIN
   out := out || format(E'\n[%s] admin_it ne voit aucune appréciation (%s)', CASE WHEN ok THEN 'OK' ELSE 'ÉCHEC' END, n);
 
   PERFORM pg_temp.as_admin();
+  SELECT count(*) INTO n FROM public.permissions WHERE resource = 'reviews' AND label <> 'Appréciations';
+  total := total + 1; ok := n = 0; IF NOT ok THEN failed := failed + 1; END IF;
+  out := out || format(E'\n[%s] libellé de la ressource « Appréciations » cohérent (%s écart)', CASE WHEN ok THEN 'OK' ELSE 'ÉCHEC' END, n);
   RAISE EXCEPTION E'RÉSULTATS : % vérifications, % échec(s)%', total, failed, out;
 END $$;

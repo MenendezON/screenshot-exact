@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, Plus } from "lucide-react";
 import type { z } from "zod";
@@ -11,8 +11,9 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { compensationSchema, todayIso, type CompensationForm } from "@/lib/employee-schemas";
 import { employeeKey, type CompensationRecord } from "@/lib/employees";
+import { CONTRACT_LABELS, type ContractType } from "@/lib/employee-schemas";
 import { formatDate, formatFCFA } from "@/lib/format";
-import { Empty, FormRow, Section, SubmitButton, useEmployeeMutation } from "./common";
+import { Empty, FormRow, Section, SelectInput, SubmitButton, useEmployeeMutation } from "./common";
 import type { FicheContext } from "./fiche-context";
 
 type Parsed = z.output<typeof compensationSchema>;
@@ -40,17 +41,37 @@ export function CompensationTab({ ctx }: { ctx: FicheContext }) {
     },
   });
 
+  const { data: contracts = [] } = useQuery({
+    queryKey: [...employeeKey(ctx.id), "contracts-options"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("contracts")
+        .select("id, type, start_date, end_date, terminated_on")
+        .eq("employee_id", ctx.id)
+        .is("archived_at", null)
+        .order("start_date", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+  const contractLabel = (c: { type: string; start_date: string }) =>
+    `${CONTRACT_LABELS[c.type as ContractType] ?? c.type} depuis le ${formatDate(c.start_date)}`;
+
   const form = useForm<CompensationForm, unknown, Parsed>({
     resolver: zodResolver(compensationSchema),
-    defaultValues: { amount: "", effectiveDate: todayIso() },
+    defaultValues: { amount: "", effectiveDate: todayIso(), contractId: "" },
   });
-  const { register, handleSubmit, reset, formState } = form;
+  const { register, control, handleSubmit, reset, formState } = form;
   const errors = formState.errors;
 
   const save = useEmployeeMutation(
     ctx.id,
     async (v: Parsed) => {
-      const values = { net_monthly_salary_fcfa: Number(v.amount), effective_date: v.effectiveDate };
+      const values = {
+        net_monthly_salary_fcfa: Number(v.amount),
+        effective_date: v.effectiveDate,
+        contract_id: v.contractId ? v.contractId : null,
+      };
       const { error } =
         editing && editing !== "new"
           ? await supabase.from("compensation").update(values).eq("id", editing.id)
@@ -67,8 +88,12 @@ export function CompensationTab({ ctx }: { ctx: FicheContext }) {
   const open = (target: CompensationRecord | "new") => {
     reset(
       target === "new"
-        ? { amount: "", effectiveDate: todayIso() }
-        : { amount: String(target.net_monthly_salary_fcfa), effectiveDate: target.effective_date },
+        ? { amount: "", effectiveDate: todayIso(), contractId: contracts[0]?.id ?? "" }
+        : {
+            amount: String(target.net_monthly_salary_fcfa),
+            effectiveDate: target.effective_date,
+            contractId: target.contract_id ?? "",
+          },
     );
     setEditing(target);
   };
@@ -112,6 +137,9 @@ export function CompensationTab({ ctx }: { ctx: FicheContext }) {
                   )}
                   <span className="block text-sm text-muted-foreground">
                     Depuis le {formatDate(c.effective_date)}
+                    {c.contract_id &&
+                      contracts.find((k) => k.id === c.contract_id) &&
+                      ` · ${contractLabel(contracts.find((k) => k.id === c.contract_id)!)}`}
                     {delta !== null &&
                       ` · ${delta > 0 ? "+" : ""}${String(delta).replace(".", ",")} %`}
                   </span>
@@ -159,6 +187,24 @@ export function CompensationTab({ ctx }: { ctx: FicheContext }) {
                 type="date"
                 aria-invalid={!!errors.effectiveDate}
                 {...register("effectiveDate")}
+              />
+            </FormRow>
+            <FormRow
+              label="Contrat concerné"
+              error={errors.contractId?.message}
+              hint="Facultatif : le contrat auquel ce salaire se rattache."
+            >
+              <Controller
+                control={control}
+                name="contractId"
+                render={({ field }) => (
+                  <SelectInput
+                    value={field.value ?? ""}
+                    onChange={field.onChange}
+                    emptyLabel="Aucun contrat précisé"
+                    options={contracts.map((c) => ({ value: c.id, label: contractLabel(c) }))}
+                  />
+                )}
               />
             </FormRow>
             <div className="flex justify-end gap-2">
