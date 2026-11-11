@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import {
   employeeSchema,
+  GENDER_LABELS,
+  GENDERS,
   ID_DOCUMENT_LABELS,
   ID_DOCUMENT_TYPES,
   KINSHIP_OPTIONS,
@@ -54,6 +56,7 @@ const toForm = (r: EmployeeRecord): EmployeeForm => ({
   matricule: r.matricule,
   lastName: r.last_name,
   firstNames: r.first_names,
+  gender: r.gender ?? "",
   birthDate: r.birth_date ?? "",
   birthPlace: r.birth_place ?? "",
   address: r.address ?? "",
@@ -114,6 +117,10 @@ function CivilSection({ ctx }: { ctx: FicheContext }) {
             { label: "Nom", value: r.last_name },
             { label: "Prénoms", value: r.first_names },
             {
+              label: "Genre",
+              value: r.gender ? GENDER_LABELS[r.gender as keyof typeof GENDER_LABELS] : null,
+            },
+            {
               label: "Date de naissance",
               value: r.birth_date
                 ? `${formatDate(r.birth_date)}${ctx.metrics?.age_years != null ? ` (${ctx.metrics.age_years} ans)` : ""}`
@@ -169,6 +176,20 @@ function CivilSection({ ctx }: { ctx: FicheContext }) {
               aria-invalid={!!errors.firstNames}
               placeholder="Ex. Awa Fatou"
               {...register("firstNames")}
+            />
+          </FormRow>
+          <FormRow label="Genre" error={errors.gender?.message}>
+            <Controller
+              control={control}
+              name="gender"
+              render={({ field }) => (
+                <SelectInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  emptyLabel="Non renseigné"
+                  options={GENDERS.map((g) => ({ value: g, label: GENDER_LABELS[g] }))}
+                />
+              )}
             />
           </FormRow>
           <FormRow label="Date de naissance" htmlFor="birthDate" error={errors.birthDate?.message}>

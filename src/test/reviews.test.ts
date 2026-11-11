@@ -59,6 +59,7 @@ describe("fiche : nouveaux champs", () => {
     childrenCount: "0",
     phone: "",
     email: "",
+    gender: "",
     professionalEmail: "",
     nationalityCode: "",
     managerId: "",
@@ -87,5 +88,39 @@ describe("fiche : nouveaux champs", () => {
     };
     expect(documentSchema.safeParse({ ...d, description: "ok" }).success).toBe(true);
     expect(documentSchema.safeParse({ ...d, description: "x".repeat(501) }).success).toBe(false);
+  });
+});
+
+describe("genre", () => {
+  it("normalise les saisies de l'import", async () => {
+    const { parseGender } = await import("@/lib/import/normalize");
+    expect(parseGender("Femme").value).toBe("F");
+    expect(parseGender(" f ").value).toBe("F");
+    expect(parseGender("Féminin").value).toBe("F");
+    expect(parseGender("H").value).toBe("M");
+    expect(parseGender("Masculin").value).toBe("M");
+    expect(parseGender("").value).toBeNull();
+    expect(parseGender("autre").error).toMatch(/Femme ou Homme/);
+  });
+  it("le formulaire n'accepte que F, M ou vide et l'enregistre", () => {
+    const f = {
+      matricule: "A1",
+      lastName: "Diop",
+      firstNames: "Awa",
+      gender: "F",
+      birthDate: "",
+      birthPlace: "",
+      address: "",
+      maritalStatus: "",
+      childrenCount: "0",
+      phone: "",
+      email: "",
+      professionalEmail: "",
+      nationalityCode: "",
+      managerId: "",
+    };
+    expect(employeeSchema.safeParse(f).success).toBe(true);
+    expect(employeeSchema.safeParse({ ...f, gender: "" }).success).toBe(true);
+    expect(employeeSchema.safeParse({ ...f, gender: "X" }).success).toBe(false);
   });
 });

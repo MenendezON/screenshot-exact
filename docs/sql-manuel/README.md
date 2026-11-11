@@ -10,6 +10,7 @@ Ces scripts réalisent, **sans passer par Lovable**, les demandes de `demande-lo
 | `04-matrice-permissions.sql` | écriture de `role_permissions` par `admin_it` seul + garde-fou anti-verrouillage | 8 |
 | `05-documents.sql` | bucket privé, politiques de stockage, contraintes, versions, journal d'accès, expiration (`generate_document_notifications()`) | 7a–7f |
 | `06-droit-import.sql` | action `import_export:import` pour `drh` et `gestionnaire_rh` | 9 (droit seulement) |
+| `07-genre.sql` | colonne `employees.gender` (`F` ou `M`, facultative) et sa présence dans `v_employee_current` | genre |
 
 ## Procédure (Supabase)
 

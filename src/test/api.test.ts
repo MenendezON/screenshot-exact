@@ -43,6 +43,7 @@ describe("niveaux d'API", () => {
       "matricule",
       "nom",
       "prenoms",
+      "sexe",
       "en_poste",
       "statut",
       "poste",

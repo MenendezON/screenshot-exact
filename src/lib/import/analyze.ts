@@ -7,6 +7,7 @@ import {
   normalizeCategory,
   parseAmount,
   parseDate,
+  parseGender,
   parseInteger,
   parseYesNo,
   splitSites,
@@ -19,6 +20,7 @@ export type SourceRow = {
   matricule?: unknown;
   last_name?: unknown;
   first_names?: unknown;
+  gender?: unknown;
   birth_date?: unknown;
   department?: unknown;
   job_title?: unknown;
@@ -122,6 +124,7 @@ export type PlannedEmployee = {
   matricule: string;
   lastName: string | null;
   firstNames: string | null;
+  gender: "F" | "M" | null;
   birthDate: string | null;
   department: string | null;
   jobTitle: string | null;
@@ -201,6 +204,9 @@ export function analyzeImport(rows: SourceRow[], ctx: ImportContext): ImportPlan
     const start = date("Début du contrat", row.contract_start);
     const rawEnd = date("Fin du contrat", row.contract_end);
     const exitDate = date("Date de sortie", row.exit_date);
+
+    const gender = parseGender(row.gender);
+    if (gender.error) bad("invalid_value", `Genre : ${gender.error}`);
 
     const inPost = parseYesNo(row.in_post);
     if (inPost.error) bad("invalid_value", `En poste : ${inPost.error}`);
@@ -339,6 +345,7 @@ export function analyzeImport(rows: SourceRow[], ctx: ImportContext): ImportPlan
         matricule,
         lastName: cleanText(row.last_name),
         firstNames: cleanText(row.first_names),
+        gender: gender.value,
         birthDate: birth,
         department: dept.value,
         jobTitle: job.value,

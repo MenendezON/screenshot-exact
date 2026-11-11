@@ -123,7 +123,7 @@ export const orFilterFor = (term: string) =>
   SEARCH_COLUMNS.map((c) => `${c}.ilike.%${term}%`).join(",");
 
 export const LIST_COLUMNS =
-  "employee_id, matricule, first_names, last_name, manager_id, birth_date, phone, email, archived_at, org_unit_id, org_unit_name, job_title_id, job_title_name, category_id, category_code, status, primary_site_id, primary_site_name, site_ids, contract_id, contract_type, contract_start, contract_end, contract_terminated_on, exit_date, is_active";
+  "employee_id, matricule, first_names, last_name, gender, manager_id, birth_date, phone, email, archived_at, org_unit_id, org_unit_name, job_title_id, job_title_name, category_id, category_code, status, primary_site_id, primary_site_name, site_ids, contract_id, contract_type, contract_start, contract_end, contract_terminated_on, exit_date, is_active";
 
 /**
  * Requête filtrée et triée de la liste (sans pagination). `unitIds` contient l'unité choisie et
@@ -281,6 +281,7 @@ const EMPLOYEE_FIELD_LABELS: Record<string, string> = {
   last_name: "Nom",
   first_names: "Prénoms",
   birth_date: "Date de naissance",
+  gender: "Genre",
   birth_place: "Lieu de naissance",
   address: "Adresse",
   marital_status: "Situation familiale",

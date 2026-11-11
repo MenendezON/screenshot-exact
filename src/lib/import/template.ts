@@ -19,6 +19,12 @@ export const TEMPLATE_COLUMNS: Array<{
   { header: "Nom", field: "last_name", help: "Nom de famille.", example: ["Diop", "Diop"] },
   { header: "Prénoms", field: "first_names", help: "Prénoms.", example: ["Awa", "Awa"] },
   {
+    header: "Genre",
+    field: "gender",
+    help: "Femme ou Homme (F ou M accepté). Facultatif.",
+    example: ["Femme", "Femme"],
+  },
+  {
     header: "Date de naissance",
     field: "birth_date",
     help: "JJ/MM/AAAA.",

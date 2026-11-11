@@ -812,6 +812,7 @@ export type Database = {
           updated_by: string | null
           professional_email: string | null
           nationality_code: string | null
+          gender: string | null
         }
         Insert: {
           address?: string | null
@@ -833,6 +834,7 @@ export type Database = {
           updated_by?: string | null
           professional_email?: string | null
           nationality_code?: string | null
+          gender?: string | null
         }
         Update: {
           address?: string | null
@@ -854,6 +856,7 @@ export type Database = {
           updated_by?: string | null
           professional_email?: string | null
           nationality_code?: string | null
+          gender?: string | null
         }
         Relationships: [
           {
@@ -1746,6 +1749,7 @@ export type Database = {
           professional_email: string | null
           nationality_code: string | null
           last_change: string | null
+          gender: string | null
         }
         Relationships: [
           {

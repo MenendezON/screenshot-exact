@@ -26,6 +26,15 @@ export function parseYesNo(v: unknown): Parsed<boolean> {
   return { value: null, error: `Valeur « ${cleanText(v)} » inattendue : Oui ou Non attendu.` };
 }
 
+/** Genre : F / Femme / Féminin → F ; M / H / Homme / Masculin → M ; vide → null ; autre valeur → erreur. */
+export function parseGender(v: unknown): Parsed<"F" | "M"> {
+  const k = foldKey(v);
+  if (k === "") return { value: null };
+  if (["f", "femme", "feminin", "female", "madame", "mme"].includes(k)) return { value: "F" };
+  if (["m", "h", "homme", "masculin", "male", "monsieur", "mr"].includes(k)) return { value: "M" };
+  return { value: null, error: `Valeur « ${cleanText(v)} » inattendue : Femme ou Homme attendu.` };
+}
+
 /** Code de catégorie : 40S2 → 4OS2 (zéro saisi à la place de la lettre O), 7ieme → 7EME, casse et espaces. */
 export function normalizeCategory(v: unknown): string | null {
   const s = cleanText(v);

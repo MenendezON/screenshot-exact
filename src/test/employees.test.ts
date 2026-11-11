@@ -59,6 +59,7 @@ const validEmployee = {
   childrenCount: "2",
   phone: "+221 77 123 45 67",
   email: "awa@example.sn",
+  gender: "F",
   professionalEmail: "",
   nationalityCode: "",
   managerId: "",

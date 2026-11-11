@@ -47,7 +47,16 @@ const INK = "#333D46";
 const RED = "#E32624";
 const BLUE = "#3B7DB5";
 // Une couleur par catégorie (barres de répartition) ; chaque barre est aussi étiquetée par son axe et son tableau.
-const CATEGORY_COLORS = ["#3B7DB5", "#E32624", "#2A9D8F", "#E9A23B", "#7A5BA6", "#D1618A", "#6C8E3F", "#333D46"];
+const CATEGORY_COLORS = [
+  "#3B7DB5",
+  "#E32624",
+  "#2A9D8F",
+  "#E9A23B",
+  "#7A5BA6",
+  "#D1618A",
+  "#6C8E3F",
+  "#333D46",
+];
 
 type Search = {
   site?: string | undefined;
@@ -169,6 +178,7 @@ function DashboardPage() {
               slices={data.byContract}
               canExport={canExport}
             />
+            <DistributionChart title="Par genre" slices={data.byGender} canExport={canExport} />
             <DistributionChart title="Par site" slices={data.bySite} canExport={canExport} />
             <DistributionChart
               title="Par département"
@@ -399,13 +409,7 @@ function DistributionChart({
                 ]}
                 contentStyle={{ borderRadius: 4, border: "1px solid var(--border)" }}
               />
-              <Bar
-                dataKey="value"
-                name="Effectif"
-                fill={INK}
-                radius={[0, 4, 4, 0]}
-                maxBarSize={22}
-              >
+              <Bar dataKey="value" name="Effectif" fill={INK} radius={[0, 4, 4, 0]} maxBarSize={22}>
                 {slices.map((s, i) => (
                   <Cell key={s.label} fill={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
                 ))}

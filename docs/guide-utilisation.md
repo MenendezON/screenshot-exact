@@ -17,7 +17,7 @@ Au clavier : la touche Tab parcourt les éléments ; le premier arrêt est « Al
 ## 2. Employés
 - **Liste** : recherche par nom ou matricule, filtres (site, unité, statut), export.
 - **Créer** : bouton « Nouvel employé ». Le matricule est unique et obligatoire.
-- **Fiche** : onglets Identité, Poste, Contrats et sortie, Rémunération, Documents, Appréciations, Historique (selon vos droits). L'onglet Identité contient l'e-mail personnel, l'**e-mail professionnel** (facultatif) et la **nationalité** (liste de pays, le Sénégal en premier).
+- **Fiche** : onglets Identité, Poste, Contrats et sortie, Rémunération, Documents, Appréciations, Historique (selon vos droits). L'onglet Identité contient le **genre** (Femme ou Homme, facultatif),  l'e-mail personnel, l'**e-mail professionnel** (facultatif) et la **nationalité** (liste de pays, le Sénégal en premier).
 - **Rémunération** : chaque ligne peut être rattachée à un **contrat** de l'employé (facultatif).
 - **Changer d'affectation** : ajoutez une nouvelle affectation avec sa date de début ; la précédente est fermée la veille.
 - **Supprimer** n'existe pas : on **archive**. Une fiche archivée reste dans l'historique et le journal.
@@ -44,6 +44,7 @@ repart de la nouvelle date d'entrée.
 - Une alerte prévient 30 jours avant l'expiration d'un document (titre de séjour, diplôme à renouveler…).
 
 ## 6. Tableau de bord
+Le tableau de bord inclut une répartition **par genre** (Femmes, Hommes, Non renseigné) de l'effectif en poste. Le modèle d'import comporte une colonne **Genre** (Femme/Homme, F/M acceptés).
 Effectif actif, âge et ancienneté moyens/médians, répartitions, entrées et sorties par mois ou par
 année. Filtrez par site ou unité. Les salaires n'apparaissent qu'avec la permission de rémunération.
 Chaque graphique a son tableau de données et un export CSV/Excel. Un manager ne voit que son périmètre.

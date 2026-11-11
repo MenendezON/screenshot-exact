@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import {
   employeeSchema,
+  GENDER_LABELS,
+  GENDERS,
   MARITAL_LABELS,
   MARITAL_STATUS,
   toEmployeePayload,
@@ -31,6 +33,7 @@ const EMPTY: EmployeeForm = {
   matricule: "",
   lastName: "",
   firstNames: "",
+  gender: "",
   birthDate: "",
   birthPlace: "",
   address: "",
@@ -158,6 +161,20 @@ export function NewEmployeeDialog({
               aria-invalid={!!errors.firstNames}
               placeholder="Ex. Awa Fatou"
               {...register("firstNames")}
+            />
+          </FormRow>
+          <FormRow label="Genre" error={errors.gender?.message}>
+            <Controller
+              control={control}
+              name="gender"
+              render={({ field }) => (
+                <SelectInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  emptyLabel="Non renseigné"
+                  options={GENDERS.map((g) => ({ value: g, label: GENDER_LABELS[g] }))}
+                />
+              )}
             />
           </FormRow>
           <FormRow label="Date de naissance" htmlFor="n-birth" error={errors.birthDate?.message}>

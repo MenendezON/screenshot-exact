@@ -112,6 +112,10 @@ export const emptyToNull = (v: string): string | null => (v.trim() === "" ? null
 
 // ---------- Identité ----------
 
+export const GENDERS = ["F", "M"] as const;
+export type Gender = (typeof GENDERS)[number];
+export const GENDER_LABELS: Record<Gender, string> = { F: "Femme", M: "Homme" };
+
 export const MARITAL_STATUS = ["celibataire", "marie", "divorce", "veuf"] as const;
 export const MARITAL_LABELS: Record<(typeof MARITAL_STATUS)[number], string> = {
   celibataire: "Célibataire",
@@ -128,6 +132,12 @@ export const employeeSchema = z
     ),
     lastName: requiredText("Le nom", 100),
     firstNames: requiredText("Les prénoms", 150),
+    gender: z
+      .string()
+      .refine(
+        (v) => v === "" || (GENDERS as readonly string[]).includes(v),
+        "Choisissez une valeur dans la liste.",
+      ),
     birthDate: optionalDate("Date de naissance"),
     birthPlace: text("Le lieu de naissance", 100),
     address: text("L'adresse", 300),
@@ -194,6 +204,7 @@ export function toEmployeePayload(v: EmployeeForm) {
     matricule: v.matricule.trim().toUpperCase(),
     last_name: v.lastName.trim(),
     first_names: v.firstNames.trim(),
+    gender: (emptyToNull(v.gender) as Gender | null) ?? null,
     birth_date: emptyToNull(v.birthDate),
     birth_place: emptyToNull(v.birthPlace),
     address: emptyToNull(v.address),

@@ -46,6 +46,7 @@ export type PersonSource = {
   org_unit_id: string | null;
   is_active: boolean | null;
   archived_at: string | null;
+  gender?: string | null;
 };
 export type MetricSource = {
   employee_id: string;
@@ -75,7 +76,7 @@ export const dashboardSourceQuery = (withSalaries: boolean) =>
           supabase
             .from("v_employee_current")
             .select(
-              "employee_id, status, contract_type, primary_site_id, primary_site_name, org_unit_id, is_active, archived_at",
+              "employee_id, status, contract_type, primary_site_id, primary_site_name, org_unit_id, is_active, archived_at, gender",
             )
             .order("employee_id")
             .range(from, to),
@@ -140,6 +141,7 @@ export type Dashboard = {
   salary: Stats | null;
   byStatus: Slice[];
   byContract: Slice[];
+  byGender: Slice[];
   bySite: Slice[];
   byDepartment: Slice[];
   flows: FlowPoint[];
@@ -279,6 +281,10 @@ export function buildDashboard(
     byContract: tally(
       active.map((p) => (p.contract_type ? CONTRACT_LABELS[p.contract_type] : null)),
       "Sans contrat",
+    ),
+    byGender: tally(
+      active.map((p) => (p.gender === "F" ? "Femmes" : p.gender === "M" ? "Hommes" : null)),
+      "Non renseigné",
     ),
     bySite: tally(
       active.map((p) => p.primary_site_name),

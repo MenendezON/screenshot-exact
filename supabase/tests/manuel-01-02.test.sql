@@ -116,6 +116,14 @@ BEGIN
   out := out || format(E'\n[%s] admin_it ne voit aucune appréciation (%s)', CASE WHEN ok THEN 'OK' ELSE 'ÉCHEC' END, n);
 
   PERFORM pg_temp.as_admin();
+  BEGIN UPDATE public.employees SET gender = 'X' WHERE id = e_sub; ok := false;
+  EXCEPTION WHEN check_violation THEN ok := true; END;
+  total := total + 1; IF NOT ok THEN failed := failed + 1; END IF;
+  out := out || format(E'\n[%s] genre limité à F ou M', CASE WHEN ok THEN 'OK' ELSE 'ÉCHEC' END);
+  UPDATE public.employees SET gender = 'F' WHERE id = e_sub;
+  SELECT count(*) INTO n FROM public.v_employee_current WHERE employee_id = e_sub AND gender = 'F';
+  total := total + 1; ok := n = 1; IF NOT ok THEN failed := failed + 1; END IF;
+  out := out || format(E'\n[%s] le genre apparaît dans v_employee_current', CASE WHEN ok THEN 'OK' ELSE 'ÉCHEC' END);
   SELECT count(*) INTO n FROM public.permissions WHERE resource = 'reviews' AND label <> 'Appréciations';
   total := total + 1; ok := n = 0; IF NOT ok THEN failed := failed + 1; END IF;
   out := out || format(E'\n[%s] libellé de la ressource « Appréciations » cohérent (%s écart)', CASE WHEN ok THEN 'OK' ELSE 'ÉCHEC' END, n);

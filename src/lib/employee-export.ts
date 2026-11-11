@@ -67,6 +67,11 @@ const BASE_COLUMNS: ExportColumn[] = [
     width: 16,
     value: (r, c) => fr(c.metrics.get(r.employee_id ?? "")?.retirement_date),
   },
+  {
+    header: "Genre",
+    width: 8,
+    value: (r) => (r.gender === "F" ? "Femme" : r.gender === "M" ? "Homme" : null),
+  },
   { header: "Téléphone", width: 18, value: (r) => r.phone },
   { header: "E-mail", width: 28, value: (r) => r.email },
   {

@@ -30,7 +30,7 @@ Un niveau insuffisant pour une ressource renvoie `403`. Les champs d'un niveau s
 Paramètres : `presence` = `actifs` (défaut) | `sortis` | `tous` ; `site` = nom du site principal ; `page` (1 par défaut) ; `per_page` (100 par défaut, 1000 au plus) ; `format` = `json` (défaut) ou `csv` ; `updated_since` = date ISO (seuls les employés modifiés depuis cette date — fiche, affectation, sites, contrats, sortie ou rémunération). Pour une synchronisation, combiner avec `presence=tous` afin de recevoir aussi les départs ; mémoriser la date de début de chaque synchronisation réussie et la réutiliser à la suivante.
 
 ```json
-{ "data": [ { "matricule": "F0001", "nom": "Diop", "prenoms": "Awa", "en_poste": true, "statut": "ouvrier",
+{ "data": [ { "matricule": "F0001", "nom": "Diop", "prenoms": "Awa", "sexe": "F", "en_poste": true, "statut": "ouvrier",
               "poste": "Soudeur", "categorie": "4OS2", "unite": "Production", "site_principal": "Dakar" } ],
   "page": 1, "per_page": 100, "total": 874 }
 ```

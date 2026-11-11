@@ -107,6 +107,11 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Rémunération : rattacher un salaire à un contrat ; un contrat d'un autre employé n'est pas proposé.
 - [ ] Documents : ajouter une description ; elle s'affiche sous le nom du fichier.
 
+## 9 genre. Genre
+- [ ] Fiche : choisir Femme ou Homme ; la valeur s'affiche en lecture et figure dans l'export de la liste.
+- [ ] Tableau de bord : le graphique « Par genre » compte Femmes, Hommes et Non renseigné selon le périmètre.
+- [ ] API niveau 1 : le champ `sexe` (F ou M) est présent.
+
 ## 9 quater. Contrôles réels après les scripts SQL manuels (`docs/sql-manuel/`)
 - [ ] Déposer un PDF de moins de 10 Mo : accepté. Un fichier Word ou de plus de 10 Mo : refusé.
 - [ ] Le bucket `employee-documents` est privé ; ouvrir directement l'URL d'un fichier ne donne rien.

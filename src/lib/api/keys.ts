@@ -50,6 +50,7 @@ export type EmployeeSource = {
   phone: string | null;
   email: string | null;
   birth_date: string | null;
+  gender?: string | null;
 };
 
 /** Ne laisse sortir que les champs du niveau accordé. `salary` n'est lu que pour le niveau « remuneration ». */
@@ -58,6 +59,7 @@ export function projectEmployee(e: EmployeeSource, level: ApiLevel, salary?: num
     matricule: e.matricule,
     nom: e.last_name,
     prenoms: e.first_names,
+    sexe: e.gender ?? null,
     en_poste: e.is_active,
     statut: e.status,
     poste: e.job_title_name,
@@ -170,6 +172,7 @@ export const EMPLOYEE_COLUMNS: Record<ApiLevel, string[]> = {
     "matricule",
     "nom",
     "prenoms",
+    "sexe",
     "en_poste",
     "statut",
     "poste",
