@@ -56,7 +56,15 @@ Tests SQL (exécutés dans une transaction annulée ; le script se termine toujo
 ```sh
 psql "$DATABASE_URL" -f supabase/tests/permissions.test.sql   # RLS par rôle
 psql "$DATABASE_URL" -f supabase/tests/rules.test.sql          # règles de gestion
+psql "$DATABASE_URL" -f supabase/tests/notifications.test.sql  # alertes quotidiennes
+# après application des scripts docs/sql-manuel/ (voir son README) :
+psql "$DATABASE_URL" -f supabase/tests/manuel-01-02.test.sql   # colonnes, appréciations
+psql "$DATABASE_URL" -f supabase/tests/manuel-03-04.test.sql   # clés d'API, matrice
+psql "$DATABASE_URL" -f supabase/tests/manuel-05.test.sql      # documents
 ```
+
+Sans projet Supabase : `sh supabase/tests/local/run-all.sh` rejoue tout sur un PostgreSQL local
+(voir `supabase/tests/local/README.md`).
 
 Tests applicatifs et qualité :
 

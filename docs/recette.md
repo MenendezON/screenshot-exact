@@ -102,6 +102,14 @@ Légende : **[Auto]** couvert par un test automatique ; **[Manuel]** à vérifie
 - [ ] Personne ne voit ses propres appréciations, manager et direction compris.
 - [ ] Le journal d'audit n'affiche pas le texte du commentaire.
 
+## 9 quater. Contrôles réels après les scripts SQL manuels (`docs/sql-manuel/`)
+- [ ] Déposer un PDF de moins de 10 Mo : accepté. Un fichier Word ou de plus de 10 Mo : refusé.
+- [ ] Le bucket `employee-documents` est privé ; ouvrir directement l'URL d'un fichier ne donne rien.
+- [ ] Remplacer un document : la nouvelle ligne porte la version 2 ; un second remplacement du même document échoue.
+- [ ] `select public.generate_document_notifications();` crée une alerte pour un document expirant sous 30 jours, une seule fois.
+- [ ] Créer une clé d'API avec une expiration à 400 jours : refusée par la base.
+- [ ] Modifier la matrice en admin_it : accepté ; en drh : refusé ; retirer `users:edit` à admin_it : refusé.
+
 ## 10. Accessibilité et performance
 - [ ] Navigation complète au clavier (Tab, Maj+Tab, Entrée, Échap) ; lien « Aller au contenu » au premier Tab.
 - [ ] Focus visible partout ; boîtes de dialogue refermées par Échap, focus rendu au déclencheur.
