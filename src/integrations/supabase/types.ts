@@ -962,11 +962,101 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_outbox: {
+        Row: {
+          archived_at: string | null
+          attempts: number
+          channel: string
+          created_at: string
+          created_by: string | null
+          id: string
+          last_error: string | null
+          notification_id: string
+          recipient_email: string
+          sent_at: string | null
+          status: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          attempts?: number
+          channel?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_error?: string | null
+          notification_id: string
+          recipient_email: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          attempts?: number
+          channel?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          last_error?: string | null
+          notification_id?: string
+          recipient_email?: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_outbox_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_recipients: {
+        Row: {
+          archived_at: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          kind: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           archived_at: string | null
           created_at: string
           created_by: string | null
+          dedupe_key: string | null
           id: string
           kind: string
           payload: Json
@@ -979,6 +1069,7 @@ export type Database = {
           archived_at?: string | null
           created_at?: string
           created_by?: string | null
+          dedupe_key?: string | null
           id?: string
           kind: string
           payload?: Json
@@ -991,6 +1082,7 @@ export type Database = {
           archived_at?: string | null
           created_at?: string
           created_by?: string | null
+          dedupe_key?: string | null
           id?: string
           kind?: string
           payload?: Json
@@ -1614,6 +1706,7 @@ export type Database = {
         Args: { _employee_id: string; _table: string }
         Returns: boolean
       }
+      generate_contract_notifications: { Args: never; Returns: number }
       get_my_permissions: {
         Args: never
         Returns: {
@@ -1654,6 +1747,10 @@ export type Database = {
         Returns: boolean
       }
       in_scope: { Args: { _employee_id: string }; Returns: boolean }
+      in_scope_for: {
+        Args: { _employee_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_confidential_document_type: {
         Args: { _type_id: string }
         Returns: boolean
@@ -1676,6 +1773,15 @@ export type Database = {
         Returns: string
       }
       org_unit_ancestors: { Args: { _unit_id: string }; Returns: string[] }
+      user_has_permission_on: {
+        Args: {
+          _action: string
+          _employee_id: string
+          _resource: string
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role:
