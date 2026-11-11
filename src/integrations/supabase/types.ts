@@ -14,6 +14,100 @@ export type Database = {
   }
   public: {
     Tables: {
+      api_call_log: {
+        Row: {
+          client_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          method: string | null
+          path: string | null
+          row_count: number | null
+          status: number | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          method?: string | null
+          path?: string | null
+          row_count?: number | null
+          status?: number | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          method?: string | null
+          path?: string | null
+          row_count?: number | null
+          status?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_call_log_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "api_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      api_clients: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          expires_at: string
+          id: string
+          key_hash: string
+          key_prefix: string
+          last_used_at: string | null
+          level: string
+          name: string
+          revoked_at: string | null
+          site_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at: string
+          id?: string
+          key_hash: string
+          key_prefix: string
+          last_used_at?: string | null
+          level: string
+          name: string
+          revoked_at?: string | null
+          site_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          expires_at?: string
+          id?: string
+          key_hash?: string
+          key_prefix?: string
+          last_used_at?: string | null
+          level?: string
+          name?: string
+          revoked_at?: string | null
+          site_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_clients_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assignments: {
         Row: {
           archived_at: string | null
@@ -198,6 +292,7 @@ export type Database = {
           net_monthly_salary_fcfa: number
           updated_at: string
           updated_by: string | null
+          contract_id: string | null
         }
         Insert: {
           archived_at?: string | null
@@ -209,6 +304,7 @@ export type Database = {
           net_monthly_salary_fcfa: number
           updated_at?: string
           updated_by?: string | null
+          contract_id?: string | null
         }
         Update: {
           archived_at?: string | null
@@ -220,6 +316,7 @@ export type Database = {
           net_monthly_salary_fcfa?: number
           updated_at?: string
           updated_by?: string | null
+          contract_id?: string | null
         }
         Relationships: [
           {
@@ -440,6 +537,7 @@ export type Database = {
           updated_at: string
           updated_by: string | null
           version: number
+          description: string | null
         }
         Insert: {
           archived_at?: string | null
@@ -459,6 +557,7 @@ export type Database = {
           updated_at?: string
           updated_by?: string | null
           version?: number
+          description?: string | null
         }
         Update: {
           archived_at?: string | null
@@ -478,6 +577,7 @@ export type Database = {
           updated_at?: string
           updated_by?: string | null
           version?: number
+          description?: string | null
         }
         Relationships: [
           {
@@ -710,6 +810,8 @@ export type Database = {
           phone: string | null
           updated_at: string
           updated_by: string | null
+          professional_email: string | null
+          nationality_code: string | null
         }
         Insert: {
           address?: string | null
@@ -729,6 +831,8 @@ export type Database = {
           phone?: string | null
           updated_at?: string
           updated_by?: string | null
+          professional_email?: string | null
+          nationality_code?: string | null
         }
         Update: {
           address?: string | null
@@ -748,6 +852,8 @@ export type Database = {
           phone?: string | null
           updated_at?: string
           updated_by?: string | null
+          professional_email?: string | null
+          nationality_code?: string | null
         }
         Relationships: [
           {
@@ -777,6 +883,69 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_employee_metrics"
             referencedColumns: ["employee_id"]
+          },
+        ]
+      }
+      employee_reviews: {
+        Row: {
+          archived_at: string | null
+          comment: string
+          contract_id: string | null
+          created_at: string
+          created_by: string | null
+          employee_id: string
+          id: string
+          kind: string
+          rating: number | null
+          review_date: string
+          title: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          comment: string
+          contract_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          employee_id: string
+          id?: string
+          kind: string
+          rating?: number | null
+          review_date: string
+          title?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          comment?: string
+          contract_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          employee_id?: string
+          id?: string
+          kind?: string
+          rating?: number | null
+          review_date?: string
+          title?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_reviews_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "contracts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employee_reviews_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1574,6 +1743,9 @@ export type Database = {
           primary_site_name: string | null
           site_ids: string[] | null
           status: Database["public"]["Enums"]["employee_status"] | null
+          professional_email: string | null
+          nationality_code: string | null
+          last_change: string | null
         }
         Relationships: [
           {
@@ -1707,6 +1879,9 @@ export type Database = {
         Returns: boolean
       }
       generate_contract_notifications: { Args: never; Returns: number }
+      generate_document_notifications: { Args: never; Returns: number }
+      purge_api_call_log: { Args: { _days?: number }; Returns: number }
+      review_is_mine: { Args: { _employee_id: string }; Returns: boolean }
       get_my_permissions: {
         Args: never
         Returns: {
