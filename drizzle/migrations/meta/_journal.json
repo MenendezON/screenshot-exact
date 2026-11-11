@@ -36,6 +36,13 @@
       "when": 1794269702080,
       "tag": "0004_employee_documents_storage_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794355564702,
+      "tag": "0005_daily_contract_notifications",
+      "breakpoints": true
     }
   ]
 }
